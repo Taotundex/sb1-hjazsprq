@@ -80,8 +80,8 @@ export default function Footer() {
               </div>
               <h3 className='text-[#59687D] text-sm font-medium text-right'>This website was co-funded by the European Union. Its content is the sole responsibility of The Heschel Center for Sustainability, and does not necessarily reflect the views of the European Union.</h3>
               <div className="flex justify-end w-full items-end gap-0 ml-0">
-                <Image src={omnis} width={90} height={30} className='' alt='omnis' />
                 עיצוב ופיתוח ע״י
+                <Image src={omnis} width={90} height={30} className='' alt='omnis' />
               </div>
             </div>
           </div>

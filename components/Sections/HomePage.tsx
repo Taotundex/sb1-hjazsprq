@@ -57,7 +57,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="bg-[#FDFBF6] border border-[#DEDEDE]/70 rounded-[40px] overflow-hidden min-h-[500px]">
           {/* Geometric shapes */}
-          <div className="relative z-10 min-h-[500px] grid grid-cols-2 gap-[60px]">
+          <div className="relative z-10 min-h-[500px] grid grid-cols-2 lg:gap-[0px]">
             {/* Right side - Content */}
             <div className="max-w-2xl text-right p-[60px] pb-[30px]">
               <h1 className="text-[45px] font-extrabold text-[#484C56] leading-tight">
@@ -149,12 +149,18 @@ export default function HomePage() {
             </div>
 
             {/* Left side - Images */}
-            <div className="flex justify-between relative p-[30px] w-full">
-              <Image src={image1} width={192} height={308} className='w-[192px] h-[308px]' alt='image' />
+            <div className="flex justify-between gap-4 relative p-[30px] pr-0 w-full">
+              <div className="w-full">
+                <Image src={image3} width={192} height={308} className='w-[192px] h-[308px]' alt='image' />
+              </div>
+              <div className="w-full">
+                <Image src={image2} width={192} height={308} className='w-[192px] h-[308px] mt-40' alt='image' />
+              </div>
+              <div className="w-full">
+                <Image src={image1} width={192} height={308} className='w-[192px] h-[308px]' alt='image' />
+              </div>
               {/* Center larger oval image */}
-              <Image src={image2} width={192} height={308} className='w-[192px] h-[308px] mt-40' alt='image' />
               {/* Top right circular image */}
-              <Image src={image3} width={192} height={308} className='w-[192px] h-[308px]' alt='image' />
             </div>
           </div>
         </section>
@@ -182,46 +188,6 @@ export default function HomePage() {
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Electricity Consumption Line Chart */}
-            <Card className="bg-white border border-orange-200 rounded-2xl shadow-sm">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg text-right">משק החשמל בישראל - נתב על</CardTitle>
-                  <div className="flex items-center space-x-2 space-x-reverse">
-                    <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100">
-                      <ExternalLink className="w-3 h-3" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100">
-                      <Download className="w-3 h-3" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="text-sm text-slate-600">נתונים בזמן אמת</div>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-600">מיון לפי:</span>
-                    <select className="border rounded px-2 py-1 text-xs w-20 h-8">
-                      <option>יומי</option>
-                      <option>שבועי</option>
-                      <option>חודשי</option>
-                    </select>
-                  </div>
-                </div>
-                <LineChart
-                  data={electricityData}
-                  yAxisLabel="[MW]"
-                  height={300}
-                />
-                <div className="mt-4 flex justify-center">
-                  <Button variant="link" className="text-blue-600 text-sm">
-                    הצג נתונים <ChevronLeft className="w-4 h-4 mr-1" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Energy Sources Pie Chart */}
             <Card className="bg-white border border-orange-200 rounded-2xl shadow-sm">
               <CardHeader className="pb-4">
@@ -282,6 +248,47 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Electricity Consumption Line Chart */}
+            <Card className="bg-white border border-orange-200 rounded-2xl shadow-sm">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg text-right">משק החשמל בישראל - נתב על</CardTitle>
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100">
+                      <ExternalLink className="w-3 h-3" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100">
+                      <Download className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="text-sm text-slate-600">נתונים בזמן אמת</div>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-4 flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-slate-600">מיון לפי:</span>
+                    <select className="border rounded px-2 py-1 text-xs w-20 h-8">
+                      <option>יומי</option>
+                      <option>שבועי</option>
+                      <option>חודשי</option>
+                    </select>
+                  </div>
+                </div>
+                <LineChart
+                  data={electricityData}
+                  yAxisLabel="[MW]"
+                  height={300}
+                />
+                <div className="mt-4 flex justify-center">
+                  <Button variant="link" className="text-blue-600 text-sm">
+                    הצג נתונים <ChevronLeft className="w-4 h-4 mr-1" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
         </div>
 
