@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className="bg-[#FDFBF6] relative">
       {/* Bottom Footer */}
       <div className="border-t-[3px] border-t-[#1E8025] z-10">
-        <div className="container bg-white p-5 mx-auto pt-8 ">
+        <div className="container bg-[#FDFBF6] p-5 mx-auto pt-8 ">
           <div className="flex justify-between px-[60px]">
             <div className="flex flex-col items-start justify-between h-auto gap-5 mb-4 md:mb-0">
               <nav className="flex flex-row-reverse gap-5">

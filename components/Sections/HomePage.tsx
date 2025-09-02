@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import LineChart from '@/components/Charts/LineChart';
 import PieChart from '@/components/Charts/PieChart';
 import NewsletterPopup from '@/components/NewsletterPopup';
-import { Download, Info, BarChart3, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { Download, Info, BarChart3, ChevronLeft, ChevronRight, ExternalLink, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import topleft from '@/public/images/Ellipse 89.png'
 import image1 from '@/public/Frame 427319915.png'
@@ -16,6 +16,7 @@ import image3 from '@/public/Frame 427319914.png'
 import download from '@/public/images/download_2.png'
 import api from '@/public/images/api_9784530 3.png'
 import InterestPage from '../InterestPage';
+
 
 export default function HomePage() {
   const [selectedTimeframe, setSelectedTimeframe] = useState('יומי');
@@ -205,7 +206,7 @@ export default function HomePage() {
                       תמהיל יצור אנרגיה
                     </CardTitle>
                     <div className="flex items-start gap-4">
-                      <Image src={download} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
+                      <Image src={api} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
                       <Image src={download} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
                     </div>
                   </div>
@@ -216,11 +217,20 @@ export default function HomePage() {
                 <div className="mb-4 -mt-4 flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-slate-600">מיון לפי:</span>
-                    <select className="w-[202px] border rounded-full px-2 py-1 text-xs h-8">
-                      <option>יומי</option>
-                      <option>שבועי</option>
-                      <option>חודשי</option>
-                    </select>
+                    <div className="relative w-[202px]">
+                      <select
+                        className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
+                      >
+                        <option>יומי</option>
+                        <option>שבועי</option>
+                        <option>חודשי</option>
+                      </select>
+
+                      {/* Custom dropdown arrow */}
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black text-xs">
+                        <ChevronDown size={14} />
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="relative">
@@ -282,7 +292,7 @@ export default function HomePage() {
                       משק החשמל בישראל - נתב על
                     </CardTitle>
                     <div className="flex items-start gap-4">
-                      <Image src={download} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
+                      <Image src={api} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
                       <Image src={download} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
                     </div>
                   </div>
@@ -293,11 +303,20 @@ export default function HomePage() {
                 <div className="mb-4 -mt-4 flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-slate-600">מיון לפי:</span>
-                    <select className="w-[202px] border rounded-full px-2 py-1 text-xs h-8">
-                      <option>יומי</option>
-                      <option>שבועי</option>
-                      <option>חודשי</option>
-                    </select>
+                    <div className="relative w-[202px]">
+                      <select
+                        className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
+                      >
+                        <option>יומי</option>
+                        <option>שבועי</option>
+                        <option>חודשי</option>
+                      </select>
+
+                      {/* Custom dropdown arrow */}
+                      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black text-xs">
+                        <ChevronDown size={14} />
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <LineChart
