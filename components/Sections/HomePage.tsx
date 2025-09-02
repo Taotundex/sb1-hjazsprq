@@ -14,7 +14,7 @@ import image1 from '@/public/Frame 427319915.png'
 import image2 from '@/public/Frame 427319913.png'
 import image3 from '@/public/Frame 427319914.png'
 import download from '@/public/images/download_2.png'
-import api from '@/public/images/api_9784530 3.png'
+import api from '@/public/images/API.png'
 import InterestPage from '../InterestPage';
 
 
@@ -214,7 +214,7 @@ export default function HomePage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="mb-4 -mt-4 flex items-center gap-4">
+                <div className="-mt-4 flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-slate-600">מיון לפי:</span>
                     <div className="relative w-[202px]">
@@ -236,36 +236,36 @@ export default function HomePage() {
                 <div className="relative">
                   <PieChart
                     data={energySourcesData}
-                    height={300}
+                    height={450}
                     innerRadius="50%"
                     showLabels={false}
                   />
                   {/* Center text */}
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute top-[-30%] inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-xs text-slate-600">סה"כ</div>
-                      <div className="text-lg font-bold">MW 5,734</div>
+                      <div className="text-sm text-slate-600 text-center">סה"כ</div>
+                      <div className="text-base font-bold">MW 5,734</div>
                     </div>
                   </div>
                   {/* Label with percentage */}
-                  <div className="absolute top-16 right-16 bg-orange-100 px-2 py-1 rounded text-xs">
+                  {/* <div className="absolute top-16 right-16 bg-orange-100 px-2 py-1 rounded text-xs">
                     38% | אנרגיות פוסיליות
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Legend */}
-                <div className="mt-4 flex flex-row-reverse justify-end gap-6 text-xs font-medium">
-                  <div className="flex items-center space-x-1 space-x-reverse">
-                    <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                    <span>אחר</span>
+                <div className="-mt-32 flex flex-row-reverse justify-end gap-6 text-xs font-medium">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                    <span className='text-sm'>אחר</span>
                   </div>
-                  <div className="flex items-center space-x-1 space-x-reverse">
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span>אנרגיות מתחדשות</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    <span className='text-sm'>אנרגיות מתחדשות</span>
                   </div>
-                  <div className="flex items-center space-x-1 space-x-reverse">
-                    <div className="w-3 h-3 rounded-full bg-orange-400"></div>
-                    <span>אנרגיות פוסיליות</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                    <span className='text-sm'>אנרגיות פוסיליות</span>
                   </div>
                 </div>
 
@@ -325,18 +325,18 @@ export default function HomePage() {
                   height={300}
                 />
                 {/* Legend */}
-                <div className="mt-4 flex flex-row-reverse justify-end gap-6 text-xs font-medium">
-                  <div className="flex items-center space-x-1 space-x-reverse">
-                    <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                    <span>אחר</span>
+                <div className="-mt-32 flex flex-row-reverse justify-end gap-6 text-xs font-medium">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                    <span className='text-sm'>אחר</span>
                   </div>
-                  <div className="flex items-center space-x-1 space-x-reverse">
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span>אנרגיות מתחדשות</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    <span className='text-sm'>אנרגיות מתחדשות</span>
                   </div>
-                  <div className="flex items-center space-x-1 space-x-reverse">
-                    <div className="w-3 h-3 rounded-full bg-orange-400"></div>
-                    <span>אנרגיות פוסיליות</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                    <span className='text-sm'>אנרגיות פוסיליות</span>
                   </div>
                 </div>
                 <div className="mt-4 flex justify-start">

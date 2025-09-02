@@ -19,7 +19,7 @@ interface PieChartProps {
 export default function PieChart({ 
   data, 
   title, 
-  height = 400,
+  height = 300,
   innerRadius = '0%',
   showLabels = true 
 }: PieChartProps) {
@@ -30,31 +30,31 @@ export default function PieChart({
   }, []);
 
   const option = useMemo(() => ({
-    title: title ? {
-      text: title,
-      left: 'center',
-      textStyle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-      }
-    } : undefined,
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} ({d}%)'
-    },
-    legend: {
-      orient: 'horizontal',
-      bottom: 0,
-      textStyle: {
-        fontSize: 12
-      }
-    },
+    // title: title ? {
+    //   text: title,
+    //   left: 'center',
+    //   textStyle: {
+    //     fontSize: 16,
+    //     fontWeight: 'bold',
+    //   }
+    // } : undefined,
+    // tooltip: {
+    //   trigger: 'item',
+    //   formatter: '{a} <br/>{b}: {c} ({d}%)'
+    // },
+    // legend: {
+    //   orient: 'horizontal',
+    //   bottom: 0,
+    //   textStyle: {
+    //     fontSize: 12
+    //   }
+    // },
     series: [
       {
         name: title || 'נתונים',
         type: 'pie',
-        radius: [innerRadius, '70%'],
-        center: ['50%', '45%'],
+        radius: [innerRadius, '20%'],
+        center: ['50%', '35%'],
         avoidLabelOverlap: false,
         label: {
           show: showLabels,
@@ -64,7 +64,7 @@ export default function PieChart({
         },
         emphasis: {
           label: {
-            show: true,
+            show: false,
             fontSize: 14,
             fontWeight: 'bold'
           }
