@@ -45,9 +45,9 @@ export default function HomePage() {
 
   // Data for energy sources pie chart - matching Figma design
   const energySourcesData = [
-    { name: 'אחר', value: 15.2, color: '#e5e7eb' },
-    { name: 'אנרגיות מתחדשות', value: 46.8, color: '#10b981' },
-    { name: 'אנרגיות פוסיליות', value: 38, color: '#f59e0b' }
+    { name: 'אנרגיות פוסיליות', value: 48, color: '#CEA073' },
+    { name: 'אנרגיות מתחדשות', value: 98, color: '#2F7A4F' },
+    { name: 'אחר', value: 34, color: '#648AA3' },
   ];
 
 
