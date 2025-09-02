@@ -42,13 +42,13 @@ export default function LineChart({ data, title, yAxisLabel, height = 400 }: Lin
         }
       }
     },
-    legend: {
-      data: data.series.map(s => s.name),
-      bottom: 0,
-      textStyle: {
-        fontSize: 12
-      }
-    },
+    // legend: {
+    //   data: data.series.map(s => s.name),
+    //   bottom: 0,
+    //   textStyle: {
+    //     fontSize: 12
+    //   }
+    // },
     grid: {
       left: '3%',
       right: '4%',

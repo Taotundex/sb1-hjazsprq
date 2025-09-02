@@ -325,7 +325,7 @@ export default function HomePage() {
                   height={300}
                 />
                 {/* Legend */}
-                <div className="-mt-32 flex flex-row-reverse justify-end gap-6 text-xs font-medium">
+                <div className="-mt-0 flex flex-row-reverse justify-end gap-6 text-xs font-medium">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-gray-300"></div>
                     <span className='text-sm'>אחר</span>
