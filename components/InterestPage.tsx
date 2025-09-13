@@ -21,7 +21,8 @@ const InterestPage = () => {
                                 </svg>
                             </div>
                         </div>
-                        <div className="w-[46px] h-1 bg-[#276E4E] my-5"></div>
+                        <div className="w-[46px] h-1 bg-[#276E4E] rounded
+                         my-5"></div>
                         <div className="grid grid-cols-4 gap-16 relative z-10">
                             <div className="bg-white border !border-t-[5px] border-[#C3D44A] border-t-[#1E8025] w-full pt-6 pb-2 px-2 rounded-[5px] text-center flex flex-col gap-5" style={{ boxShadow: '0px 3px 30px 0px #99BF4129' }}>
                                 <span className='text-lg text-[#484C56] font-normal text-center'>יתרונות וחסרונות של סוגי<br />  האנרגיה</span>

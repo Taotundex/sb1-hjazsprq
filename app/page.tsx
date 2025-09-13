@@ -62,7 +62,7 @@ export default function Home() {
         {renderActiveSection()}
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

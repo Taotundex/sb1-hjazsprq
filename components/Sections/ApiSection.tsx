@@ -5,19 +5,24 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Copy, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
+import topleft from '@/public/images/Ellipse 89 (1).png'
+import Link from 'next/link';
+import InterestPage from '../InterestPage';
 
 interface ApiEndpoint {
   title: string;
   description: string;
   endpoint: string;
   method: string;
-  parameters: {
-    name: string;
-    type: string;
-    required: boolean;
-    description: string;
-  }[];
-  response: string;
+}
+
+interface ApiData {
+  id: number;
+  name: string;
+  endpoint: string;
+  method: string;
+  url: string;
 }
 
 export default function ApiSection() {
@@ -31,285 +36,222 @@ export default function ApiSection() {
 
   const apiEndpoints: ApiEndpoint[] = [
     {
-      title: 'Chart Data',
-      description: 'קבלת נתוני תרשים לוח למחרת תחפים',
-      endpoint: '/api/v1/charts/data',
-      method: 'GET',
-      parameters: [
-        { name: 'chart_type', type: 'string', required: true, description: 'סוג התרשים' },
-        { name: 'date_from', type: 'date', required: false, description: 'תאריך התחלה' },
-        { name: 'date_to', type: 'date', required: false, description: 'תאריך סיום' },
-        { name: 'region', type: 'string', required: false, description: 'אזור גיאוגרפי' }
-      ],
-      response: `{
-  "status": "success",
-  "data": {
-    "chart_type": "line",
-    "dates": ["2024-01-01", "2024-01-02"],
-    "series": [
-      {
-        "name": "Solar Data",
-        "data": [100, 150],
-        "unit": "MW"
-      }
-    ],
-    "metadata": {
-      "total_records": 2,
-      "last_updated": "2024-01-01T12:00:00Z"
-    }
-  }
-}`
+      title: 'מחיר שולי על פני זמן SMP',
+      description: 'Fetches a list of available charts',
+      endpoint: 'GET /api/charts',
+      method: 'GET'
     },
     {
-      title: 'Chart Info',
-      description: 'קבלת מידע על תרשים נכדף חירותי',
-      endpoint: '/api/v1/charts/info',
-      method: 'GET',
-      parameters: [
-        { name: 'chart_id', type: 'string', required: true, description: 'מזהה התרשים' }
-      ],
-      response: `{
-  "id": "chart_001",
-  "title": "Solar Generation",
-  "description": "Daily solar power generation",
-  "data_source": "National Grid",
-  "update_frequency": "Daily",
-  "last_updated": "2024-01-01T12:00:00Z"
-}`
+      title: 'מחיר שולי על פני זמן SMP',
+      description: 'Fetches a list of available charts',
+      endpoint: 'GET /api/charts',
+      method: 'GET'
     },
     {
-      title: 'Chart List',
-      description: 'קבלת רשימת כל התרשימים הזמינים',
-      endpoint: '/api/v1/charts',
-      method: 'GET',
-      parameters: [
-        { name: 'category', type: 'string', required: false, description: 'קטגוריית תרשים' },
-        { name: 'limit', type: 'integer', required: false, description: 'מספר תוצאות מקסימלי' }
-      ],
-      response: `{
-  "charts": [
-    {
-      "id": "renewable_capacity",
-      "title": "Renewable Energy Capacity",
-      "category": "renewable",
-      "available_regions": ["north", "center", "south"]
-    }
-  ],
-  "total": 1
-}`
+      title: 'מחיר שולי על פני זמן SMP',
+      description: 'Fetches a list of available charts',
+      endpoint: 'GET /api/charts',
+      method: 'GET'
     },
     {
-      title: 'Regional Data',
-      description: 'קבלת נתונים פי אזור',
-      endpoint: '/api/v1/regions/{region_id}',
-      method: 'GET',
-      parameters: [
-        { name: 'region_id', type: 'string', required: true, description: 'מזהה אזור' }
-      ],
-      response: `{
-  "region_id": "north",
-  "region_name": "North Region",
-  "data": {
-    "renewable_capacity": 500,
-    "co2_emissions": 1200,
-    "energy_consumption": 2500
-  },
-  "last_updated": "2024-01-01T12:00:00Z"
-}`
+      title: 'מחיר שולי על פני זמן SMP',
+      description: 'Fetches a list of available charts',
+      endpoint: 'GET /api/charts',
+      method: 'GET'
     },
     {
-      title: 'Time Series Data',
-      description: 'קבלת נתוני גיד זמן',
-      endpoint: '/api/v1/timeseries',
-      method: 'GET',
-      parameters: [
-        { name: 'metric', type: 'string', required: true, description: 'סוג המדד' },
-        { name: 'start_date', type: 'date', required: true, description: 'תאריך התחלה' },
-        { name: 'end_date', type: 'date', required: true, description: 'תאריך סיום' },
-        { name: 'granularity', type: 'string', required: false, description: 'רזולוציית זמן' }
-      ],
-      response: `{
-  "metric": "solar_generation",
-  "unit": "MW",
-  "granularity": "daily",
-  "data_points": [
+      title: 'מחיר שולי על פני זמן SMP',
+      description: 'Fetches a list of available charts',
+      endpoint: 'GET /api/charts',
+      method: 'GET'
+    },
+  ];
+
+  const apiData: ApiData[] = [
     {
-      "timestamp": "2024-01-01T00:00:00Z",
-      "value": 150.5
-    }
-  ]
-}`
+      id: 1,
+      name: "Retrieve a list of available charts",
+      endpoint: "charts/",
+      method: "GET",
+      url: "#"
     },
     {
-      title: 'Export Data',
-      description: 'יצוא נתונים לקובץ',
-      endpoint: '/api/v1/export',
-      method: 'POST',
-      parameters: [
-        { name: 'data_type', type: 'string', required: true, description: 'סוג הנתונים לייצוא' },
-        { name: 'format', type: 'string', required: true, description: 'פורמט הקובץ (CSV/XLSX)' },
-        { name: 'date_range', type: 'object', required: false, description: 'טווח תאריכים' }
-      ],
-      response: `{
-  "export_id": "exp_123",
-  "download_url": "https://api.example.com/downloads/exp_123.csv",
-  "expires_at": "2024-01-01T18:00:00Z",
-  "file_size": 1024
-}`
-    }
+      id: 2,
+      name: "Create a new chart",
+      endpoint: "charts/",
+      method: "POST",
+      url: "#"
+    },
+    {
+      id: 3,
+      name: "Fetch details of a specific chart",
+      endpoint: "charts/{id}/",
+      method: "GET",
+      url: "#"
+    },
+    {
+      id: 4,
+      name: "Update an existing chart",
+      endpoint: "charts/{id}/",
+      method: "PUT",
+      url: "#"
+    },
+    {
+      id: 5,
+      name: "Delete a chart",
+      endpoint: "charts/",
+      method: "DELETE",
+      url: "#"
+    },
+    {
+      id: 6,
+      name: "List available data sources",
+      endpoint: "data-sources/",
+      method: "GET",
+      url: "#"
+    },
+    {
+      id: 7,
+      name: "Connect to a data source",
+      endpoint: "data-sources/connect/",
+      method: "POST",
+      url: "#"
+    },
   ];
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="bg-gradient-to-l from-yellow-100 to-blue-100 rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-slate-800 mb-4">API</h1>
-        <p className="text-lg text-slate-600 mb-4">
-          ממש על הדברים הכי ציבור להכנסת נתונים חיכול קמוס עליכם השמש ומקודש שלמה API משותף.
-        </p>
-        <div className="flex items-center space-x-4 space-x-reverse">
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            Base URL: https://api.openenergy.gov.il/v1
-          </Button>
-          <Badge variant="outline">v1.0</Badge>
+    <div className="">
+      <Image src={topleft} width={600} height={600} className='size-[600px] absolute top-0 left-0 z-1' alt='image' />
+
+      <div className="container mx-auto px-5 py-[52px] relative w-full overflow-hidden z-10">
+        {/* Header */}
+        {/* <div className=""> */}
+        <div className="px-[60px]">
+          <h1 className="text-5xl font-extrabold text-[#484C56]">API</h1>
+          <div className="w-[92px] h-1 bg-[#276E4E] my-5"></div>
+          <p className="text-lg text-[#484C56] font-normal mb-4">
+            ממש על הדברים הכי ציבור להכנסת נתונים חיכול קמוס עליכם השמש ומקודש שלמה API משותף.
+          </p>
         </div>
-      </div>
+        <div className="flex flex-col bg-[#FDFBF6] rounded-[40px] border border-[#DEDEDE]/70 px-[60px] py-[50px]">
+          <h2 className='text-[34px] text-[#276E4E] font-extrabold'>כללי</h2>
+          <div className="flex flex-col gap-1 items-end text-left">
+            <p className='text-xl font-normal text-[#484C56]'>Base URL: <Link className='text-[#5D6FFF]' href={''}>https://openenergy.org/api</Link></p>
+            <p className='text-xl font-normal text-[#484C56]'>Authentication: Some details about authentication methods, such as API keys or tokens</p>
+            <p className='text-xl font-normal text-[#484C56]'>Formats Supported: Specify data formats, e.g., JSON or XML</p>
+          </div>
+        </div>
+        {/* </div> */}
 
-      {/* API Documentation */}
-      <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-slate-800">תיעוד שירותי API</h2>
-        <p className="text-slate-600">
-          השרותים API מאפשרים גישה קצה של נתונים וסטטיסטיקה של שיתופי שירותי אנרגיה.
-        </p>
+        {/* API Documentation */}
+        <div className="my-10 flex flex-col gap-10">
+          <div className="flex flex-col bg-[#FDFBF6] rounded-[40px] border border-[#DEDEDE]/70 px-[60px] py-[50px]">
+            <h2 className='text-[34px] text-[#276E4E] font-extrabold'>רשימה של שיטות API</h2>
+            <p className="text-lg text-[#484C56] font-normal mb-4">
+              נקודות הקצה והפונקציונליות שלהן.
+            </p>
+            <div className="relative overflow-x-auto sm:rounded-lg max-w-[975px] w-full">
+              <table className='w-full text-sm text-right'>
+                <thead className='border border-[#C3C3C3] bg-[#DEDEDE]/70'>
+                  <tr className='text-xl font-extrabold border border-[#C3C3C3]'>
+                    <th className='text-right p-3 border border-[#C3C3C3]'>שיטה</th>
+                    <th className='text-right p-3 border border-[#C3C3C3]'>נקודת קצה / קוד</th>
+                    <th className='text-right p-3 border border-[#C3C3C3]'>תאוּר</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apiData.map((data) =>
+                  (
+                    <tr key={data.id}>
+                      <td className='bg-white text-right p-3 border border-[#C3C3C3] text-xl text-[#484C56] font-normal'>{data.method}</td>
+                      <td className='bg-white text-right p-3 border border-[#C3C3C3] text-xl text-[#484C56] font-normal'><Link href={data.url} className='text-[#5D6FFF]'>{data.endpoint}</Link></td>
+                      <td className='bg-white text-right p-3 border border-[#C3C3C3] text-xl text-[#484C56] font-normal'>{data.name}</td>
+                    </tr>
+                  )
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-        {/* Endpoints Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border border-slate-200 rounded-lg overflow-hidden">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="text-right p-3 font-semibold">נקודת קצה</th>
-                <th className="text-right p-3 font-semibold">שיטת HTTP / חיכרי</th>
-                <th className="text-right p-3 font-semibold">תיאור</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className="flex flex-col bg-[#FDFBF6] rounded-[40px] border border-[#DEDEDE]/70 px-[60px] py-[50px]">
+            <h2 className='text-[34px] text-[#276E4E] font-extrabold'>נקודות הקצה</h2>
+            <div className="flex flex-col gap-6">
               {apiEndpoints.map((endpoint, index) => (
-                <tr key={index} className="border-t border-slate-200 hover:bg-slate-50">
-                  <td className="p-3">
-                    <code className="text-blue-600 text-sm bg-blue-50 px-2 py-1 rounded">
-                      {endpoint.endpoint}
-                    </code>
-                  </td>
-                  <td className="p-3">
-                    <Badge 
-                      variant={endpoint.method === 'GET' ? 'secondary' : 'default'}
-                      className={endpoint.method === 'GET' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}
-                    >
-                      {endpoint.method}
-                    </Badge>
-                  </td>
-                  <td className="p-3 text-slate-600">{endpoint.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Detailed API Documentation */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-slate-800">נקודות תהליכים</h3>
-          
-          {apiEndpoints.map((endpoint, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">{endpoint.title}</CardTitle>
-                  <div className="flex items-center space-x-2 space-x-reverse">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
+                <div key={index} className="max-w-[780px] text-left w-full bg-white border border-[#C3C3C3] p-5 rounded-xl">
+                  <div className="border-b border-[#59687D] py-3 flex flex-col md:flex-row-reverse justify-between items-start md:items-center gap-3">
+                    <div className="text-right">
+                      <h3 className='text-[#484C56] font-extrabold text-xl text-right flex justify-end'><span>:</span>Сhart title</h3>
+                      <p className='text-[#484C56] text-xl font-normal'>{endpoint.title}</p>
+                    </div>
+                    <button
                       onClick={() => copyToClipboard(endpoint.endpoint, endpoint.endpoint)}
+                      className={`flex items-center gap-1 px-3 py-1 rounded text-white ${copiedEndpoint === endpoint.endpoint ? 'bg-green-500' : 'bg-[#276E4E] hover:bg-[#1e5a3f]'
+                        }`}
                     >
-                      {copiedEndpoint === endpoint.endpoint ? '✓ הועתק' : <Copy className="w-4 h-4" />}
-                    </Button>
+                      {copiedEndpoint === endpoint.endpoint ? 'Copied!' : 'Copy'}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    </button>
                   </div>
-                </div>
-                <p className="text-slate-600">{endpoint.description}</p>
-                <div className="flex items-center space-x-4 space-x-reverse">
-                  <Badge 
-                    variant={endpoint.method === 'GET' ? 'secondary' : 'default'}
-                    className={endpoint.method === 'GET' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}
-                  >
-                    {endpoint.method}
-                  </Badge>
-                  <code className="text-blue-600 text-sm bg-blue-50 px-3 py-1 rounded">
-                    {endpoint.endpoint}
-                  </code>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {/* Parameters */}
-                {endpoint.parameters.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="font-medium mb-2">פרמטרים:</h4>
-                    <div className="space-y-2">
-                      {endpoint.parameters.map((param, paramIndex) => (
-                        <div key={paramIndex} className="flex items-center space-x-4 space-x-reverse text-sm">
-                          <code className="bg-slate-100 px-2 py-1 rounded text-slate-700">
-                            {param.name}
-                          </code>
-                          <Badge variant="outline" className={param.required ? 'border-red-300 text-red-700' : 'border-slate-300'}>
-                            {param.type}
-                          </Badge>
-                          {param.required && <Badge variant="destructive" className="text-xs">חובה</Badge>}
-                          <span className="text-slate-600">{param.description}</span>
-                        </div>
-                      ))}
+
+                  <div className="py-4 space-y-3">
+                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                      <span className="text-right">Endpoint: </span>
+                      <span className="py-1 rounded">{endpoint.endpoint}</span>
+                    </div>
+                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                      <span className="">Description: </span>
+                      <span>{endpoint.description}</span>
+                    </div>
+                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                      <span className="">Authentication: </span>
+                      <span>Required (Bearer Token)</span>
+                    </div>
+                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                      <div className="flex justify-end"><span>:</span>Headers</div>
+                      <ul className="mt-1 px-8 text-right">
+                        <li className='text-right'>Authorization: Bearer {`<your-token>`}</li>
+                        <li className='text-right'>Content-Type: application/json</li>
+                      </ul>
+                    </div>
+                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                      <div className="flex justify-end"><span>:</span>Parameters</div>
+                      <ul className="mt-1 px-8">
+                        <li className='text-right'>page (optional): The page number for paginated results</li>
+                        <li className='text-right'>limit (optional): Number of items per page (default: 10)</li>
+                      </ul>
+                    </div>
+                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                      <div className="flex justify-end"><span>:</span>Response</div>
+                      <ul className="mt-1 px-8">
+                        <li className='text-right'>Status: 200 OK</li>
+                        <li className='text-right'>:Body
+                          <pre className="p-3 rounded mt-2 overflow-x-auto">
+                            {`{
+  "chart": [
+    {
+      "id": 1,
+      "title": "Sales Data",
+      "type": "bar",
+      "created_at": "2023-01-01T12:00:00Z"
+    },
+    ...]
+}`}
+                          </pre>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                )}
-
-                {/* Response Example */}
-                <div>
-                  <h4 className="font-medium mb-2">דוגמת תגובה:</h4>
-                  <div className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
-                    <pre className="text-sm">
-                      <code>{endpoint.response}</code>
-                    </pre>
-                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
-
-        {/* API Usage Notes */}
-        <Card>
-          <CardHeader>
-            <CardTitle>הערות שימוש</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <h4 className="font-medium mb-2">זמי מסירה:</h4>
-              <p className="text-slate-600 text-sm">
-                כל הקריאות מוגבלות ל-1000 בקשות לשעה. בקשות נוספות יוחזרו עם קוד שגיאה 429.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">אימות:</h4>
-              <p className="text-slate-600 text-sm">
-                הרשמה אינה נדרשת עבור נקודות קצה ציבוריות. עבור נתונים מתקדמים, נדרש מפתח API.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">פורמט תגובה:</h4>
-              <p className="text-slate-600 text-sm">
-                כל התגובות מוחזרות בפורמט JSON עם קידוד UTF-8. תאריכים מוחזרים בפורמט ISO 8601.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
+
+      <InterestPage />
     </div>
   );
 }

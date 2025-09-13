@@ -2,8 +2,10 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Heebo } from 'next/font/google';
 import ClientProvider from '@/components/ClientProvider';
+import Header from '@/components/Layout/Header';
+import Footer from '@/components/Layout/Footer';
 
-const heebo = Heebo({ 
+const heebo = Heebo({
   subsets: ['hebrew', 'latin'],
   variable: '--font-heebo',
   display: 'swap'
@@ -24,7 +26,12 @@ export default function RootLayout({
     <html lang="he" dir="rtl">
       <body className={`${heebo.className} ${heebo.variable}`}>
         <ClientProvider>
+          {/* <Header
+            activeSection={'home'}
+            onSectionChange={'home'}
+          /> */}
           {children}
+          <Footer />
         </ClientProvider>
       </body>
     </html>
