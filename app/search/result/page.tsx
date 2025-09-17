@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import InterestPage from '@/components/InterestPage';
 import { ChevronLeft } from 'lucide-react';
-import EnergyTargetsChart from '@/components/Charts/EnergyTargetsChart';
 
 export default function SearchResult() {
 
@@ -56,7 +55,6 @@ export default function SearchResult() {
                             <Link className='text-[#358BFF] text-sm font-bold flex items-center gap-2 w-max' href={''}>מעבר לעמוד <ChevronLeft /></Link>
                         </div>
                     </div>
-                    <EnergyTargetsChart />
                 </div>
             </div>
 
