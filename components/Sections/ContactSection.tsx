@@ -32,25 +32,25 @@ export default function ContactSection() {
     <div className="">
       <Image src={topleft} width={600} height={600} className='size-[600px] absolute top-0 left-0 z-1' alt='image' />
 
-      <div className="container mx-auto px-5 py-[52px] relative w-full overflow-hidden z-10">
-        <h1 className="text-[45px] font-extrabold text-[#484C56] leading-tight">
+      <div className="container mx-auto px-5 md:py-[52px] py-10 relative w-full overflow-hidden z-10">
+        <h1 className="md:text-[45px] text-3xl font-extrabold text-[#484C56] leading-tight">
           יצירת קשר
         </h1>
-        <div className="w-[46px] h-1 bg-[#276E4E] mt-[18px] mr-0"></div>
-        <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 rounded-[40px] overflow-hidden p-10 mt-[30px]">
+        <div className="w-[46px] h-1 bg-[#276E4E] md:mt-[18px] mt-3 mr-0"></div>
+        <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] overflow-hidden md:p-10 p-5 md:mt-[30px] mt-5">
           {/* <div className="relative z-10 container mx-auto px-4 py-16"> */}
-          <div className="flex justify-between items-center">
+          <div className="flex md:flex-row flex-col gap-5 justify-between items-center">
             {/* Left side - Content */}
             {/* <div className="order-2 lg:order-1 text-right"> */}
             {/* <div className="space-y-8"> */}
             <div>
-              <h2 className="text-[34px] font-extrabold text-[#484C56] leading-[110%]">
+              <h2 className="md:text-[34px] text-2xl font-extrabold text-[#484C56] leading-[110%]">
                 לא מצאתם מה שחיפשתם?
                 <br />
                 <span className='text-[#276E4E]'>יש לכם הצעת שיפור?</span>
               </h2>
-              <div className="w-[46px] h-1 bg-[#276E4E] my-5 mr-0"></div>
-              <p className="text-[#484C56] text-lg">
+              <div className="w-[46px] h-1 bg-[#276E4E] md:my-5 my-3 mr-0"></div>
+              <p className="text-[#484C56] md:text-lg text-base">
                 מוזמנים לכתוב לנו ונעשה להשיב במקרום
               </p>
             </div>
@@ -62,7 +62,7 @@ export default function ContactSection() {
             {/* Right side - Contact form */}
             {/* <div className="order-1 lg:order-2 bg-[#DEDEDE]/70"> */}
             <div className="bg-white rounded-[20px] p-10 border border-[#E9C863] max-w-[516px] w-full">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+              <form onSubmit={handleSubmit} className="flex flex-col md:gap-10 gap-5">
                 <input
                   name="name"
                   type="text"
@@ -94,7 +94,7 @@ export default function ContactSection() {
                   required
                   value={formData.message}
                   onChange={handleChange}
-                  className="text-left outline-none placeholder:font-medium placeholder:text-base placeholder:text-[#59687D] border-b border-[#59687D]/39 min-h-[120px] resize-none w-full"
+                  className="text-left outline-none placeholder:font-medium placeholder:text-base placeholder:text-[#59687D] border-b border-[#59687D]/39 min-h-[120px] h-[80px] resize-none w-full"
                   placeholder="כתבו כאן את תוכן הפנייה"
                 ></textarea>
 

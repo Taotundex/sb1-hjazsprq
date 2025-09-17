@@ -1,60 +1,114 @@
 "use client";
 
-import React from "react";
 import {
-    LineChart,
-    Line,
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-    CartesianGrid,
-} from "recharts";
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Chart } from "react-chartjs-2";
 
-type DataItem = {
-    year: number;
-    target: number;
-    actual: number;
-    ministryTarget: number;
-    nzoTarget: number;
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const data: DataItem[] = [
-    { year: 2020, target: 12, actual: 10, ministryTarget: 15, nzoTarget: 16 },
-    { year: 2021, target: 14, actual: 12, ministryTarget: 16, nzoTarget: 17 },
-    { year: 2022, target: 16, actual: 14, ministryTarget: 17, nzoTarget: 18 },
-    { year: 2023, target: 18, actual: 16, ministryTarget: 18, nzoTarget: 19 },
-    { year: 2024, target: 20, actual: 18, ministryTarget: 19, nzoTarget: 20 },
-    { year: 2025, target: 22, actual: 20, ministryTarget: 20, nzoTarget: 21 },
-    { year: 2030, target: 25, actual: 22, ministryTarget: 23, nzoTarget: 24 },
-];
+const labels = [2020, 2022, 2024, 2026, 2028, 2030, 2040, 2050];
 
-const EnergyTargetsChart = () => {
-    return (
-        <div className="w-full h-[500px] bg-white p-6 rounded-2xl shadow">
-            <h2 className="text-lg font-semibold mb-4">
-                יעדי אנרגיות מתחדשות מול ייצור בפועל
-            </h2>
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={data} margin={{ top: 20, right: 40, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="year" />
-                    <YAxis domain={[0, 50]} tickFormatter={(v) => `${v}%`} />
-                    <Tooltip formatter={(value: any) => `${value}%`} />
-                    <Legend />
-                    {/* Actual (Bars) */}
-                    <Bar dataKey="actual" fill="#2f855a" name="לפי ייצור בפועל" />
-                    {/* Targets */}
-                    <Line type="monotone" dataKey="target" stroke="#f6ad55" strokeWidth={2} name="יעד אנרגיות מתחדשות" />
-                    <Line type="monotone" dataKey="ministryTarget" stroke="#63b3ed" strokeWidth={2} name="לפי יעד משרד האנרגיה" />
-                    <Line type="monotone" dataKey="nzoTarget" stroke="#805ad5" strokeWidth={2} name="לפי יעד NZO" />
-                </LineChart>
-            </ResponsiveContainer>
-        </div>
-    );
-};
+export default function EnergyTargetsChart() {
+  const data = {
+    labels,
+    datasets: [
+      {
+        type: "bar" as const,
+        label: "ייצור בפועל",
+        data: [12, 14, 16, 18, 20, 22, 28, 35],
+        backgroundColor: "#15803d", // Green bars
+        borderRadius: 6,
+      },
+      {
+        type: "line" as const,
+        label: "יעד משרד האנרגיה",
+        data: [15, 17, 19, 21, 23, 25, 33, 42],
+        borderColor: "#facc15", // Yellow line
+        borderWidth: 2,
+        tension: 0.3,
+        pointBackgroundColor: "#facc15",
+      },
+      {
+        type: "line" as const,
+        label: "יעד NZO",
+        data: [16, 18, 20, 23, 25, 28, 36, 45],
+        borderColor: "#3b82f6", // Blue line
+        borderWidth: 2,
+        tension: 0.3,
+        pointBackgroundColor: "#3b82f6",
+      },
+    ],
+  };
 
-export default EnergyTargetsChart;
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: "index" as const,
+      intersect: false,
+    },
+    stacked: false,
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+        labels: {
+          font: {
+            size: 14,
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context: any) {
+            return `${context.dataset.label}: ${context.raw}%`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          drawBorder: false,
+        },
+      },
+      y: {
+        min: 0,
+        max: 50,
+        ticks: {
+          callback: function (value: any) {
+            return value + "%";
+          },
+        },
+        grid: {
+          color: "#e5e7eb",
+        },
+      },
+    },
+  };
+
+  return (
+    <div className="w-full h-[500px] bg-white p-6 rounded-2xl shadow-md">
+      <h2 className="text-xl font-semibold text-center mb-4">
+        יעדי אנרגיות מתחדשות מול ייצור בפועל
+      </h2>
+      <Chart type="bar" data={data} options={options} />
+    </div>
+  );
+}

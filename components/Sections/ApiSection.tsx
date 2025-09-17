@@ -123,37 +123,37 @@ export default function ApiSection() {
     <div className="">
       <Image src={topleft} width={600} height={600} className='size-[600px] absolute top-0 left-0 z-1' alt='image' />
 
-      <div className="container mx-auto px-5 py-[52px] relative w-full overflow-hidden z-10">
+      <div className="container mx-auto px-5 md:py-[52px] py-10 relative w-full overflow-hidden z-10">
         {/* Header */}
         {/* <div className=""> */}
-        <div className="px-[60px]">
-          <h1 className="text-5xl font-extrabold text-[#484C56]">API</h1>
-          <div className="w-[92px] h-1 bg-[#276E4E] my-5"></div>
-          <p className="text-lg text-[#484C56] font-normal mb-4">
+        <div className="md:px-[60px] px-5">
+          <h1 className="md:text-5xl text-3xl font-extrabold text-[#484C56]">API</h1>
+          <div className="w-[92px] h-1 bg-[#276E4E] md:my-5 my-3"></div>
+          <p className="md:text-lg text-base text-[#484C56] font-normal mb-4">
             ממש על הדברים הכי ציבור להכנסת נתונים חיכול קמוס עליכם השמש ומקודש שלמה API משותף.
           </p>
         </div>
-        <div className="flex flex-col bg-[#FDFBF6] rounded-[40px] border border-[#DEDEDE]/70 px-[60px] py-[50px]">
-          <h2 className='text-[34px] text-[#276E4E] font-extrabold'>כללי</h2>
-          <div className="flex flex-col gap-1 items-end text-left">
-            <p className='text-xl font-normal text-[#484C56]'>Base URL: <Link className='text-[#5D6FFF]' href={''}>https://openenergy.org/api</Link></p>
-            <p className='text-xl font-normal text-[#484C56]'>Authentication: Some details about authentication methods, such as API keys or tokens</p>
-            <p className='text-xl font-normal text-[#484C56]'>Formats Supported: Specify data formats, e.g., JSON or XML</p>
+        <div className="flex flex-col bg-[#FDFBF6] md:rounded-[40px] rounded-[20px] border border-[#DEDEDE]/70 md:px-[60px] px-5 md:py-[50px] py-5">
+          <h2 className='md:text-[34px] text-2xl text-[#276E4E] font-extrabold'>כללי</h2>
+          <div className="flex flex-col gap-1 items-end">
+            <p className='md:text-xl text-base font-normal text-right text-[#484C56]'>Base URL: <Link className='text-[#5D6FFF]' href={''}>https://openenergy.org/api</Link></p>
+            <p className='md:text-xl text-base font-normal text-right text-[#484C56]'>Authentication: Some details about authentication methods, such as API keys or tokens</p>
+            <p className='md:text-xl text-base font-normal text-right text-[#484C56]'>Formats Supported: Specify data formats, e.g., JSON or XML</p>
           </div>
         </div>
         {/* </div> */}
 
         {/* API Documentation */}
-        <div className="my-10 flex flex-col gap-10">
-          <div className="flex flex-col bg-[#FDFBF6] rounded-[40px] border border-[#DEDEDE]/70 px-[60px] py-[50px]">
-            <h2 className='text-[34px] text-[#276E4E] font-extrabold'>רשימה של שיטות API</h2>
-            <p className="text-lg text-[#484C56] font-normal mb-4">
+        <div className="md:my-10 my-5 flex flex-col md:gap-10 gap-5">
+          <div className="flex flex-col bg-[#FDFBF6] md:rounded-[40px] rounded-[20px] border border-[#DEDEDE]/70 md:px-[60px] px-5 md:py-[50px] py-5">
+            <h2 className='md:text-[34px] text-2xl text-[#276E4E] font-extrabold'>רשימה של שיטות API</h2>
+            <p className="md:text-lg text-base text-[#484C56] font-normal mb-4">
               נקודות הקצה והפונקציונליות שלהן.
             </p>
-            <div className="relative overflow-x-auto sm:rounded-lg max-w-[975px] w-full">
-              <table className='w-full text-sm text-right'>
+            <div className="relative overflow-x-auto rounded-lg max-w-[975px] w-full">
+              <table className='w-full text-sm text-right rounded-lg'>
                 <thead className='border border-[#C3C3C3] bg-[#DEDEDE]/70'>
-                  <tr className='text-xl font-extrabold border border-[#C3C3C3]'>
+                  <tr className='md:text-xl text-base font-extrabold border border-[#C3C3C3]'>
                     <th className='text-right p-3 border border-[#C3C3C3]'>שיטה</th>
                     <th className='text-right p-3 border border-[#C3C3C3]'>נקודת קצה / קוד</th>
                     <th className='text-right p-3 border border-[#C3C3C3]'>תאוּר</th>
@@ -163,9 +163,9 @@ export default function ApiSection() {
                   {apiData.map((data) =>
                   (
                     <tr key={data.id}>
-                      <td className='bg-white text-right p-3 border border-[#C3C3C3] text-xl text-[#484C56] font-normal'>{data.method}</td>
-                      <td className='bg-white text-right p-3 border border-[#C3C3C3] text-xl text-[#484C56] font-normal'><Link href={data.url} className='text-[#5D6FFF]'>{data.endpoint}</Link></td>
-                      <td className='bg-white text-right p-3 border border-[#C3C3C3] text-xl text-[#484C56] font-normal'>{data.name}</td>
+                      <td className='bg-white text-right p-3 border border-[#C3C3C3] md:text-xl text-base text-[#484C56] font-normal'>{data.method}</td>
+                      <td className='bg-white text-right p-3 border border-[#C3C3C3] md:text-xl text-base text-[#484C56] font-normal'><Link href={data.url} className='text-[#5D6FFF]'>{data.endpoint}</Link></td>
+                      <td className='bg-white text-right p-3 border border-[#C3C3C3] md:text-xl text-base text-[#484C56] font-normal'>{data.name}</td>
                     </tr>
                   )
                   )}
@@ -174,19 +174,19 @@ export default function ApiSection() {
             </div>
           </div>
 
-          <div className="flex flex-col bg-[#FDFBF6] rounded-[40px] border border-[#DEDEDE]/70 px-[60px] py-[50px]">
-            <h2 className='text-[34px] text-[#276E4E] font-extrabold'>נקודות הקצה</h2>
+          <div className="flex flex-col bg-[#FDFBF6] md:rounded-[40px] rounded-[20px] border border-[#DEDEDE]/70 md:px-[60px] px-5 md:py-[50px] py-5">
+            <h2 className='md:text-[34px] text-2xl text-[#276E4E] font-extrabold'>נקודות הקצה</h2>
             <div className="flex flex-col gap-6">
               {apiEndpoints.map((endpoint, index) => (
                 <div key={index} className="max-w-[780px] text-left w-full bg-white border border-[#C3C3C3] p-5 rounded-xl">
-                  <div className="border-b border-[#59687D] py-3 flex flex-col md:flex-row-reverse justify-between items-start md:items-center gap-3">
+                  <div className="border-b border-[#59687D] py-3 flex flex-row-reverse justify-between items-start md:items-center gap-3">
                     <div className="text-right">
-                      <h3 className='text-[#484C56] font-extrabold text-xl text-right flex justify-end'><span>:</span>Сhart title</h3>
-                      <p className='text-[#484C56] text-xl font-normal'>{endpoint.title}</p>
+                      <h3 className='text-[#484C56] font-extrabold md:text-xl text-base text-right flex justify-end'><span>:</span>Сhart title</h3>
+                      <p className='text-[#484C56] md:text-xl text-base font-normal'>{endpoint.title}</p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(endpoint.endpoint, endpoint.endpoint)}
-                      className={`flex items-center gap-1 px-3 py-1 rounded text-white ${copiedEndpoint === endpoint.endpoint ? 'bg-green-500' : 'bg-[#276E4E] hover:bg-[#1e5a3f]'
+                      className={`flex items-center gap-1 px-3 py-1 rounded ${copiedEndpoint === endpoint.endpoint ? '' : 'hover:bg-[#1e5a3f] hover:text-white'
                         }`}
                     >
                       {copiedEndpoint === endpoint.endpoint ? 'Copied!' : 'Copy'}
@@ -196,34 +196,34 @@ export default function ApiSection() {
                     </button>
                   </div>
 
-                  <div className="py-4 space-y-3">
-                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                  <div className="py-4 md:space-y-3 space-y-1">
+                    <div className='text-[#484C56] text-right md:text-lg text-sm font-normal'>
                       <span className="text-right">Endpoint: </span>
                       <span className="py-1 rounded">{endpoint.endpoint}</span>
                     </div>
-                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                    <div className='text-[#484C56] text-right md:text-lg text-sm font-normal'>
                       <span className="">Description: </span>
                       <span>{endpoint.description}</span>
                     </div>
-                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                    <div className='text-[#484C56] text-right md:text-lg text-sm font-normal'>
                       <span className="">Authentication: </span>
                       <span>Required (Bearer Token)</span>
                     </div>
-                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                    <div className='text-[#484C56] text-right md:text-lg text-sm font-normal'>
                       <div className="flex justify-end"><span>:</span>Headers</div>
                       <ul className="mt-1 px-8 text-right">
                         <li className='text-right'>Authorization: Bearer {`<your-token>`}</li>
                         <li className='text-right'>Content-Type: application/json</li>
                       </ul>
                     </div>
-                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                    <div className='text-[#484C56] text-right md:text-lg text-sm font-normal'>
                       <div className="flex justify-end"><span>:</span>Parameters</div>
                       <ul className="mt-1 px-8">
                         <li className='text-right'>page (optional): The page number for paginated results</li>
                         <li className='text-right'>limit (optional): Number of items per page (default: 10)</li>
                       </ul>
                     </div>
-                    <div className='text-[#484C56] text-right text-lg font-normal'>
+                    <div className='text-[#484C56] text-right md:text-lg text-sm font-normal'>
                       <div className="flex justify-end"><span>:</span>Response</div>
                       <ul className="mt-1 px-8">
                         <li className='text-right'>Status: 200 OK</li>

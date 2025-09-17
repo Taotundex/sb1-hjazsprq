@@ -16,61 +16,75 @@ interface PieChartProps {
   showLabels?: boolean;
 }
 
-export default function PieChart({ 
-  data, 
-  title, 
+export default function PieChart({
+  data,
+  title,
   height = 300,
   innerRadius = '0%',
-  showLabels = true 
+  showLabels = true
 }: PieChartProps) {
   const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+    };
   }, []);
 
   const option = useMemo(() => ({
-    // title: title ? {
-    //   text: title,
-    //   left: 'center',
-    //   textStyle: {
-    //     fontSize: 16,
-    //     fontWeight: 'bold',
-    //   }
-    // } : undefined,
+    title: title ? {
+      text: title,
+      left: 'center',
+      textStyle: {
+        fontSize: isMobile ? 18 : 16,
+        fontWeight: 'bold',
+      }
+    } : undefined,
     // tooltip: {
     //   trigger: 'item',
     //   formatter: '{a} <br/>{b}: {c} ({d}%)'
     // },
     // legend: {
-    //   orient: 'horizontal',
-    //   bottom: 0,
+    //   orient: isMobile ? 'horizontal' : 'vertical',
+    //   right: isMobile ? 0 : 0,
+    //   top: isMobile ? 'bottom' : 'middle',
     //   textStyle: {
-    //     fontSize: 12
+    //     fontSize: isMobile ? 0 : 0
     //   }
     // },
     series: [
       {
-        name: title || 'נתונים',
+        name: title || 'Data',
         type: 'pie',
-        radius: [innerRadius, '20%'],
-        center: ['50%', '35%'],
+        radius: [innerRadius, isMobile ? '90%' : '80%'],
+        center: isMobile ? ['50%', '50%'] : ['50%', '50%'],
         avoidLabelOverlap: false,
         label: {
           show: showLabels,
           position: 'outside',
-          fontSize: 11,
+          fontSize: isMobile ? 12 : 11,
           formatter: '{b}\n{d}%'
         },
         emphasis: {
           label: {
-            show: false,
-            fontSize: 14,
+            show: true,
+            fontSize: isMobile ? 14 : 12,
             fontWeight: 'bold'
           }
         },
         labelLine: {
-          show: showLabels
+          show: showLabels,
+          length: isMobile ? 15 : 10,
+          length2: isMobile ? 10 : 5
         },
         data: data.map(item => ({
           value: item.value,
@@ -81,22 +95,27 @@ export default function PieChart({
         }))
       }
     ]
-  }), [data, title, height, innerRadius, showLabels]);
+  }), [data, title, innerRadius, showLabels, isMobile]);
 
   if (!isClient) {
     return (
       <div className="w-full flex items-center justify-center" style={{ height: `${height}px` }}>
-        <div className="text-slate-500">טוען גרף...</div>
+        <div className="text-slate-500">Loading chart...</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-visible">
       <ReactECharts
         option={option}
-        style={{ height: `${height}px` }}
-        opts={{ renderer: 'canvas' }}
+        style={{
+          height: `${height}px`,
+          width: '100%'
+        }}
+        opts={{
+          renderer: 'canvas'
+        }}
       />
     </div>
   );

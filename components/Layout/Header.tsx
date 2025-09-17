@@ -51,7 +51,7 @@ export default function Header({ activeSection, onSectionChange }: HeaderProps) 
             {/* Search */}
             <div className="flex items-center">
               <div className="relative">
-                <div className="flex items-center gap-2 rounded-full px-4 py-2 border border-white w-[200px]" style={{ backgroundColor: '#2A2E33' }}>
+                <div className="flex items-center gap-2 rounded-full px-4 py-2 border border-white max-:w-[200px] w-full" style={{ backgroundColor: '#2A2E33' }}>
                   <input
                     type="text"
                     placeholder="חיפוש"
