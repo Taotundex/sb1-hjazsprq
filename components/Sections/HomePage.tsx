@@ -17,11 +17,25 @@ import download from '@/public/images/download_2.png'
 import api from '@/public/images/API.png'
 import InterestPage from '../InterestPage';
 import Link from 'next/link';
+import SMP from '../SMP';
+import Electritiy from '../Electritiy';
+import { ElectricityLineGraph, ElectricityScatterGraph } from '../Graph/ElectricityScatterGraph';
 
 
 export default function HomePage() {
+  const [activeTab, setActiveTab] = useState<'market' | 'smp'>();
+  const [smpDetails, setSmpDetails] = useState(false)
+  const [marketDetails, setMarketDetails] = useState(false)
   const [selectedTimeframe, setSelectedTimeframe] = useState('יומי');
 
+  const handleSMP = (() => {
+    setSmpDetails(!smpDetails)
+    setActiveTab('smp');
+  })
+  const handleMarket = (() => {
+    setMarketDetails(!marketDetails)
+    setActiveTab('market');
+  })
   // Data for electricity consumption line chart - matching Figma design
   const electricityData = {
     dates: ['0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20', '22', '24'],
@@ -54,14 +68,13 @@ export default function HomePage() {
 
   return (
     <div className="">
+      <NewsletterPopup />
       <Image src={topleft} width={600} height={600} className='md:w-[800px] md:h-[500px] w-[300px] h-[200px] absolute md:top-0 left-0 z-10' alt='image' />
       <div className="container mx-auto px-5 py-[52px] space-y-[52px] relative w-full overflow-hidden" >
-        <NewsletterPopup />
-
         {/* Hero Section */}
         <section className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] overflow-hidden min-h-[500px]">
           {/* Geometric shapes */}
-          <div className="relative z-10 min-h-[500px] grid md:grid-cols-2 grid-cols-1 lg:gap-[0px]">
+          <div className="relative z-10 min-h-[500px] md:grid md:grid-cols-2 grid-cols-1 flex flex-col-reverse lg:gap-[0px]">
             {/* Right side - Content */}
             <div className="max-w-2xl text-right md:p-[60px] p-6 md:pb-[30px]">
               <h1 className="md:text-[45px] text-3xl font-extrabold text-[#484C56] leading-tight">
@@ -256,23 +269,7 @@ export default function HomePage() {
                   </div> */}
                 </div>
 
-                {/* Legend */}
-                <div className="-mt-20 flex flex-row-reverse justify-end md:gap-6 gap-3 text-xs font-medium">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                    <span className='md:text-sm text-xs'>אחר</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className='md:text-sm text-xs'>אנרגיות מתחדשות</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                    <span className='md:text-sm text-xs'>אנרגיות פוסיליות</span>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex justify-start">
+                <div className="-mt-10 flex justify-start">
                   <Button variant="link" className="text-blue-600 text-sm">
                     הצג נתונים <ChevronLeft className="w-4 h-4 mr-1" />
                   </Button>
@@ -328,20 +325,6 @@ export default function HomePage() {
                   height={300}
                 />
                 {/* Legend */}
-                <div className="-mt-0 flex flex-row-reverse justify-end md:gap-6 gap-3 text-xs font-medium">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-gray-300"></div>
-                    <span className='md:text-sm text-xs'>אחר</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className='md:text-sm text-xs'>אנרגיות מתחדשות</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                    <span className='md:text-sm text-xs'>אנרגיות פוסיליות</span>
-                  </div>
-                </div>
                 <div className="mt-4 flex justify-start">
                   <Button variant="link" className="text-blue-600 text-sm">
                     הצג נתונים <ChevronLeft className="w-4 h-4 mr-1" />
@@ -355,16 +338,60 @@ export default function HomePage() {
 
 
         {/* Bottom Section - Additional Data Links */}
-        <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] md:px-[60px] px-5 space-y-[30px]">
+        <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 border-b-0 md:rounded-[40px] rounded-[20px] md:rounded-b-none rounded-b-none pb-5 md:px-[60px] px-5 space-y-[30px]">
           <div className="flex flex-col gap-2 my-[30px]">
             <h3 className="md:text-lg text-base font-extrabold text-[#276E4E]">לנתונים נוספים</h3>
             <div className="flex items-center md:gap-6 gap-3">
-              <Button variant="link" className="text-[#59687D] font-bold border border-[#DEDEDE] bg-white py-[6px] space-x-[22px] rounded-full md:text-base text-sm hover:underline">
+              <button
+                onClick={handleMarket}
+                className={`text-[#59687D] font-bold border py-[6px] px-6 rounded-full md:text-base text-sm transition-all ${activeTab === 'market'
+                  ? 'bg-[#1E8025] border-[#1E8025] text-white'
+                  : 'bg-white border-[#DEDEDE] hover:bg-gray-50'
+                  }`}
+              >
                 שוק חשמל תחרותי
-              </Button>
-              <Button variant="link" className="text-[#59687D] font-bold border border-[#DEDEDE] bg-white py-[6px] space-x-[22px] rounded-full md:text-base text-sm hover:underline">
+              </button>
+
+              <button
+                onClick={handleSMP}
+                className={`text-[#59687D] font-bold border py-[6px] px-6 rounded-full md:text-base text-sm transition-all ${activeTab === 'smp'
+                  ? 'bg-[#1E8025] border-[#1E8025] text-white'
+                  : 'bg-white border-[#DEDEDE] hover:bg-gray-50'
+                  }`}
+              >
                 SMP
-              </Button>
+              </button>
+            </div>
+
+            <div className="md:mt-[60px] mt-10">
+              {activeTab === 'smp' && (
+                <div className='flex flex-col gap-6'>
+                  <SMP />
+                  <Electritiy />
+                </div>
+              )}
+
+              {activeTab === 'market' && (
+                <div className="p-4 bg-white rounded-lg border border-[#DEDEDE]">
+                  <h4 className="text-lg font-bold text-[#276E4E] mb-4">נתוני שוק</h4>
+                  <p>תוכן נתוני שוק יוצג כאן...</p>
+
+                  <div className="mt-4 flex gap-3">
+                    {['יומי', 'שבועי', 'חודשי'].map((timeframe) => (
+                      <button
+                        key={timeframe}
+                        onClick={() => setSelectedTimeframe(timeframe)}
+                        className={`px-4 py-2 rounded-full text-sm ${selectedTimeframe === timeframe
+                          ? 'bg-[#1E8025] text-white'
+                          : 'bg-gray-100 text-gray-700'
+                          }`}
+                      >
+                        {timeframe}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

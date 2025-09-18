@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { useMemo } from 'react';
+import { ECharts, ECElementEvent } from 'echarts';
 
 interface PieChartProps {
   data: {
@@ -25,9 +25,18 @@ export default function PieChart({
 }: PieChartProps) {
   const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const chartRef = useRef<ECharts | null>(null);
+  const [selectedLegends, setSelectedLegends] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     setIsClient(true);
+    // Initialize all legends as selected (visible)
+    const initialSelection: Record<string, boolean> = {};
+    data.forEach(item => {
+      initialSelection[item.name] = true;
+    });
+    setSelectedLegends(initialSelection);
+
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -38,7 +47,30 @@ export default function PieChart({
     return () => {
       window.removeEventListener('resize', checkIsMobile);
     };
-  }, []);
+  }, [data]);
+
+  const onChartReady = (chart: ECharts) => {
+    chartRef.current = chart;
+
+    // Listen for legend select changes from the chart itself
+    chart.on('legendSelectChanged', (params: any) => {
+      const newSelection = { ...selectedLegends };
+      newSelection[params.name] = params.selected[params.name];
+      setSelectedLegends(newSelection);
+    });
+  };
+
+  const handleLegendClick = (name: string) => {
+    if (!chartRef.current) return;
+
+    // Dispatch legend select action to the chart
+    chartRef.current.dispatchAction({
+      type: 'legendToggleSelect',
+      name: name
+    });
+
+    // The state will be updated via the legendSelectChanged event listener
+  };
 
   const option = useMemo(() => ({
     title: title ? {
@@ -49,18 +81,13 @@ export default function PieChart({
         fontWeight: 'bold',
       }
     } : undefined,
-    // tooltip: {
-    //   trigger: 'item',
-    //   formatter: '{a} <br/>{b}: {c} ({d}%)'
-    // },
-    // legend: {
-    //   orient: isMobile ? 'horizontal' : 'vertical',
-    //   right: isMobile ? 0 : 0,
-    //   top: isMobile ? 'bottom' : 'middle',
-    //   textStyle: {
-    //     fontSize: isMobile ? 0 : 0
-    //   }
-    // },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+      show: false, // We'll use our custom legend instead
+    },
     series: [
       {
         name: title || 'Data',
@@ -116,7 +143,37 @@ export default function PieChart({
         opts={{
           renderer: 'canvas'
         }}
+        onChartReady={onChartReady}
+        onEvents={{
+          // Also update state when user clicks on pie segments
+          click: (params: ECElementEvent) => {
+            if (params.componentType === 'series' && params.seriesType === 'pie') {
+              handleLegendClick(params.name);
+            }
+          }
+        }}
       />
+
+      {/* Custom Legend */}
+      <div className="flex flex-wrap justify-start md:gap-6 gap-3 text-xs font-medium mt-5">
+        {data.map((item, index) => (
+          <div
+            key={index}
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => handleLegendClick(item.name)}
+            style={{
+              opacity: selectedLegends[item.name] ? 1 : 0.4,
+              transition: 'opacity 0.2s ease'
+            }}
+          >
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: item.color || '#5470c6' }}
+            ></div>
+            <span className="md:text-sm text-xs">{item.name}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

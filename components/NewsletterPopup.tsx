@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { X, Mail } from 'lucide-react';
 
@@ -18,22 +17,22 @@ export default function NewsletterPopup() {
   ];
 
   useEffect(() => {
-    // בדיקה אם המשתמש כבר מילא את הטופס
+    // Check if user has already submitted the form
     const hasSubmitted = sessionStorage.getItem('newsletter-submitted');
-    
+
     if (!hasSubmitted) {
-      // הצגת הפופ-אפ אחרי 10 שניות
+      // Show popup after 1 second (for testing, change to 10000 for 10 seconds)
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 10000);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }
   }, []);
 
   const handleInterestToggle = (interest: string) => {
-    setSelectedInterests(prev => 
-      prev.includes(interest) 
+    setSelectedInterests(prev =>
+      prev.includes(interest)
         ? prev.filter(i => i !== interest)
         : [...prev, interest]
     );
@@ -41,13 +40,13 @@ export default function NewsletterPopup() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // שמירה בסשן שהמשתמש מילא את הטופס
+
+    // Save in session that user has submitted the form
     sessionStorage.setItem('newsletter-submitted', 'true');
-    
-    // כאן תוכל להוסיף לוגיקה לשליחת הנתונים לשרת
+
+    // Add logic here to send data to server
     console.log('Newsletter subscription:', { interests: selectedInterests });
-    
+
     setIsOpen(false);
   };
 
@@ -56,41 +55,46 @@ export default function NewsletterPopup() {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-lg p-8 overflow-hidden bg-white rounded-lg shadow-xl">
-        {/* כפתור סגירה */}
+    <>
+      {/* Toggle Button at the Top */}
+      {/* <div className="fixed top-4 right-4 z-[500000]">
         <Button
-          variant="ghost"
-          size="sm"
-          className="absolute top-4 left-4 z-10 w-8 h-8 p-0 hover:bg-gray-100 rounded"
-          onClick={handleClose}
+          onClick={() => setIsOpen(true)}
+          className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full flex items-center"
         >
-          <X className="w-4 h-4" />
+          <Mail className="w-4 h-4 ml-2" />
+          הצגת הטופס
         </Button>
+      </div> */}
 
+      {/* Popup Overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="relative bg-white border border-[#357A5B] rounded-2xl max-w-[447px] w-full p-[30px] mx-4">
+            {/* Close Button */}
+            <button
+              onClick={handleClose}
+              className="absolute -top-14 left-0 p-2 w-[44px] h-[44px] bg-white border border-[#357A5B] rounded-xl flex items-center justify-center"
+            >
+              <X className="w-5 h-5" />
+            </button>
 
+            {/* Content */}
+            <h3 className='text-[#484C56] text-[28px] md:text-[34px] font-extrabold leading-tight'>
+              האתר חופשי לשימושך באופן מלא!
+            </h3>
+            <div className="w-[46px] h-1 bg-[#276E4E] my-4 mr-0"></div>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              לצורך שיפור חוויית השימוש באתר, נשמח לדעת
+              האם השימוש באתר הינו:
+            </p>
 
-
-
-        {/* תוכן */}
-        <div className="text-right">
-          <DialogTitle className="text-2xl font-bold text-gray-800 mb-2">
-            האתר חופשי לשימושך
-            באופן מלא!
-          </DialogTitle>
-          <div className="w-16 h-1 bg-green-600 mb-6 mr-auto"></div>
-          
-          <p className="text-gray-600 mb-6 leading-relaxed">
-            לצורך שיפור חוויית השימוש באתר, נשמח לדעת
-            האם השימוש באתר הינו:
-          </p>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* תחומי עניין */}
-            <div className="text-right space-y-3">
-              {interests.map((interest) => (
-                <label key={interest} className="flex items-center justify-end space-x-3 space-x-reverse text-gray-700 cursor-pointer">
-                  <span className="text-base">{interest}</span>
-                  <div className="relative">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Interest areas */}
+              <div className="text-right space-y-3">
+                {interests.map((interest) => (
+                  <label key={interest} className="flex flex-row-reverse items-center justify-end gap-3 text-gray-700 cursor-pointer">
+                    <span className="text-[#59687D] font-medium text-base">{interest}</span>
                     <input
                       type="radio"
                       name="interest"
@@ -99,24 +103,25 @@ export default function NewsletterPopup() {
                       onChange={() => {
                         setSelectedInterests([interest]);
                       }}
-                      className="w-5 h-5 text-green-600 border-2 border-gray-300 focus:ring-green-500 focus:ring-2"
+                      className="w-5 h-5 text-green-600 border-2 border-[#59687D] focus:ring-green-500 focus:ring-2 rounded-full"
                     />
-                  </div>
-                </label>
-              ))}
-            </div>
-            {/* כפתור הרשמה */}
-            <div className="pt-4">
-              <Button 
-                type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-full text-lg"
-              >
-                המשך גלישה באתר
-              </Button>
-            </div>
-          </form>
+                  </label>
+                ))}
+              </div>
+
+              {/* Submit button */}
+              <div className="pt-4">
+                <Button
+                  type="submit"
+                  className="w-max bg-[#1E8025] hover:bg-green-700 text-white font-medium py-[10px] px-[30px] rounded-full text-xl font-extrabold"
+                >
+                  המשך גלישה באתר
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </>
   );
 }
