@@ -97,8 +97,8 @@ export default function MarketPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <Header 
-        activeSection="market" 
-        onSectionChange={handleSectionChange} 
+        // activeSection="market" 
+        // onSectionChange={handleSectionChange} 
       />
       
       <main className="market-container py-8">

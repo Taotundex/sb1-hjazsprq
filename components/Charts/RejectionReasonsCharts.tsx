@@ -1,0 +1,220 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell,
+} from "recharts";
+
+// -------------------------
+// Mock Data
+// -------------------------
+interface DataItem {
+    month: string;
+    missingDocs: number;
+    photoIssues: number;
+    formErrors: number;
+    other: number;
+}
+
+const barData: DataItem[] = [
+    { month: "01/24", missingDocs: 20, photoIssues: 10, formErrors: 15, other: 5 },
+    { month: "02/24", missingDocs: 15, photoIssues: 12, formErrors: 10, other: 13 },
+    { month: "03/24", missingDocs: 25, photoIssues: 15, formErrors: 20, other: 10 },
+    { month: "04/24", missingDocs: 30, photoIssues: 20, formErrors: 15, other: 15 },
+    { month: "05/24", missingDocs: 35, photoIssues: 25, formErrors: 20, other: 10 },
+    { month: "06/24", missingDocs: 25, photoIssues: 20, formErrors: 15, other: 15 },
+    { month: "07/24", missingDocs: 30, photoIssues: 15, formErrors: 10, other: 20 },
+    { month: "08/24", missingDocs: 20, photoIssues: 10, formErrors: 15, other: 5 },
+    { month: "09/24", missingDocs: 40, photoIssues: 25, formErrors: 15, other: 15 },
+    { month: "10/24", missingDocs: 30, photoIssues: 20, formErrors: 15, other: 10 },
+    { month: "11/24", missingDocs: 25, photoIssues: 15, formErrors: 10, other: 10 },
+    { month: "12/24", missingDocs: 20, photoIssues: 10, formErrors: 15, other: 5 },
+];
+
+const pieData = [
+    { name: "ייפוי כח חסר", value: 214897, color: "#3D843F" },
+    { name: "בעיות בתמונה", value: 113946, color: "#E0B441" },
+    { name: "בעיות במילוי הבקשה", value: 214897, color: "#9AC348" },
+    { name: "אחר", value: 214897, color: "#7DB2CE" },
+];
+
+// -------------------------
+// Custom Tooltip
+// -------------------------
+const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        const total = payload.reduce((acc: number, cur: any) => acc + cur.value, 0);
+        return (
+            <div className="bg-white shadow-lg rounded-lg px-3 py-2 border border-gray-200 text-sm" style={{ boxShadow: "0px 2px 30px 2px #99BF4129" }}>
+                <p className="mr-3 font-normal text-gray-800">{label}</p>
+                {label ? (
+                    <p className="mr-3 text-[#59687D] font-semibold text-base border-b border-[#59687D]">סה"כ {total.toLocaleString()}</p>
+                ) : (
+                    ""
+                )
+                }
+                {payload.map((entry: any, index: number) => (
+                    <div key={index} className="flex items-start gap-2 text-gray-700">
+                        <span
+                            className="w-2 h-2 rounded-full mr-3 mt-2"
+                            style={{ backgroundColor: entry.color }}
+                        ></span>
+                        <div className="flex flex-col space-y-2">
+                            {entry.name} <span className="ml-1 font-semibold">{entry.value}</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+    return null;
+};
+
+// -------------------------
+// Custom Legend
+// -------------------------
+const CustomLegend = ({ payload, onClick, hiddenKeys }: any) => {
+    return (
+        <div className="flex flex-wrap gap-4 justify-start mt-2">
+            {payload.map((entry: any, index: number) => (
+                <button
+                    key={index}
+                    onClick={() => onClick(entry.value)}
+                    className="flex items-center gap-1 cursor-pointer"
+                >
+                    <span
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                            backgroundColor: hiddenKeys.includes(entry.value)
+                                ? "#ccc"
+                                : entry.color,
+                        }}
+                    />
+                    <span
+                        className={`text-sm ${hiddenKeys.includes(entry.value) ? "opacity-50" : ""
+                            }`}
+                    >
+                        {entry.value}
+                    </span>
+                </button>
+            ))}
+        </div>
+    );
+};
+
+// -------------------------
+// Main Component
+// -------------------------
+const RejectionReasonsCharts: React.FC = () => {
+    const [hiddenKeys, setHiddenKeys] = useState<string[]>([]);
+
+    const handleLegendClick = (key: string) => {
+        setHiddenKeys((prev) =>
+            prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+        );
+    };
+
+    return (
+        <div className="flex md:flex-row flex-col gap-12">
+            {/* Pie Chart */}
+            <div className="relative md:w-[400px] w-full">
+                {/* <h3 className="text-lg font-semibold mb-4 text-right">סיבות דחייה</h3> */}
+                <ResponsiveContainer width="100%" height={400}>
+                    <PieChart>
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend
+                            content={
+                                <CustomLegend
+                                    onClick={handleLegendClick}
+                                    hiddenKeys={hiddenKeys}
+                                />
+                            }
+                        />
+                        <Pie
+                            data={pieData}
+                            dataKey="value"
+                            nameKey="name"
+                            innerRadius={70}
+                            outerRadius={120}
+                            paddingAngle={0}
+                        >
+                            {pieData.map((entry, index) =>
+                                hiddenKeys.includes(entry.name) ? null : (
+                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                )
+                            )}
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45px]">
+                    <b className="text-xl">12,531</b>
+                    <p className="text-gray-500 text-sm font-normal">סה״כ פניות</p>
+                </div>
+            </div>
+
+            {/* Bar Chart */}
+            <div className="w-full">
+                {/* <h3 className="text-lg font-semibold mb-4 text-right">סיבות דחייה לפי חודש</h3> */}
+                <ResponsiveContainer width="100%" height={400}>
+                    <BarChart
+                        data={barData}
+                        barCategoryGap="30%"
+                        margin={{ top: 20, right: 10, left: -20, bottom: 20 }}
+                    >
+                        <XAxis dataKey="month" />
+                        <YAxis domain={[0, 100]} />
+                        <Tooltip content={<CustomTooltip />} />
+                        {/* Legend removed from BarChart */}
+                        {!hiddenKeys.includes("ייפוי כח חסר") && (
+                            <Bar
+                                barSize={28}
+                                dataKey="missingDocs"
+                                name="ייפוי כח חסר"
+                                fill="#3D843F"
+                                stackId="a"
+                            />
+                        )}
+                        {!hiddenKeys.includes("בעיות בתמונה") && (
+                            <Bar
+                                barSize={28}
+                                dataKey="photoIssues"
+                                name="בעיות בתמונה"
+                                fill="#E0B441"
+                                stackId="a"
+                            />
+                        )}
+                        {!hiddenKeys.includes("בעיות במילוי הבקשה") && (
+                            <Bar
+                                barSize={28}
+                                dataKey="formErrors"
+                                name="בעיות במילוי הבקשה"
+                                fill="#9AC348"
+                                stackId="a"
+                            />
+                        )}
+                        {!hiddenKeys.includes("אחר") && (
+                            <Bar
+                                barSize={28}
+                                dataKey="other"
+                                name="אחר"
+                                fill="#7DB2CE"
+                                stackId="a"
+                            />
+                        )}
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+};
+
+export default RejectionReasonsCharts;

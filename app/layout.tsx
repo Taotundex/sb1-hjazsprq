@@ -26,10 +26,7 @@ export default function RootLayout({
     <html lang="he" dir="rtl">
       <body className={`${heebo.className} ${heebo.variable}`}>
         <ClientProvider>
-          {/* <Header
-            activeSection={'home'}
-            onSectionChange={'home'}
-          /> */}
+          <Header />
           {children}
           <Footer />
         </ClientProvider>

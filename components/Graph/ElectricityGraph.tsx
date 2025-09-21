@@ -153,7 +153,7 @@ const ElectricityLineGraph = () => {
         const { payload } = props;
 
         return (
-            <div className="flex items-center justify-between ml-10 mt-6">
+            <div className="flex items-center justify-between md:ml-10 ml-0 mt-6 md:pr-10 pr-5">
                 <div className="flex flex-row-reverse justify-end">
                     {payload.map((entry: any, index: number) => {
                         const isActive = !activeSeries.includes(entry.dataKey);
@@ -169,7 +169,7 @@ const ElectricityLineGraph = () => {
                                     className="w-2 h-2 rounded-full ml-2"
                                     style={{ backgroundColor: entry.color }}
                                 ></div>
-                                <span className="text-sm">{entry.value}</span>
+                                <span className="md:!text-sm !text-[10px]">{entry.value}</span>
                             </div>
                         );
                     })}
@@ -179,11 +179,11 @@ const ElectricityLineGraph = () => {
     };
 
     return (
-        <div className="w-full h-[500px]">
+        <div className="w-full md:h-[500px] h-[300px] md:mt-0 -mt-10">
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                     data={lineData}
-                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    margin={{ top: 10, right: -50, left: -50, bottom: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
@@ -291,10 +291,10 @@ const ElectricityGraphWithTabs = () => {
                         <div className='flex flex-col gap-6'>
                             <div className="">
                                 {chartView === 'time' ? <ElectricityLineGraph /> : <ElectricityScatterGraph />}
-                                <div className="flex gap-1 p-[6px] rounded-full bg-[#F8F8F8] mb-4 w-fit ml-auto mt-5" style={{ boxShadow: "inset 0px 4px 10px 0px #0000001A" }}>
+                                <div className="flex gap-1 md:p-[6px] p-1 rounded-full bg-[#F8F8F8] mb-4 w-fit ml-auto mt-5" style={{ boxShadow: "inset 0px 4px 10px 0px #0000001A" }}>
                                     <Button
                                         onClick={() => setChartView('time')}
-                                        className={`rounded-full px-5 py-[6px] font-black text-base ${chartView === 'time'
+                                        className={`rounded-full md:px-5 px-2 md:py-[6px] py-1 font-black md:text-base text-xs ${chartView === 'time'
                                             ? 'bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white'
                                             : 'bg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white'
                                             }`}
@@ -303,7 +303,7 @@ const ElectricityGraphWithTabs = () => {
                                     </Button>
                                     <Button
                                         onClick={() => setChartView('scatter')}
-                                        className={`rounded-full px-5 py-[6px] text-base ${chartView === 'scatter'
+                                        className={`rounded-full md:px-5 px-2 md:py-[6px] py-1 md:text-base text-xs ${chartView === 'scatter'
                                             ? 'bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white'
                                             : 'bg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white'
                                             }`}

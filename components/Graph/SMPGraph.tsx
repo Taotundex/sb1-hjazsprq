@@ -78,14 +78,14 @@ const renderLegend = (props: any) => {
                     <div
                         key={`legend-${index}`}
                         onClick={() => handleClick(entry.dataKey)}
-                        className={`flex items-center cursor-pointer px-3 py-1 rounded-lg ${isActive ? 'bg-transparent' : 'opacity-50'
+                        className={`flex items-center cursor-pointer md:px-3 px-2 py-1 rounded-lg ${isActive ? 'bg-transparent' : 'opacity-50'
                             }`}
                     >
                         <div
                             className="w-2 h-2 rounded-full ml-2"
                             style={{ backgroundColor: entry.color }}
                         ></div>
-                        <span className="text-sm">{entry.value}</span>
+                        <span className="md:text-sm text-[10px]">{entry.value}</span>
                     </div>
                 );
             })}
@@ -99,7 +99,7 @@ export default function SMPGraph() {
             <ResponsiveContainer width="100%" height="95%">
                 <LineChart
                     data={data}
-                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                    margin={{ top: 10, right: 10, left: -50, bottom: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
@@ -133,19 +133,6 @@ export default function SMPGraph() {
                     />
                 </LineChart>
             </ResponsiveContainer>
-
-            {/* <div className="mt-4 text-center text-sm text-gray-600">
-                <p>Yjw 冲面</p>
-                <p className="mt-1">[㎝/㎜/㎜]</p>
-                <div className="flex justify-center space-x-4 mt-2">
-                    <div className="bg-gray-100 px-3 py-1 rounded">
-                        <span>① xìyīk yīu yīu 冲面</span>
-                    </div>
-                    <div className="bg-gray-100 px-3 py-1 rounded">
-                        <span>② xìyīk kyy yīu 冲面</span>
-                    </div>
-                </div>
-            </div> */}
         </div>
     );
 }

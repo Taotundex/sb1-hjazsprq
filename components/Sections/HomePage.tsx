@@ -20,6 +20,11 @@ import Link from 'next/link';
 import SMP from '../SMP';
 import Electritiy from '../Electritiy';
 import { ElectricityLineGraph, ElectricityScatterGraph } from '../Graph/ElectricityScatterGraph';
+import PrivateConsumersChart from '../Charts/PrivateConsumersChart';
+import Market from '../Market';
+import DashboardCharts from '../Charts/DashboardChart';
+import DashChart from '../DashChart';
+import RejectionChart from '../RejectionChart';
 
 
 export default function HomePage() {
@@ -338,7 +343,7 @@ export default function HomePage() {
 
 
         {/* Bottom Section - Additional Data Links */}
-        <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 border-b-0 md:rounded-[40px] rounded-[20px] md:rounded-b-none rounded-b-none pb-5 md:px-[60px] px-5 space-y-[30px]">
+        <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] pb-5 md:px-[60px] px-5 space-y-[30px]">
           <div className="flex flex-col gap-2 my-[30px]">
             <h3 className="md:text-lg text-base font-extrabold text-[#276E4E]">לנתונים נוספים</h3>
             <div className="flex items-center md:gap-6 gap-3">
@@ -372,23 +377,11 @@ export default function HomePage() {
               )}
 
               {activeTab === 'market' && (
-                <div className="p-4 bg-white rounded-lg border border-[#DEDEDE]">
-                  <h4 className="text-lg font-bold text-[#276E4E] mb-4">נתוני שוק</h4>
-                  <p>תוכן נתוני שוק יוצג כאן...</p>
-
-                  <div className="mt-4 flex gap-3">
-                    {['יומי', 'שבועי', 'חודשי'].map((timeframe) => (
-                      <button
-                        key={timeframe}
-                        onClick={() => setSelectedTimeframe(timeframe)}
-                        className={`px-4 py-2 rounded-full text-sm ${selectedTimeframe === timeframe
-                          ? 'bg-[#1E8025] text-white'
-                          : 'bg-gray-100 text-gray-700'
-                          }`}
-                      >
-                        {timeframe}
-                      </button>
-                    ))}
+                <div className="flex flex-col gap-6">
+                  <Market />
+                  <div className="fle flex-col">
+                    <DashChart />
+                    <RejectionChart />
                   </div>
                 </div>
               )}

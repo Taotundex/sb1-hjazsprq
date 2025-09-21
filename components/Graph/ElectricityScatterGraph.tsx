@@ -61,7 +61,7 @@ const CustomLegend = (props: any) => {
   };
 
   return (
-    <div className="flex items-center justify-between ml-10 mt-6">
+    <div className="flex items-center justify-between md:ml-10 ml-0 mt-6 md:pr-10 pr-5">
       <div className="flex flex-row-reverse justify-end">
         {payload.map((entry: any, index: number) => {
           const isActive = !activeSeries.includes(entry.dataKey);
@@ -77,7 +77,7 @@ const CustomLegend = (props: any) => {
                 className="w-2 h-2 rounded-full ml-2"
                 style={{ backgroundColor: entry.color }}
               ></div>
-              <span className="text-sm">{entry.value}</span>
+              <span className="md:text-sm text-[10px]">{entry.value}</span>
             </div>
           );
         })}
@@ -95,12 +95,12 @@ const scatterData1 = Array.from({ length: 100 }).map((_, i) => ({
 
 export function ElectricityScatterGraph() {
   return (
-    <div className="w-full h-[500px]">
+    <div className="w-full md:h-[500px] h-[300px] md:mt-0 -mt-10">
       {/* <h2 className="text-xl font-bold text-gray-800 mb-4 text-right">
         ייצור חשמל אל מול המחיר השוליי
       </h2> */}
       <ResponsiveContainer width="100%" height="95%">
-        <ScatterChart margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+        <ScatterChart margin={{ top: 10, right: -50, left: -50, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis dataKey="price" name="מחיר שוליי" tick={{ fontSize: 12 }} />
           <YAxis dataKey="demand" name="MW" tick={{ fontSize: 12 }} />
@@ -129,10 +129,10 @@ const lineData2 = [
 
 export function ElectricityLineGraph() {
   return (
-    <div className="w-full h-[500px] bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4 text-right">
+    <div className="w-full h-[500px] bg-transparent">
+      {/* <h2 className="text-xl font-bold text-gray-800 mb-4 text-right">
         ייצור חשמל אל מול המחיר השוליי
-      </h2>
+      </h2> */}
       <ResponsiveContainer width="100%" height="95%">
         <LineChart data={lineData2} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />

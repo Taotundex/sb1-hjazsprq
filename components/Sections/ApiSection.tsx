@@ -1,10 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Copy, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import topleft from '@/public/images/Ellipse 89 (1).png'
 import Link from 'next/link';

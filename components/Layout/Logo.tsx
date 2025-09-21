@@ -1,21 +1,18 @@
 import Image from 'next/image';
 
-interface LogoProps {
-  onClick?: () => void;
-}
 
-export default function Logo({ onClick }: LogoProps) {
+
+export default function Logo() {
   return (
-    <div 
-      className="flex items-center cursor-pointer hover:opacity-80 transition-opacity"
-      onClick={onClick}
+    <div
+      className="flex items-center cursor-pointer"
     >
       <Image
         src="/Frame 427319881.png"
         alt="NZO Logo"
-        width={80}
-        height={40}
-        className="h-10 w-auto"
+        width={163}
+        height={65}
+        className="h-[65px] w-[163px]"
         priority
       />
     </div>
