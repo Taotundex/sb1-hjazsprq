@@ -379,7 +379,7 @@ export default function HomePage() {
               {activeTab === 'market' && (
                 <div className="flex flex-col gap-6">
                   <Market />
-                  <div className="fle flex-col">
+                  <div className="flex flex-col">
                     <DashChart />
                     <RejectionChart />
                   </div>

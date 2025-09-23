@@ -221,7 +221,7 @@ const ElectricityGraphWithTabs = () => {
                                 <div className="flex gap-1 md:p-[6px] p-1 rounded-full bg-[#F8F8F8] mb-4 w-fit ml-auto mt-5" style={{ boxShadow: "inset 0px 4px 10px 0px #0000001A" }}>
                                     <Button
                                         onClick={() => setChartView('time')}
-                                        className={`rounded-full md:px-5 px-2 md:py-[6px] py-1 font-black md:text-base text-xs ${chartView === 'time'
+                                        className={`rounded-full md:px-5 px-2 md:py-[6px] py-[2px] font-black md:text-base text-xs ${chartView === 'time'
                                             ? 'bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white'
                                             : 'bg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white'
                                             }`}
@@ -230,7 +230,7 @@ const ElectricityGraphWithTabs = () => {
                                     </Button>
                                     <Button
                                         onClick={() => setChartView('scatter')}
-                                        className={`rounded-full md:px-5 px-2 md:py-[6px] py-1 md:text-base text-xs ${chartView === 'scatter'
+                                        className={`rounded-full md:px-5 px-2 md:py-[6px] py-[2px] md:text-base text-xs ${chartView === 'scatter'
                                             ? 'bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white'
                                             : 'bg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white'
                                             }`}

@@ -140,13 +140,13 @@ export default function ContactSection() {
 
             <div className="bg-white rounded-[20px] p-10 border border-[#E9C863] max-w-[516px] w-full">
               {isSubmitted ? (
-                <div className="flex flex-col gap-10 items-center justify-center text-center h-[450px]">
+                <div className="flex flex-col md:gap-10 gap-5 items-center justify-center text-center md:h-[450px] h-[200px]">
                   <Image src={mark} width={80} height={80} className='w-[80px] h-[80px]' alt='' />
                   <div className="flex flex-col items-center gap-[10px]">
-                    <h3 className="text-2xl font-bold text-[#1E8025]">
+                    <h3 className="md:text-2xl text-lg font-bold text-center text-[#1E8025]">
                       ההודעה נשלחה בהצלחה!
                     </h3>
-                    <p className="text-[#484C56] text-lg">
+                    <p className="text-center text-[#484C56] md:text-lg text-base">
                       מישהו מהצוות שלנו ייצור קשר איתך בקרוב.
                     </p>
                   </div>

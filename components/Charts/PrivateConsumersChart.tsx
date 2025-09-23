@@ -126,7 +126,7 @@ const PrivateConsumersChart = () => {
     };
 
     return (
-        <div className="w-full h-[500px]">
+        <div className="w-full md:h-[500px] h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                     data={data}

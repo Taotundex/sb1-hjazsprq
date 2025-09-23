@@ -35,7 +35,7 @@ const Market = () => {
                 </CardHeader>
                 <CardContent>
                     <div className="-mt-4 flex items-center gap-4">
-                        <div className="flex items-center gap-5">
+                        <div className="flex flex-wrap items-center gap-5">
                             <span className="text-sm text-slate-600 mt-6">מיון לפי:</span>
 
                             <div className="relative w-[113px]">

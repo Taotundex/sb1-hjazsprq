@@ -138,8 +138,8 @@ const DashboardCharts: React.FC = () => {
     return (
         <div className="flex md:flex-row flex-col gap-12">
             {/* Pie Chart */}
-            <div className="relative md:w-[400px] w-[80%]">
-                <ResponsiveContainer width="100%" height={500}>
+            <div className="relative md:h-[500px] h-[300px] md:w-[400px] w-[100%]">
+                <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Tooltip content={<CustomTooltip />} />
                         <Legend
@@ -182,8 +182,8 @@ const DashboardCharts: React.FC = () => {
             </div>
 
             {/* Bar Chart */}
-            <div className="w-full">
-                <ResponsiveContainer width="100%" height={500}>
+            <div className="w-full md:h-[500px] h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={barData} barCategoryGap="100%" margin={{ top: 20, right: 10, left: -50, bottom: 20 }}>
                         <XAxis dataKey="month" />
                         <YAxis domain={[0, 100]} />

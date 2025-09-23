@@ -112,7 +112,7 @@ const RejectionReasonsCharts: React.FC = () => {
     // -------------------------
     const CustomLegend = ({ payload, onClick, hiddenKeys, onMouseEnter, onMouseLeave }: any) => {
         return (
-            <div className="flex flex-wrap gap-4 justify-start mt-2">
+            <div className="flex flex-wrap gap-4 justify-start md:mt-2 mt-0">
                 {payload.map((entry: any, index: number) => {
                     const isHidden = hiddenKeys.includes(entry.value);
                     const isHovered = hoveredItem === entry.value;
@@ -134,7 +134,7 @@ const RejectionReasonsCharts: React.FC = () => {
                                 }}
                             />
                             <span
-                                className={`text-sm ${isHidden ? "opacity-50" : ""}`}
+                                className={`md:text-sm text-xs ${isHidden ? "opacity-50" : ""}`}
                                 style={{ opacity: isHovered ? 1 : getOpacity(entry.value) }}
                             >
                                 {entry.value}
@@ -149,8 +149,8 @@ const RejectionReasonsCharts: React.FC = () => {
     return (
         <div className="flex md:flex-row flex-col gap-12">
             {/* Pie Chart */}
-            <div className="relative md:w-[400px] w-full">
-                <ResponsiveContainer width="100%" height={400}>
+            <div className="relative h-[500px] md:w-[400px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Tooltip content={<CustomTooltip />} />
                         <Legend
@@ -193,12 +193,12 @@ const RejectionReasonsCharts: React.FC = () => {
             </div>
 
             {/* Bar Chart */}
-            <div className="w-full">
-                <ResponsiveContainer width="100%" height={400}>
+            <div className="md:h-[500px] h-[300px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         data={barData}
                         barCategoryGap="30%"
-                        margin={{ top: 20, right: 10, left: -20, bottom: 20 }}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                     >
                         <XAxis dataKey="month" />
                         <YAxis domain={[0, 100]} />

@@ -50,11 +50,11 @@ export default function SolarDashboard({
     }, [gaugePercent]);
 
     return (
-        <div className="min-h-screen bg-white p-6 flex items-center justify-center" dir="rtl">
+        <div className="" dir="rtl">
             {/* Outer golden rounded card like image */}
-            <div className="w-full max-w-6xl rounded-[18px] border-[3px] border-amber-600/60 p-6 bg-white shadow-sm">
+            <div className="w-full rounded-[16px] border border-[#E9C863] p-6 pb-20 bg-white shadow-sm" >
                 {/* Header */}
-                <div className="flex justify-start items-center text-right">
+                <div className="flex justify-start items-center text-right" >
                     <div>
                         <div className="text-[#484C56] font-extrabold text-lg">מימוש פוטנציאל סולארי</div>
                         <div className="text-sm">
@@ -65,7 +65,7 @@ export default function SolarDashboard({
                 </div>
 
                 {/* Gauge + black baseline */}
-                <div className="flex justify-center mt-6 border-b-[5px] border-black max-w-[50%] w-full mx-auto">
+                <div className="flex justify-center mt-6 border-b-[5px] border-black max-w-[50%] w-full mx-auto" >
                     <div className="relative flex justify-center" style={{ width: svgW }}>
                         <div className="absolute flex flex-col items-center top-1/2 left-1/2 -translate-x-1/2 mt-10">
                             <h1 className="text-[#484C56] text-[58px] leading-[60px] font-semibold">8%</h1>
@@ -128,7 +128,7 @@ export default function SolarDashboard({
                 </div>
 
                 {/* Content area under gauge: left = progress bars, right = status cards */}
-                <div className="w-full mt-10 grid grid-cols-2 gap-10 items-center">
+                <div className="w-full mt-10 grid grid-cols-2 gap-10 items-center" >
                     <div className="flex flex-col gap-2">
                         <h3 className="text-[#484C56] font-extrabold text-xl">סטטוס יישובי</h3>
                         {/* Right: two rounded status cards */}
