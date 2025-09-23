@@ -80,42 +80,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 // -------------------------
-// Custom Legend
-// -------------------------
-const CustomLegend = ({ payload, onClick, hiddenKeys }: any) => {
-    return (
-        <div className="flex flex-wrap gap-4 justify-start mt-2">
-            {payload.map((entry: any, index: number) => (
-                <button
-                    key={index}
-                    onClick={() => onClick(entry.value)}
-                    className="flex items-center gap-1 cursor-pointer"
-                >
-                    <span
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                            backgroundColor: hiddenKeys.includes(entry.value)
-                                ? "#ccc"
-                                : entry.color,
-                        }}
-                    />
-                    <span
-                        className={`text-sm ${hiddenKeys.includes(entry.value) ? "opacity-50" : ""
-                            }`}
-                    >
-                        {entry.value}
-                    </span>
-                </button>
-            ))}
-        </div>
-    );
-};
-
-// -------------------------
 // Main Component
 // -------------------------
 const RejectionReasonsCharts: React.FC = () => {
     const [hiddenKeys, setHiddenKeys] = useState<string[]>([]);
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
     const handleLegendClick = (key: string) => {
         setHiddenKeys((prev) =>
@@ -123,11 +92,64 @@ const RejectionReasonsCharts: React.FC = () => {
         );
     };
 
+    const handleLegendMouseEnter = (key: string) => {
+        setHoveredItem(key);
+    };
+
+    const handleLegendMouseLeave = () => {
+        setHoveredItem(null);
+    };
+
+    // Get opacity for bars and pie segments based on hover state
+    const getOpacity = (dataKey: string) => {
+        if (!hoveredItem) return 1; // No hover, full opacity
+        if (hoveredItem === dataKey) return 1; // Hovered item, full opacity
+        return 0.3; // Other items, faded
+    };
+
+    // -------------------------
+    // Custom Legend with Hover Effects
+    // -------------------------
+    const CustomLegend = ({ payload, onClick, hiddenKeys, onMouseEnter, onMouseLeave }: any) => {
+        return (
+            <div className="flex flex-wrap gap-4 justify-start mt-2">
+                {payload.map((entry: any, index: number) => {
+                    const isHidden = hiddenKeys.includes(entry.value);
+                    const isHovered = hoveredItem === entry.value;
+
+                    return (
+                        <button
+                            key={index}
+                            onClick={() => onClick(entry.value)}
+                            onMouseEnter={() => onMouseEnter(entry.value)}
+                            onMouseLeave={onMouseLeave}
+                            className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded-lg transition-all duration-200 ${isHovered ? 'bg-gray-100' : ''
+                                }`}
+                        >
+                            <span
+                                className="w-2 h-2 rounded-full"
+                                style={{
+                                    backgroundColor: isHidden ? "#ccc" : entry.color,
+                                    opacity: isHovered ? 1 : getOpacity(entry.value)
+                                }}
+                            />
+                            <span
+                                className={`text-sm ${isHidden ? "opacity-50" : ""}`}
+                                style={{ opacity: isHovered ? 1 : getOpacity(entry.value) }}
+                            >
+                                {entry.value}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+        );
+    };
+
     return (
         <div className="flex md:flex-row flex-col gap-12">
             {/* Pie Chart */}
             <div className="relative md:w-[400px] w-full">
-                {/* <h3 className="text-lg font-semibold mb-4 text-right">סיבות דחייה</h3> */}
                 <ResponsiveContainer width="100%" height={400}>
                     <PieChart>
                         <Tooltip content={<CustomTooltip />} />
@@ -136,6 +158,8 @@ const RejectionReasonsCharts: React.FC = () => {
                                 <CustomLegend
                                     onClick={handleLegendClick}
                                     hiddenKeys={hiddenKeys}
+                                    onMouseEnter={handleLegendMouseEnter}
+                                    onMouseLeave={handleLegendMouseLeave}
                                 />
                             }
                         />
@@ -149,7 +173,14 @@ const RejectionReasonsCharts: React.FC = () => {
                         >
                             {pieData.map((entry, index) =>
                                 hiddenKeys.includes(entry.name) ? null : (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={entry.color}
+                                        opacity={getOpacity(entry.name)}
+                                        style={{
+                                            transition: 'opacity 0.2s ease-in-out'
+                                        }}
+                                    />
                                 )
                             )}
                         </Pie>
@@ -163,7 +194,6 @@ const RejectionReasonsCharts: React.FC = () => {
 
             {/* Bar Chart */}
             <div className="w-full">
-                {/* <h3 className="text-lg font-semibold mb-4 text-right">סיבות דחייה לפי חודש</h3> */}
                 <ResponsiveContainer width="100%" height={400}>
                     <BarChart
                         data={barData}
@@ -173,7 +203,6 @@ const RejectionReasonsCharts: React.FC = () => {
                         <XAxis dataKey="month" />
                         <YAxis domain={[0, 100]} />
                         <Tooltip content={<CustomTooltip />} />
-                        {/* Legend removed from BarChart */}
                         {!hiddenKeys.includes("ייפוי כח חסר") && (
                             <Bar
                                 barSize={28}
@@ -181,6 +210,7 @@ const RejectionReasonsCharts: React.FC = () => {
                                 name="ייפוי כח חסר"
                                 fill="#3D843F"
                                 stackId="a"
+                                opacity={getOpacity("ייפוי כח חסר")}
                             />
                         )}
                         {!hiddenKeys.includes("בעיות בתמונה") && (
@@ -190,6 +220,7 @@ const RejectionReasonsCharts: React.FC = () => {
                                 name="בעיות בתמונה"
                                 fill="#E0B441"
                                 stackId="a"
+                                opacity={getOpacity("בעיות בתמונה")}
                             />
                         )}
                         {!hiddenKeys.includes("בעיות במילוי הבקשה") && (
@@ -199,6 +230,7 @@ const RejectionReasonsCharts: React.FC = () => {
                                 name="בעיות במילוי הבקשה"
                                 fill="#9AC348"
                                 stackId="a"
+                                opacity={getOpacity("בעיות במילוי הבקשה")}
                             />
                         )}
                         {!hiddenKeys.includes("אחר") && (
@@ -208,6 +240,7 @@ const RejectionReasonsCharts: React.FC = () => {
                                 name="אחר"
                                 fill="#7DB2CE"
                                 stackId="a"
+                                opacity={getOpacity("אחר")}
                             />
                         )}
                     </BarChart>

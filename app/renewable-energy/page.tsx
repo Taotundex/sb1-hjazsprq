@@ -3,6 +3,7 @@ import InterestPage from '@/components/InterestPage';
 import Electricity from '@/components/Electritiy';
 import RenewableTargetsSection from '@/components/Sections/RenewableTargetsSection';
 import RenewableEnergySection from '@/components/Sections/RenewableEnergySection';
+import SolarDashboard from '@/components/SolarDashboard';
 
 const page = () => {
     return (
@@ -25,6 +26,8 @@ const page = () => {
                     {/* <RenewableEnergySection /> */}
                     {/* </div> */}
                 </div>
+
+                <SolarDashboard />
 
                 {/* Bottom Section - Additional Data Links */}
             </div>

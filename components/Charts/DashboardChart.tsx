@@ -73,37 +73,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-const CustomLegend = ({ payload, onClick, hiddenKeys }: any) => {
-    return (
-        <div className="flex gap-4 justify-start mt-2">
-            {payload.map((entry: any, index: number) => (
-                <button
-                    key={`legend-${index}`}
-                    onClick={() => onClick(entry.value)}
-                    className="flex items-center gap-1 cursor-pointer"
-                >
-                    <span
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                            backgroundColor: hiddenKeys.includes(entry.value)
-                                ? "#ccc"
-                                : entry.color,
-                        }}
-                    />
-                    <span
-                        className={`text-sm ${hiddenKeys.includes(entry.value) ? "opacity-50" : ""
-                            }`}
-                    >
-                        {entry.value}
-                    </span>
-                </button>
-            ))}
-        </div>
-    );
-};
-
 const DashboardCharts: React.FC = () => {
     const [hiddenKeys, setHiddenKeys] = useState<string[]>([]);
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
     const handleLegendClick = (key: string) => {
         setHiddenKeys((prev) =>
@@ -111,11 +83,62 @@ const DashboardCharts: React.FC = () => {
         );
     };
 
+    const handleLegendMouseEnter = (key: string) => {
+        setHoveredItem(key);
+    };
+
+    const handleLegendMouseLeave = () => {
+        setHoveredItem(null);
+    };
+
+    // Get opacity for bars and pie segments based on hover state
+    const getOpacity = (dataKey: string) => {
+        if (!hoveredItem) return 1; // No hover, full opacity
+        if (hoveredItem === dataKey) return 1; // Hovered item, full opacity
+        return 0.3; // Other items, faded
+    };
+
+    // Custom Legend component with hover effects
+    const CustomLegend = ({ payload, onClick, hiddenKeys, onMouseEnter, onMouseLeave }: any) => {
+        return (
+            <div className="flex gap-4 justify-start mt-2">
+                {payload.map((entry: any, index: number) => {
+                    const isHidden = hiddenKeys.includes(entry.value);
+                    const isHovered = hoveredItem === entry.value;
+
+                    return (
+                        <button
+                            key={`legend-${index}`}
+                            onClick={() => onClick(entry.value)}
+                            onMouseEnter={() => onMouseEnter(entry.value)}
+                            onMouseLeave={onMouseLeave}
+                            className={`flex items-center gap-1 cursor-pointer px-3 py-1 rounded-lg transition-all duration-200 ${isHovered ? 'bg-gray-100' : ''
+                                }`}
+                        >
+                            <span
+                                className="w-2 h-2 rounded-full"
+                                style={{
+                                    backgroundColor: isHidden ? "#ccc" : entry.color,
+                                    opacity: isHovered ? 1 : getOpacity(entry.value)
+                                }}
+                            />
+                            <span
+                                className={`text-sm ${isHidden ? "opacity-50" : ""}`}
+                                style={{ opacity: isHovered ? 1 : getOpacity(entry.value) }}
+                            >
+                                {entry.value}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+        );
+    };
+
     return (
         <div className="flex md:flex-row flex-col gap-12">
             {/* Pie Chart */}
             <div className="relative md:w-[400px] w-[80%]">
-                {/* <h2 className="text-lg font-semibold mb-4">סיכום בקשות</h2> */}
                 <ResponsiveContainer width="100%" height={500}>
                     <PieChart>
                         <Tooltip content={<CustomTooltip />} />
@@ -124,6 +147,8 @@ const DashboardCharts: React.FC = () => {
                                 <CustomLegend
                                     onClick={handleLegendClick}
                                     hiddenKeys={hiddenKeys}
+                                    onMouseEnter={handleLegendMouseEnter}
+                                    onMouseLeave={handleLegendMouseLeave}
                                 />
                             }
                         />
@@ -137,7 +162,14 @@ const DashboardCharts: React.FC = () => {
                         >
                             {pieData.map((entry, index) =>
                                 hiddenKeys.includes(entry.name) ? null : (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={entry.color}
+                                        opacity={getOpacity(entry.name)}
+                                        style={{
+                                            transition: 'opacity 0.2s ease-in-out'
+                                        }}
+                                    />
                                 )
                             )}
                         </Pie>
@@ -148,20 +180,35 @@ const DashboardCharts: React.FC = () => {
                     <span className="text-gray-500 text-sm font-normal">בקשות</span>
                 </div>
             </div>
+
             {/* Bar Chart */}
             <div className="w-full">
-                {/* <h2 className="text-lg font-semibold mb-4">סטטוס בקשות נייד</h2> */}
                 <ResponsiveContainer width="100%" height={500}>
                     <BarChart data={barData} barCategoryGap="100%" margin={{ top: 20, right: 10, left: -50, bottom: 20 }}>
                         <XAxis dataKey="month" />
                         <YAxis domain={[0, 100]} />
                         <Tooltip content={<CustomTooltip />} />
-                        {/* Removed Legend component from BarChart */}
                         {!hiddenKeys.includes("אושרו") && (
-                            <Bar barSize={28} radius={[0, 0, 0, 0]} dataKey="approved" name="אושרו" fill="#648AA3" stackId="a" />
+                            <Bar
+                                barSize={28}
+                                radius={[0, 0, 0, 0]}
+                                dataKey="approved"
+                                name="אושרו"
+                                fill="#648AA3"
+                                stackId="a"
+                                opacity={getOpacity("אושרו")}
+                            />
                         )}
                         {!hiddenKeys.includes("נדחו") && (
-                            <Bar barSize={28} radius={[4, 4, 0, 0]} dataKey="rejected" name="נדחו" fill="#DACF61" stackId="a" />
+                            <Bar
+                                barSize={28}
+                                radius={[4, 4, 0, 0]}
+                                dataKey="rejected"
+                                name="נדחו"
+                                fill="#DACF61"
+                                stackId="a"
+                                opacity={getOpacity("נדחו")}
+                            />
                         )}
                     </BarChart>
                 </ResponsiveContainer>

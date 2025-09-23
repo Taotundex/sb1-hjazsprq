@@ -57,35 +57,33 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 // Custom Legend component
-const renderLegend = (props: any) => {
+const RenderLegend = (props: any) => {
     const { payload } = props;
-    const [activeSeries, setActiveSeries] = useState<string[]>([]);
-
-    const handleClick = (dataKey: string) => {
-        if (activeSeries.includes(dataKey)) {
-            setActiveSeries(activeSeries.filter(key => key !== dataKey));
-        } else {
-            setActiveSeries([...activeSeries, dataKey]);
-        }
-    };
+    const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
 
     return (
         <div className="flex flex-row-reverse justify-end mt-4">
             {payload.map((entry: any, index: number) => {
-                const isActive = !activeSeries.includes(entry.dataKey);
+                const isHovered = hoveredSeries === entry.dataKey;
+                const isOtherHovered = hoveredSeries && hoveredSeries !== entry.dataKey;
 
                 return (
                     <div
                         key={`legend-${index}`}
-                        onClick={() => handleClick(entry.dataKey)}
-                        className={`flex items-center cursor-pointer md:px-3 px-2 py-1 rounded-lg ${isActive ? 'bg-transparent' : 'opacity-50'
+                        onMouseEnter={() => setHoveredSeries(entry.dataKey)}
+                        onMouseLeave={() => setHoveredSeries(null)}
+                        className={`flex items-center cursor-pointer md:px-3 px-2 py-1 rounded-lg transition-all duration-200 ${isOtherHovered ? 'opacity-30' : ''
                             }`}
                     >
                         <div
                             className="w-2 h-2 rounded-full ml-2"
-                            style={{ backgroundColor: entry.color }}
+                            style={{
+                                backgroundColor: entry.color,
+                                transform: isHovered ? 'scale(1.3)' : 'scale(1)',
+                                transition: 'transform 0.2s'
+                            }}
                         ></div>
-                        <span className="md:text-sm text-[10px]">{entry.value}</span>
+                        <span className="md:text-sm text-[10px] font-medium">{entry.value}</span>
                     </div>
                 );
             })}
@@ -94,6 +92,50 @@ const renderLegend = (props: any) => {
 };
 
 export default function SMPGraph() {
+    const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
+
+    const handleLegendMouseEnter = (dataKey: string) => {
+        setHoveredSeries(dataKey);
+    };
+
+    const handleLegendMouseLeave = () => {
+        setHoveredSeries(null);
+    };
+
+    // Custom legend component that communicates with parent
+    const CustomLegend = (props: any) => {
+        const { payload } = props;
+
+        return (
+            <div className="flex flex-row-reverse justify-end mt-4">
+                {payload.map((entry: any, index: number) => {
+                    const isHovered = hoveredSeries === entry.dataKey;
+                    const isOtherHovered = hoveredSeries && hoveredSeries !== entry.dataKey;
+
+                    return (
+                        <div
+                            key={`legend-${index}`}
+                            onMouseEnter={() => handleLegendMouseEnter(entry.dataKey)}
+                            onMouseLeave={handleLegendMouseLeave}
+                            className={`flex items-center cursor-pointer md:px-3 px-2 py-1 rounded-lg transition-all duration-200 ${isOtherHovered ? 'opacity-30' : ''
+                                }`}
+                        >
+                            <div
+                                className="w-2 h-2 rounded-full ml-2"
+                                style={{
+                                    backgroundColor: entry.color,
+                                    transform: isHovered ? 'scale(1.3)' : 'scale(1)',
+                                    transition: 'transform 0.2s'
+                                }}
+                            ></div>
+                            <span className="md:text-sm text-[10px] font-medium">{entry.value}</span>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    };
+
     return (
         <div className="w-full h-[500px]">
             <ResponsiveContainer width="100%" height="95%">
@@ -114,12 +156,13 @@ export default function SMPGraph() {
                         tickMargin={10}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend content={renderLegend} />
+                    <Legend content={CustomLegend} />
                     <Line
                         type="linear"
                         dataKey="withoutExc"
                         stroke="#166534"
                         strokeWidth={2}
+                        strokeOpacity={hoveredSeries ? (hoveredSeries === "withoutExc" ? 1 : 0.3) : 1}
                         dot={false}
                         name="מחיר שוליי ללא אילוצים"
                     />
@@ -128,6 +171,7 @@ export default function SMPGraph() {
                         dataKey="withExc"
                         stroke="#eab308"
                         strokeWidth={2}
+                        strokeOpacity={hoveredSeries ? (hoveredSeries === "withExc" ? 1 : 0.3) : 1}
                         dot={false}
                         name="מחיר שוליי כולל אילוצים"
                     />

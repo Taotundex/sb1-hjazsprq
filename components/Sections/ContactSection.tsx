@@ -2,11 +2,9 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import Image from 'next/image';
-import topleft from '@/public/images/Ellipse 89 (1).png'
-
+import topleft from '@/public/images/Ellipse 89 (1).png';
+import mark from '@/public/images/mark.png';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -15,17 +13,106 @@ export default function ContactSection() {
     phone: '',
     message: ''
   });
+  const [errors, setErrors] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {
+      name: '',
+      phone: '',
+      email: '',
+      message: ''
+    };
+    let isValid = true;
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'יש למלא את השדה המבוקש';
+      isValid = false;
+    }
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'יש למלא את השדה המבוקש';
+      isValid = false;
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'יש למלא את השדה המבוקש';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'כתובת דוא"ל לא תקינה';
+      isValid = false;
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'יש למלא את השדה המבוקש';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+
+    if (validateForm()) {
+      console.log('Form submitted:', formData);
+      // Show congratulatory message
+      setIsSubmitted(true);
+      // Reset form and errors
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+      setErrors({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    // Clear error when user starts typing
+    if (errors[name as keyof typeof errors] && value.trim()) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
+  };
+
+  const getInputClassName = (fieldName: string) => {
+    const hasError = errors[fieldName as keyof typeof errors];
+    const baseClass = "text-left outline-none placeholder:font-medium placeholder:text-base h-10 w-full !border-b";
+
+    if (hasError) {
+      return `${baseClass} placeholder:text-[#CEA073] !border-b-[#CEA073]`;
+    }
+    return `${baseClass} placeholder:text-[#59687D] !border-b-[#59687D]/39`;
+  };
+
+  const getTextareaClassName = () => {
+    const hasError = errors.message;
+    const baseClass = "text-left outline-none placeholder:font-medium placeholder:text-base min-h-[120px] h-[80px] resize-none w-full border-b";
+
+    if (hasError) {
+      return `${baseClass} placeholder:text-[#CEA073] border-b-[#CEA073]`;
+    }
+    return `${baseClass} placeholder:text-[#59687D] border-b-[#59687D]/39`;
   };
 
   return (
@@ -38,11 +125,7 @@ export default function ContactSection() {
         </h1>
         <div className="w-[46px] h-1 bg-[#276E4E] md:mt-[18px] mt-3 mr-0"></div>
         <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] overflow-hidden md:p-10 p-5 md:mt-[30px] mt-5">
-          {/* <div className="relative z-10 container mx-auto px-4 py-16"> */}
           <div className="flex md:flex-row flex-col gap-5 justify-between items-center">
-            {/* Left side - Content */}
-            {/* <div className="order-2 lg:order-1 text-right"> */}
-            {/* <div className="space-y-8"> */}
             <div>
               <h2 className="md:text-[34px] text-2xl font-extrabold text-[#484C56] leading-[110%]">
                 לא מצאתם מה שחיפשתם?
@@ -54,61 +137,96 @@ export default function ContactSection() {
                 מוזמנים לכתוב לנו ונעשה להשיב במקרום
               </p>
             </div>
-            {/* </div> */}
-            {/* </div> */}
 
-
-
-            {/* Right side - Contact form */}
-            {/* <div className="order-1 lg:order-2 bg-[#DEDEDE]/70"> */}
             <div className="bg-white rounded-[20px] p-10 border border-[#E9C863] max-w-[516px] w-full">
-              <form onSubmit={handleSubmit} className="flex flex-col md:gap-10 gap-5">
-                <input
-                  name="name"
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="text-left outline-none placeholder:font-medium placeholder:text-base placeholder:text-[#59687D] !border-b !border-[#59687D]/39 h-10 w-full"
-                  placeholder="שם *"
-                />
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="text-left outline-none placeholder:font-medium placeholder:text-base placeholder:text-[#59687D] !border-b !border-[#59687D]/39 h-10 w-full"
-                  placeholder="כתובת דוא״ל *"
-                />
-                <input
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="text-left outline-none placeholder:font-medium placeholder:text-base placeholder:text-[#59687D] !border-b !border-[#59687D]/39 h-10 w-full"
-                  placeholder="אזור (אם יש)"
-                />
-                <textarea
-                  name="message"
-                  required
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="text-left outline-none placeholder:font-medium placeholder:text-base placeholder:text-[#59687D] border-b border-[#59687D]/39 min-h-[120px] h-[80px] resize-none w-full"
-                  placeholder="כתבו כאן את תוכן הפנייה"
-                ></textarea>
+              {isSubmitted ? (
+                <div className="flex flex-col gap-10 items-center justify-center text-center h-[450px]">
+                  <Image src={mark} width={80} height={80} className='w-[80px] h-[80px]' alt='' />
+                  <div className="flex flex-col items-center gap-[10px]">
+                    <h3 className="text-2xl font-bold text-[#1E8025]">
+                      ההודעה נשלחה בהצלחה!
+                    </h3>
+                    <p className="text-[#484C56] text-lg">
+                      מישהו מהצוות שלנו ייצור קשר איתך בקרוב.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col md:gap-10 gap-5">
+                  <div className="relative">
+                    <input
+                      name="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className={getInputClassName('name')}
+                      placeholder="שם *"
+                    />
+                    {errors.name && (
+                      <p className="text-right text-[#CEA073] text-sm mt-1 absolute bottom-[-20px] right-0">
+                        {errors.name}
+                      </p>
+                    )}
+                  </div>
 
-                <Button
-                  type="submit"
-                  className="max-w-[192px] w-full bg-[#1E8025] text-white rounded-full h-10 text-lg font-extrabold"
-                >
-                  שליחה
-                </Button>
-              </form>
+                  <div className="relative">
+                    <input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={getInputClassName('email')}
+                      placeholder="כתובת דוא״ל *"
+                    />
+                    {errors.email && (
+                      <p className="text-right text-[#CEA073] text-sm mt-1 absolute bottom-[-20px] right-0">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+
+                  <div className="relative">
+                    <input
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className={getInputClassName('phone')}
+                      placeholder="אזור (אם יש)"
+                    />
+                    {errors.phone && (
+                      <p className="text-right text-[#CEA073] text-sm mt-1 absolute bottom-[-20px] right-0">
+                        {errors.phone}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      className={getTextareaClassName()}
+                      placeholder="כתבו כאן את תוכן הפנייה"
+                    ></textarea>
+                    {errors.message && (
+                      <p className="text-right text-[#CEA073] text-sm mt-1 absolute bottom-[-20px] right-0">
+                        {errors.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="max-w-[192px] w-full bg-[#1E8025] text-white rounded-full h-10 text-lg font-extrabold"
+                  >
+                    שליחה
+                  </Button>
+                </form>
+              )}
             </div>
-            {/* </div> */}
           </div>
-          {/* </div> */}
         </div>
       </div>
     </div>

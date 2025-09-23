@@ -10,9 +10,6 @@ import {
     Tooltip,
     ResponsiveContainer,
     Legend,
-    ScatterChart,
-    Scatter,
-    ZAxis
 } from "recharts";
 import { Button } from "../ui/button";
 import { ElectricityScatterGraph } from "./ElectricityScatterGraph";
@@ -44,35 +41,6 @@ const lineData = [
     { time: "22:00", withExc: 50, withoutExc: 70, demandWith: 2800, demandWithout: 6300 },
     { time: "23:00", withExc: 80, withoutExc: 100, demandWith: 2600, demandWithout: 6000 },
     { time: "24:00", withExc: 56, withoutExc: 76, demandWith: 2500, demandWithout: 5900 },
-];
-
-// Data for the scatter chart
-const scatterData = [
-    { hour: 0, price: 110, demand: 2800, size: 40 },
-    { hour: 1, price: 135, demand: 2600, size: 35 },
-    { hour: 2, price: 75, demand: 2500, size: 30 },
-    { hour: 3, price: 74, demand: 2700, size: 45 },
-    { hour: 4, price: 73, demand: 2800, size: 50 },
-    { hour: 5, price: 100, demand: 2600, size: 35 },
-    { hour: 6, price: 120, demand: 2500, size: 30 },
-    { hour: 7, price: 100, demand: 2650, size: 40 },
-    { hour: 8, price: 75, demand: 2700, size: 45 },
-    { hour: 9, price: 75, demand: 2800, size: 50 },
-    { hour: 10, price: 45, demand: 2600, size: 35 },
-    { hour: 11, price: 45, demand: 2500, size: 30 },
-    { hour: 12, price: 40, demand: 2700, size: 40 },
-    { hour: 13, price: 61, demand: 2800, size: 45 },
-    { hour: 14, price: 57, demand: 2600, size: 35 },
-    { hour: 15, price: 59, demand: 2500, size: 30 },
-    { hour: 16, price: 49, demand: 2650, size: 40 },
-    { hour: 17, price: 89, demand: 2700, size: 45 },
-    { hour: 18, price: 56, demand: 2800, size: 50 },
-    { hour: 19, price: 23, demand: 2600, size: 35 },
-    { hour: 20, price: 56, demand: 2500, size: 30 },
-    { hour: 21, price: 20, demand: 2700, size: 40 },
-    { hour: 22, price: 50, demand: 2800, size: 45 },
-    { hour: 23, price: 80, demand: 2600, size: 35 },
-    { hour: 24, price: 56, demand: 2500, size: 30 },
 ];
 
 // Custom Tooltip component for Line Chart
@@ -107,39 +75,10 @@ const CustomLineTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-// Custom Tooltip component for Scatter Chart
-const CustomScatterTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-        return (
-            <div className="bg-white p-2 rounded-[10px] shadow-md border-none" style={{ boxShadow: "0px 2px 30px 2px #99BF4129" }}>
-                <p className="text-gray-700 font-medium mb-2 border-b border-[#59687D]">שעה {payload[0].payload.hour}:00</p>
-                <div className="space-y-1">
-                    <div className="flex items-center">
-                        <div className="w-2 h-2 rounded-full ml-2 bg-[#1E8025]"></div>
-                        <span className="text-sm text-[#484C56]">מחיר</span>
-                        <span className="text-gray-600 mx-1">|</span>
-                        <span className="text-sm text-[#484C56] ml-1">
-                            {payload[0].value.toLocaleString()} ₪
-                        </span>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-2 h-2 rounded-full ml-2 bg-[#eab308]"></div>
-                        <span className="text-sm text-[#484C56]">ביקוש</span>
-                        <span className="text-gray-600 mx-1">|</span>
-                        <span className="text-sm text-[#484C56] ml-1">
-                            {payload[1].value.toLocaleString()} MW
-                        </span>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    return null;
-};
-
 // Line Chart Component
 const ElectricityLineGraph = () => {
     const [activeSeries, setActiveSeries] = useState<string[]>([]);
+    const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
 
     const handleLegendClick = (dataKey: string) => {
         if (activeSeries.includes(dataKey)) {
@@ -147,6 +86,14 @@ const ElectricityLineGraph = () => {
         } else {
             setActiveSeries([...activeSeries, dataKey]);
         }
+    };
+
+    const handleLegendMouseEnter = (dataKey: string) => {
+        setHoveredSeries(dataKey);
+    };
+
+    const handleLegendMouseLeave = () => {
+        setHoveredSeries(null);
     };
 
     const renderLegend = (props: any) => {
@@ -157,25 +104,48 @@ const ElectricityLineGraph = () => {
                 <div className="flex flex-row-reverse justify-end">
                     {payload.map((entry: any, index: number) => {
                         const isActive = !activeSeries.includes(entry.dataKey);
+                        const isHovered = hoveredSeries === entry.dataKey;
+                        const isOtherHovered = hoveredSeries && hoveredSeries !== entry.dataKey;
 
                         return (
                             <div
                                 key={`legend-${index}`}
                                 onClick={() => handleLegendClick(entry.dataKey)}
-                                className={`flex items-center cursor-pointer px-3 py-1 rounded-lg ${isActive ? 'bg-transparent' : 'opacity-50'
-                                    }`}
+                                onMouseEnter={() => handleLegendMouseEnter(entry.dataKey)}
+                                onMouseLeave={handleLegendMouseLeave}
+                                className={`flex items-center cursor-pointer px-3 py-1 rounded-lg transition-all duration-200 ${isActive ? 'bg-transparent' : 'opacity-50'
+                                    } ${isOtherHovered ? 'opacity-30' : ''}`}
                             >
                                 <div
                                     className="w-2 h-2 rounded-full ml-2"
-                                    style={{ backgroundColor: entry.color }}
+                                    style={{
+                                        backgroundColor: entry.color,
+                                        transform: isHovered ? 'scale(1.3)' : 'scale(1)',
+                                        transition: 'transform 0.2s'
+                                    }}
                                 ></div>
-                                <span className="md:!text-sm !text-[10px]">{entry.value}</span>
+                                <span className="md:!text-sm !text-[10px] font-medium">{entry.value}</span>
                             </div>
                         );
                     })}
                 </div>
             </div>
         );
+    };
+
+    const getLineOpacity = (dataKey: string) => {
+        // If series is manually hidden by click
+        if (activeSeries.includes(dataKey)) {
+            return 0;
+        }
+
+        // If hovering over a legend item
+        if (hoveredSeries) {
+            return hoveredSeries === dataKey ? 1 : 0.3;
+        }
+
+        // Default state - all visible
+        return 1;
     };
 
     return (
@@ -215,9 +185,9 @@ const ElectricityLineGraph = () => {
                         dataKey="withoutExc"
                         stroke="#166534"
                         strokeWidth={2}
+                        strokeOpacity={getLineOpacity("withoutExc")}
                         dot={false}
                         name="מחיר שוליי ללא אילוצים"
-                        hide={activeSeries.includes("withoutExc")}
                     />
                     <Line
                         yAxisId="left"
@@ -225,58 +195,15 @@ const ElectricityLineGraph = () => {
                         dataKey="withExc"
                         stroke="#eab308"
                         strokeWidth={2}
+                        strokeOpacity={getLineOpacity("withExc")}
                         dot={false}
                         name="מחיר שוליי כולל אילוצים"
-                        hide={activeSeries.includes("withExc")}
                     />
                 </LineChart>
             </ResponsiveContainer>
         </div>
     );
 };
-
-// Scatter Chart Component
-// const ElectricityScatterGraph = () => {
-//     return (
-//         <div className="w-full h-[500px]">
-//             <ResponsiveContainer width="100%" height="95%">
-//                 <ScatterChart
-//                     margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-//                 >
-//                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-//                     <XAxis
-//                         type="number"
-//                         dataKey="hour"
-//                         name="שעה"
-//                         domain={[0, 24]}
-//                         tickCount={13}
-//                         tick={{ fontSize: 12 }}
-//                     />
-//                     <YAxis
-//                         type="number"
-//                         dataKey="price"
-//                         name="מחיר"
-//                         domain={[0, 200]}
-//                         tick={{ fontSize: 12 }}
-//                     />
-//                     <ZAxis
-//                         type="number"
-//                         dataKey="demand"
-//                         range={[50, 300]}
-//                         name="ביקוש"
-//                     />
-//                     <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<CustomScatterTooltip />} />
-//                     <Scatter
-//                         name="מחיר vs ביקוש"
-//                         data={scatterData}
-//                         fill="#1E8025"
-//                         shape="circle"
-//                     />
-//                 </ScatterChart>
-//             </ResponsiveContainer>
-//         </div>
-//     );
-// };
 
 // Main Component with Tab Switching
 const ElectricityGraphWithTabs = () => {

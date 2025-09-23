@@ -62,6 +62,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 const PrivateConsumersChart = () => {
     const [hiddenBars, setHiddenBars] = useState<string[]>([]);
+    const [hoveredBar, setHoveredBar] = useState<string | null>(null);
 
     const handleLegendClick = (payload: any) => {
         const { dataKey } = payload;
@@ -72,24 +73,50 @@ const PrivateConsumersChart = () => {
         }
     };
 
-    // Custom Legend component that receives payload and click handler
-    const CustomLegend = ({ payload, onClick }: any) => {
+    const handleLegendMouseEnter = (dataKey: string) => {
+        setHoveredBar(dataKey);
+    };
+
+    const handleLegendMouseLeave = () => {
+        setHoveredBar(null);
+    };
+
+    // Determine if a bar should be faded
+    const getBarOpacity = (dataKey: string) => {
+        if (!hoveredBar) return 1; // No hover, full opacity
+        if (hoveredBar === dataKey) return 1; // Hovered bar, full opacity
+        return 0.3; // Other bars, faded
+    };
+
+    // Custom Legend component
+    const CustomLegend = ({ payload, onClick, onMouseEnter, onMouseLeave }: any) => {
         return (
             <div className="flex gap-3">
                 {payload.map((entry: any, index: number) => {
                     const isHidden = hiddenBars.includes(entry.dataKey);
+                    const isHovered = hoveredBar === entry.dataKey;
+
                     return (
                         <div
                             key={`legend-${index}`}
-                            className={`flex items-center cursor-pointer px-3 py-1 rounded-lg ${isHidden ? 'opacity-50' : 'bg-transparent'}`}
-                            onClick={() => onClick(entry)} // Pass the full entry object to the handler
+                            className={`flex items-center cursor-pointer px-3 py-1 rounded-lg transition-all duration-200 ${isHidden ? 'opacity-50' : ''
+                                } ${isHovered ? 'bg-gray-100' : ''}`}
+                            onClick={() => onClick(entry)}
+                            onMouseEnter={() => onMouseEnter(entry.dataKey)}
+                            onMouseLeave={onMouseLeave}
                         >
                             <div
                                 className="w-2 h-2 rounded-full ml-2"
-                                style={{ backgroundColor: entry.color }}
+                                style={{
+                                    backgroundColor: entry.color,
+                                    opacity: isHovered ? 1 : getBarOpacity(entry.dataKey)
+                                }}
                             ></div>
-                            <span className="md:text-sm text-[10px]">
-                                {entry.value === "virtual" ? "מספקים וירטואליים" : "מספקים עם אמצעי ייצור"}
+                            <span
+                                className="md:text-sm text-[10px]"
+                                style={{ opacity: isHovered ? 1 : getBarOpacity(entry.dataKey) }}
+                            >
+                                {entry.dataKey === "virtual" ? "מספקים וירטואליים" : "מספקים עם אמצעי ייצור"}
                             </span>
                         </div>
                     );
@@ -110,24 +137,34 @@ const PrivateConsumersChart = () => {
                     <XAxis dataKey="month" />
                     <YAxis domain={[0, 100]} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend content={<CustomLegend />} onClick={handleLegendClick} />
+                    <Legend
+                        content={
+                            <CustomLegend
+                                onClick={handleLegendClick}
+                                onMouseEnter={handleLegendMouseEnter}
+                                onMouseLeave={handleLegendMouseLeave}
+                            />
+                        }
+                    />
                     <Bar
                         dataKey="virtual"
-                        name="מספקים עם אמצעי ייצור"
+                        name="מספקים וירטואליים"
                         stackId="a"
                         fill="#F4D150"
                         barSize={28}
                         radius={[0, 0, 0, 0]}
                         hide={hiddenBars.includes("virtual")}
+                        opacity={getBarOpacity("virtual")}
                     />
                     <Bar
                         dataKey="withProduction"
-                        name="מספקים וירטואליים"
+                        name="מספקים עם אמצעי ייצור"
                         stackId="a"
                         fill="#3A7C2F"
                         barSize={28}
                         radius={[4, 4, 0, 0]}
                         hide={hiddenBars.includes("withProduction")}
+                        opacity={getBarOpacity("withProduction")}
                     />
                 </BarChart>
             </ResponsiveContainer>
@@ -136,4 +173,3 @@ const PrivateConsumersChart = () => {
 };
 
 export default PrivateConsumersChart;
-

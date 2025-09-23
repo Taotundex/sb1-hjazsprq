@@ -97,7 +97,7 @@ export default function HomePage() {
                 <h3 className="md:text-2xl text-lg font-bold text-[#276E4E] md:mb-4 mb-2">מה מעניין אותך?</h3>
 
                 <div className="flex flex-wrap md:gap-3 gap-2 space-x-0 space-y-0">
-                  <Link href={'/electricity-sector'}>
+                  <Link href={'#electricity-sector'}>
                     <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 md:h-12 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.92371 15.0982H10.5456C10.5456 17.5576 11.2482 19.7714 12.3458 21.3384C12.893 22.122 13.5397 22.7407 14.2331 23.1604C14.9296 23.5802 15.6727 23.8041 16.4531 23.8041C17.2335 23.8041 17.9766 23.5802 18.6731 23.1604C19.7147 22.5324 20.6443 21.4473 21.3066 20.0481C21.9689 18.649 22.3637 16.942 22.3606 15.0982C22.3637 12.6886 21.3937 10.3069 20.1282 8.55329C19.5001 7.67649 18.7975 6.96139 18.1352 6.47946C17.8056 6.23694 17.4854 6.05661 17.1962 5.93846C16.907 5.82031 16.6521 5.76743 16.45 5.76743C16.2728 5.76743 16.0302 5.81719 15.7504 5.93535C15.2623 6.14055 14.6684 6.54784 14.0745 7.11683C13.1822 7.96876 12.2898 9.17517 11.6307 10.565C10.9684 11.9548 10.5424 13.5187 10.5424 15.0982H9.92371H9.30187C9.30498 12.3497 10.4181 9.75657 11.8234 7.82574C12.5292 6.85877 13.3097 6.05658 14.0932 5.47826C14.485 5.1891 14.8767 4.95592 15.2716 4.79113C15.6633 4.62634 16.0582 4.52686 16.4531 4.52686C16.8604 4.52686 17.2677 4.62634 17.6719 4.78802C18.3777 5.07718 19.0773 5.57154 19.7551 6.21826C20.7687 7.18834 21.7201 8.50666 22.4321 10.0333C23.141 11.5599 23.6074 13.2949 23.6074 15.0951C23.6074 17.7877 22.8488 20.2378 21.5833 22.0473C20.949 22.9521 20.1873 23.6983 19.3198 24.2207C18.4523 24.7462 17.4791 25.0446 16.4562 25.0446C15.4333 25.0446 14.4601 24.7462 13.5926 24.2207C12.2929 23.4341 11.2265 22.1531 10.4803 20.5736C9.73405 18.9941 9.30497 17.113 9.30497 15.092H9.92371V15.0982Z" fill="#59687D" />
@@ -190,8 +190,8 @@ export default function HomePage() {
         </section>
 
         {/* Main Content */}
-        <div className="md:space-y-[52px] space-y-8 bg-[#FDFBF6] border border-[#DEDEDE]/70 md:px-[60px] px-6 md:py-[50px] py-6 md:rounded-[40px] rounded-[20px]">
-          <div className="">
+        <div id='electricity-sector' className="md:space-y-[52px] space-y-8 bg-[#FDFBF6] border border-[#DEDEDE]/70 md:px-[60px] px-6 md:py-[50px] py-6 md:rounded-[40px] rounded-[20px]">
+          <div>
             <h2 className="md:text-3xl text-2xl font-bold text-[#276E4E]">משק החשמל בישראל</h2>
             <div className="w-[46px] h-1 bg-[#276E4E] md:my-5 my-3"></div>
             <div className="flex flex-col gap-2 max-w-[1043px] w-full md:text-xl text-base">
