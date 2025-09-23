@@ -62,14 +62,14 @@ export default function Header() {
       }}
     >
       <div className="container mx-auto px-6 py-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           {/* Logo */}
           <Link href={'/'} className="flex items-center flex-shrink-0">
             <Logo />
           </Link>
 
           <div className="flex flex-col items-end gap-5 space-y-0">
-            <div className="flex items-center gap-8">
+            <div className="flex justify-between items-center gap-8">
               {/* Desktop Navigation - Always visible */}
               <nav className="hidden lg:flex items-center gap-8">
                 {navItems.map((item) => (
@@ -85,15 +85,15 @@ export default function Header() {
               </nav>
 
               {/* Search */}
-              <div className="flex items-center">
+              <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="flex items-center gap-2 rounded-full px-4 pl-3 py-2 border border-white max-:w-[200px] w-full transition-all duration-300 hover:border-gray-300" style={{ backgroundColor: '#2A2E33' }}>
+                  <div className="flex items-center gap-2 rounded-full px-4 pl-3 py-2 border border-white md:w-[200px] w-[175px] transition-all duration-300 hover:border-gray-300" style={{ backgroundColor: '#2A2E33' }}>
                     <input
                       type="text"
                       placeholder="חיפוש"
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
-                      className="bg-transparent border-none text-white placeholder-white text-sm focus:outline-none flex-1 transition-colors duration-200"
+                      className="bg-transparent border-none text-white placeholder-white text-sm focus:outline-none transition-colors duration-200 w-full"
                     />
                     <div className="w-[18px] flex items-center justify-center transition-transform duration-200 hover:scale-110">
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +107,7 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="lg:hidden ml-4 transition-all duration-200 hover:bg-slate-700"
+                  className="lg:hidden transition-all duration-200 hover:bg-slate-700 border border-white"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                   {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -132,7 +132,7 @@ export default function Header() {
                   <Link
                     href={`/${item.id}`}
                     key={item.id}
-                    className={`px-5 py-[6px] rounded-full text-base font-bold hover:text-gray-200 hover:bg-transparent cursor-pointer relative transition-all duration-300 transform hover:scale-105 ${active ? 'text-[#fff]' : 'text-white'
+                    className={`px-5 py-[6px] rounded-full text-base font-bold hover:text-gray-200 hover:bg-transparent cursor-pointer relative transition-all duration-300 transform ${active ? 'text-[#fff]' : 'text-white'
                       }`}
                     style={{
                       background: active ? "#1E8025" : "transparent",
@@ -162,7 +162,7 @@ export default function Header() {
 
         {/* Mobile Navigation with smooth animation */}
         <div
-          className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen
+          className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden mt-3 ${isMenuOpen
             ? 'max-h-96 opacity-100 border-t border-slate-600'
             : 'max-h-0 opacity-0'
             }`}
@@ -185,17 +185,19 @@ export default function Header() {
             {isScrolled && (
               <>
                 <div className="border-t border-slate-600 my-2 transition-opacity duration-300"></div>
-                {otherNavItems.map((item) => (
-                  <Link
-                    href={`/${item.id}`}
-                    key={item.id}
-                    className={`w-full block px-4 py-2 text-base font-bold cursor-pointer transition-colors duration-200 hover:bg-slate-600 rounded ${isActive(item.id) ? 'text-[#fff] bg-[#1E8025]' : 'text-white'
-                      }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {otherNavItems.map((item) => (
+                    <Link
+                      href={`/${item.id}`}
+                      key={item.id}
+                      className={`w-max border border-gray-400 rounded-full block px-4 py-2 text-base font-bold cursor-pointer transition-colors duration-200 hover:bg-slate-600 ${isActive(item.id) ? 'text-[#fff] bg-[#1E8025]' : 'text-white'
+                        }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </>
             )}
           </div>

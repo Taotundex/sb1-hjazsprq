@@ -12,7 +12,7 @@ export default function Logo() {
         alt="NZO Logo"
         width={163}
         height={65}
-        className="h-[65px] w-[163px]"
+        className="md:h-[65px] md:w-[163px] h-auto w-[70px]"
         priority
       />
     </div>

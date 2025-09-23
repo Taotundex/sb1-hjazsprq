@@ -73,8 +73,8 @@ export default function HomePage() {
 
   return (
     <div className="">
-      <NewsletterPopup />
       <Image src={topleft} width={600} height={600} className='md:w-[800px] md:h-[500px] w-[300px] h-[200px] absolute md:top-0 left-0 z-10' alt='image' />
+      <NewsletterPopup />
       <div className="container mx-auto px-5 py-[52px] space-y-[52px] relative w-full overflow-hidden" >
         {/* Hero Section */}
         <section className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] overflow-hidden min-h-[500px]">
