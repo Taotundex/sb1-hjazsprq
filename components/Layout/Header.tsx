@@ -17,7 +17,7 @@ const otherNavItems = [
   { id: 'climate', label: 'אקלים' },
   { id: 'emissions', label: 'פליטות CO2' },
   { id: 'renewable-energy', label: 'אנרגיות מתחדשות' },
-  { id: 'electricity-sector', label: 'משק החשמל' },
+  { id: '#electricity-sector', label: 'משק החשמל' },
 ];
 
 export default function Header() {
@@ -34,7 +34,7 @@ export default function Header() {
       if (!ticking) {
         requestAnimationFrame(() => {
           const scrollTop = window.scrollY;
-          setIsScrolled(scrollTop > 50);
+          setIsScrolled(scrollTop > 500);
           ticking = false;
         });
         ticking = true;
