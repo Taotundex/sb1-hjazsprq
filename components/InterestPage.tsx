@@ -7,7 +7,9 @@ const InterestPage = () => {
     return (
         <div>
             <div className='relative'>
-                <Image src={bottomright} width={250} height={250} className='md:w-[250px] md:h-[250px] w-[150px] h-[150px] absolute bottom-0 right-0' alt='image' />
+                <div className="md:w-[250px] md:h-[250px] w-[150px] h-[150px] absolute bottom-0 flex items-end right-0">
+                    <Image src={bottomright} width={250} height={250} className='object-cover' alt='image' />
+                </div>
                 <div className="container px-5 mx-auto">
                     <div className="flex flex-col md:px-[60px] px-0 md:pb-14 pb-10">
                         <div className="flex justify-between items-center px-2">
