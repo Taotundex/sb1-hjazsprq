@@ -5,6 +5,8 @@ import CommunityDisplay from '@/components/CommunityDisplay';
 import { useState } from 'react';
 import ProductionFacility from '@/components/ProductionFacility';
 import RenewableProduction from '@/components/Charts/RenewableProduction';
+import RenewableProduction2 from '@/components/Charts/RenewableProduction2';
+import ConnectionRequests from '@/components/ConnectionRequests';
 
 const page = () => {
     const [activeTab, setActiveTab] = useState<'production' | 'municipal' | 'facilities' | 'requests'>('production');
@@ -138,28 +140,27 @@ const page = () => {
                 </div>
 
                 {activeTab === 'production' && (
-                    <div className="min-h-screen bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] md:px-[60px] px-5 md:py-[50px] py-5">
+                    <div className="">
                         <RenewableProduction />
-                       
+                        <RenewableProduction2 />
                     </div>
                 )}
 
                 {activeTab === 'municipal' && (
-                    <div className="min-h-screen bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] md:px-[60px] px-5 md:py-[50px] py-5">
+                    <div className="">
                         <CommunityDisplay />
                     </div>
                 )}
 
                 {activeTab === 'facilities' && (
-                    <div className="min-h-screen bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] md:px-[60px] px-5 md:py-[50px] py-5">
+                    <div className="">
                         <ProductionFacility />
                     </div>
                 )}
 
                 {activeTab === 'requests' && (
-                    <div className="min-h-screen bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] md:px-[60px] px-5 md:py-[50px] py-5">
-                        {/* <ConnectionRequests /> */}
-                        working
+                    <div className="">
+                        <ConnectionRequests />
                     </div>
                 )}
 

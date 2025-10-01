@@ -23,7 +23,7 @@ const CommunityDisplay = () => {
                         <input
                             type="text"
                             placeholder="תל אביב"
-                            className="bg-transparent border-none text-white placeholder-white text-sm focus:outline-none transition-colors duration-200 w-full"
+                            className="bg-transparent border-none text-sm focus:outline-none transition-colors duration-200 w-full"
                         />
                         <div className="w-[18px] flex items-center justify-center transition-transform duration-200 hover:scale-110">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

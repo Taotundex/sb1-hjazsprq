@@ -14,6 +14,7 @@ import {
     Bar,
     Legend,
 } from "recharts";
+import { ChevronDown } from "lucide-react";
 
 type DataPoint = {
     month: string;
@@ -65,9 +66,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         (payloadPoint.windMW || 0) + (payloadPoint.solarMW || 0) + (payloadPoint.otherMW || 0);
 
     return (
-        <div className="rounded-lg shadow-xl border border-gray-200 bg-white p-4 min-w-[200px] text-sm">
+        <div className="rounded-lg shadow-xl border border-[#DEDEDE] bg-white p-4 min-w-[140px] text-sm">
             <div className="text-xs text-gray-500 mb-2">{label}</div>
-            <div className="text-lg font-semibold mb-3">{totalMW ? `${totalMW.toLocaleString()} MW` : `סה״כ ${payloadPoint.total}`}</div>
+            <div className="md:text-base text-sm font-medium mb-3 border-b border-[#707585]">{totalMW ? `${totalMW.toLocaleString()} MW` : `סה״כ ${payloadPoint.total}`}</div>
 
             {series.map((s) => {
                 const val = payloadPoint[s.key];
@@ -78,7 +79,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                         <div className="flex-1">
                             <div className="text-xs text-gray-600">{s.label}</div>
                             <div className="text-sm font-medium">
-                                {val?.toLocaleString()} {payloadPoint[mwKey] ? `| ${payloadPoint[mwKey].toLocaleString()} MW` : ""}
+                                {payloadPoint[mwKey] ? `${payloadPoint[mwKey].toLocaleString()} MW` : ""}
                             </div>
                         </div>
                     </div>
@@ -120,17 +121,38 @@ export default function RenewableProduction() {
 
     // since Recharts' legend is not used, we construct layout: chart left, legend right
     return (
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-            <div className="flex items-start justify-between mb-3">
-                <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                    תחמ״ל ייצור אנרגיות מתחדשות
-                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g opacity="0.5">
-                            <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
-                            <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
-                        </g>
-                    </svg>
-                </h2>
+        <div className="bg-white border border-[#E9C863] md:rounded-[40px] rounded-[20px] p-6">
+            <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-2 mb-3">
+                    <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+                        תחמ״ל ייצור אנרגיות מתחדשות
+                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g opacity="0.5">
+                                <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
+                                <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
+                            </g>
+                        </svg>
+                    </h2>
+                    <p className="mr-14">פרק זמן:</p>
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-slate-600">מיון לפי:</span>
+                        <div className="relative w-[202px]">
+                            <select
+                                className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
+                            >
+                                <option>יומי</option>
+                                <option>שבועי</option>
+                                <option>חודשי</option>
+                            </select>
+
+                            {/* Custom dropdown arrow */}
+                            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-black text-xs">
+                                <ChevronDown size={14} />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="flex items-start md:gap-4 gap-2">
                     <Image src={api} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
                     <Image src={download} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
@@ -138,6 +160,10 @@ export default function RenewableProduction() {
             </div>
 
             <div className="flex gap-4">
+                {/* legend at the right side */}
+                <div className="w-40 flex-shrink-0">
+                    <CustomRightLegend />
+                </div>
                 {/* chart area */}
                 <div className="flex-1 md:h-[420px] h-[320px]">
                     <ResponsiveContainer width="100%" height="100%">
@@ -174,15 +200,7 @@ export default function RenewableProduction() {
                         </ComposedChart>
                     </ResponsiveContainer>
                 </div>
-
-                {/* legend at the right side */}
-                <div className="w-40 flex-shrink-0">
-                    <CustomRightLegend />
-                </div>
             </div>
-
-            {/* small caption showing the small totals above bars (optional) */}
-            <div className="mt-4 text-xs text-gray-500">הערה: הנתונים מבוססים על הערכה חזותית מהתמונה; ניתן לעדכן את המספרים לפי מקור אמיתי</div>
         </div>
     );
 }

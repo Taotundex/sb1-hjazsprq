@@ -165,7 +165,7 @@ const InstalledCapacityTwo: React.FC = () => {
     );
 
     return (
-        <div className="w-full md:h-[500px] h-[300px]">
+        <div className="bg-white border border-[#E9C863] md:rounded-[40px] rounded-[20px] p-6">
             <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
                     הספק מתקנים שחוברו על ציר הזמן, לפי גודל מתקן
@@ -181,72 +181,75 @@ const InstalledCapacityTwo: React.FC = () => {
                     <Image src={download} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
                 </div>
             </div>
-            <ResponsiveContainer width="100%" height="80%">
-                <BarChart
-                    data={data}
-                    margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
-                    barGap={0}
-                    barCategoryGap={0}
-                >
-                    <XAxis
-                        dataKey="year"
-                        tick={{ fontSize: 12 }}
-                        axisLine={{ stroke: '#ddd' }}
-                        tickLine={{ stroke: '#ddd' }}
-                    />
-                    <YAxis
-                        tick={{ fontSize: 12 }}
-                        axisLine={{ stroke: '#ddd' }}
-                        tickLine={{ stroke: '#ddd' }}
-                        tickFormatter={(value) => value.toLocaleString()}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend content={renderLegend} />
 
-                    {/* Bars with dynamic opacity based on hover and hidden state */}
-                    {!hiddenKeys.has('small') && (
-                        <Bar
-                            dataKey="small"
-                            stackId="a"
-                            fill={COLORS.small}
-                            barSize={28}
-                            opacity={getBarOpacity('small')}
-                            name={LABELS.small}
+            <div className="w-full md:h-[500px] h-[300px]">
+                <ResponsiveContainer width="100%" height="80%">
+                    <BarChart
+                        data={data}
+                        margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
+                        barGap={0}
+                        barCategoryGap={0}
+                    >
+                        <XAxis
+                            dataKey="year"
+                            tick={{ fontSize: 12 }}
+                            axisLine={{ stroke: '#ddd' }}
+                            tickLine={{ stroke: '#ddd' }}
                         />
-                    )}
-                    {!hiddenKeys.has('medium') && (
-                        <Bar
-                            dataKey="medium"
-                            stackId="a"
-                            fill={COLORS.medium}
-                            barSize={28}
-                            opacity={getBarOpacity('medium')}
-                            name={LABELS.medium}
+                        <YAxis
+                            tick={{ fontSize: 12 }}
+                            axisLine={{ stroke: '#ddd' }}
+                            tickLine={{ stroke: '#ddd' }}
+                            tickFormatter={(value) => value.toLocaleString()}
                         />
-                    )}
-                    {!hiddenKeys.has('large') && (
-                        <Bar
-                            dataKey="large"
-                            stackId="a"
-                            fill={COLORS.large}
-                            barSize={28}
-                            opacity={getBarOpacity('large')}
-                            name={LABELS.large}
-                        />
-                    )}
-                    {!hiddenKeys.has('veryLarge') && (
-                        <Bar
-                            dataKey="veryLarge"
-                            stackId="a"
-                            fill={COLORS.veryLarge}
-                            barSize={28}
-                            opacity={getBarOpacity('veryLarge')}
-                            name={LABELS.veryLarge}
-                            radius={[4, 4, 0, 0]}
-                        />
-                    )}
-                </BarChart>
-            </ResponsiveContainer>
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend content={renderLegend} />
+
+                        {/* Bars with dynamic opacity based on hover and hidden state */}
+                        {!hiddenKeys.has('small') && (
+                            <Bar
+                                dataKey="small"
+                                stackId="a"
+                                fill={COLORS.small}
+                                barSize={28}
+                                opacity={getBarOpacity('small')}
+                                name={LABELS.small}
+                            />
+                        )}
+                        {!hiddenKeys.has('medium') && (
+                            <Bar
+                                dataKey="medium"
+                                stackId="a"
+                                fill={COLORS.medium}
+                                barSize={28}
+                                opacity={getBarOpacity('medium')}
+                                name={LABELS.medium}
+                            />
+                        )}
+                        {!hiddenKeys.has('large') && (
+                            <Bar
+                                dataKey="large"
+                                stackId="a"
+                                fill={COLORS.large}
+                                barSize={28}
+                                opacity={getBarOpacity('large')}
+                                name={LABELS.large}
+                            />
+                        )}
+                        {!hiddenKeys.has('veryLarge') && (
+                            <Bar
+                                dataKey="veryLarge"
+                                stackId="a"
+                                fill={COLORS.veryLarge}
+                                barSize={28}
+                                opacity={getBarOpacity('veryLarge')}
+                                name={LABELS.veryLarge}
+                                radius={[4, 4, 0, 0]}
+                            />
+                        )}
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 };

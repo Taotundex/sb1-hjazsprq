@@ -34,7 +34,7 @@ export default function Header() {
       if (!ticking) {
         requestAnimationFrame(() => {
           const scrollTop = window.scrollY;
-          setIsScrolled(scrollTop > 500);
+          setIsScrolled(scrollTop > 300);
           ticking = false;
         });
         ticking = true;
