@@ -100,7 +100,7 @@ export function ElectricityScatterGraph() {
         ייצור חשמל אל מול המחיר השוליי
       </h2> */}
       <ResponsiveContainer width="100%" height="95%">
-        <ScatterChart margin={{ top: 10, right: -50, left: -50, bottom: 0 }}>
+        <ScatterChart margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis dataKey="price" name="מחיר שוליי" tick={{ fontSize: 12 }} />
           <YAxis dataKey="demand" name="MW" tick={{ fontSize: 12 }} />

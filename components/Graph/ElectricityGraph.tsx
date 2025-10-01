@@ -153,7 +153,7 @@ const ElectricityLineGraph = () => {
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                     data={lineData}
-                    margin={{ top: 10, right: -50, left: -50, bottom: 0 }}
+                    margin={{ top: 10, right: 0, left: -20, bottom: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis

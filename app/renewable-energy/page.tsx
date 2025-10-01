@@ -140,7 +140,7 @@ const page = () => {
                 </div>
 
                 {activeTab === 'production' && (
-                    <div className="">
+                    <div className="flex flex-col gap-10 bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] md:px-[60px] px-5 md:py-[50px] py-5">
                         <RenewableProduction />
                         <RenewableProduction2 />
                     </div>

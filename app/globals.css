@@ -146,8 +146,7 @@
   border-radius: 4px;
 }
 
-/* text.recharts-cartesian-axis-tick-value tspan {
-  margin-left: -150px !important;
-  position: absolute;
-  left: -50px !important;
-} */
+.recharts-yAxis .recharts-cartesian-axis-tick text{
+    text-anchor: start;
+    /* transform: translateX(5px); */
+}

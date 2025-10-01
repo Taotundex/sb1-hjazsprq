@@ -141,7 +141,7 @@ export default function SMPGraph() {
             <ResponsiveContainer width="100%" height="95%">
                 <LineChart
                     data={data}
-                    margin={{ top: 10, right: 10, left: -50, bottom: 0 }}
+                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis

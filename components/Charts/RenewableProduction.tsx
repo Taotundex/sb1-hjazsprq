@@ -13,6 +13,7 @@ import {
     Tooltip,
     Bar,
     Legend,
+    LabelList,
 } from "recharts";
 import { ChevronDown } from "lucide-react";
 
@@ -196,7 +197,13 @@ export default function RenewableProduction() {
                                 radius={[4, 4, 0, 0]}
                                 barSize={28}
                                 opacity={opacityForKey("wind")}
-                            />
+                            >
+                                <LabelList
+                                    dataKey="total"
+                                    position="top"
+                                    style={{ fill: "#707585", fontWeight: 500 }}
+                                />
+                            </Bar>
                         </ComposedChart>
                     </ResponsiveContainer>
                 </div>

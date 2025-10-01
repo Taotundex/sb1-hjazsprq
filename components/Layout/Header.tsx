@@ -68,10 +68,10 @@ export default function Header() {
             <Logo />
           </Link>
 
-          <div className="flex flex-col items-end gap-5 space-y-0">
+          <div className="flex flex-col items-end space-y-0">
             <div className="flex justify-between items-center gap-8">
               {/* Desktop Navigation - Always visible */}
-              <nav className="hidden lg:flex items-center gap-8">
+              <nav className="hidden md:flex items-center gap-8">
                 {navItems.map((item) => (
                   <Link
                     href={`/${item.id}`}
@@ -107,7 +107,7 @@ export default function Header() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="lg:hidden transition-all duration-200 hover:bg-slate-700 border border-white"
+                  className="md:hidden transition-all duration-200 hover:bg-slate-700 border border-white"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                   {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -117,7 +117,7 @@ export default function Header() {
 
             {/* Conditionally render otherNavItems - Smooth animation on scroll */}
             <nav
-              className={`hidden lg:flex flex-row-reverse gap-4 items-center justify-start transition-all duration-500 ease-in-out ${isScrolled
+              className={`hidden md:flex flex-row-reverse gap-4 items-center justify-start transition-all duration-500 ease-in-out ${isScrolled
                 ? 'opacity-100 max-h-20 translate-y-0'
                 : 'opacity-0 max-h-0 -translate-y-2 pointer-events-none'
                 }`}
@@ -132,7 +132,7 @@ export default function Header() {
                   <Link
                     href={`/${item.id}`}
                     key={item.id}
-                    className={`px-5 py-[6px] rounded-full text-base font-bold hover:text-gray-200 hover:bg-transparent cursor-pointer relative transition-all duration-300 transform ${active ? 'text-[#fff]' : 'text-white'
+                    className={`px-5 py-[6px] rounded-full text-base font-bold hover:text-gray-200 hover:bg-transparent cursor-pointer relative transition-all duration-300 transform mt-3 ${active ? 'text-[#fff]' : 'text-white'
                       }`}
                     style={{
                       background: active ? "#1E8025" : "transparent",
@@ -162,7 +162,7 @@ export default function Header() {
 
         {/* Mobile Navigation with smooth animation */}
         <div
-          className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden mt-3 ${isMenuOpen
+          className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden mt-3 ${isMenuOpen
             ? 'max-h-96 opacity-100 border-t border-slate-600'
             : 'max-h-0 opacity-0'
             }`}
