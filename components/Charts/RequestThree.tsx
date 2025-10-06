@@ -82,7 +82,7 @@ const CustomLegend = ({
     activeSeries: string | null;
     setActiveSeries: (s: string | null) => void;
 }) => (
-    <div className="flex justify-start gap-6 mt-6">
+    <div className="flex flex-row-reverse justify-end gap-6 mt-6">
         {series.map((s) => (
             <div
                 key={s.key}
@@ -269,14 +269,14 @@ export default function RequestThree() {
                     className={`rounded-full md:px-5 px-2 md:py-[6px] py-[2px] font-black md:text-base text-xs ${tab === "chart" ? "bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white" : "bbg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white"
                         }`}
                 >
-                    גרף
+                    הספק מתקנים
                 </button>
                 <button
                     onClick={() => setTab("text")}
                     className={`rounded-full md:px-5 px-2 md:py-[6px] py-[2px] font-black md:text-base text-xs ${tab === "text" ? "bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white" : "bbg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white"
                         }`}
                 >
-                    טקסט
+                    מספר מתקנים
                 </button>
             </div>
         </div>

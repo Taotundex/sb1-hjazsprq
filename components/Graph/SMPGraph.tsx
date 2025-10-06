@@ -9,6 +9,7 @@ import {
     Tooltip,
     ResponsiveContainer,
     Legend,
+    Text
 } from "recharts";
 import { useState } from "react";
 
@@ -56,40 +57,25 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-// Custom Legend component
-const RenderLegend = (props: any) => {
-    const { payload } = props;
-    const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
-
+// Custom YAxis Label component
+const CustomYAxisLabel = (props: any) => {
+    const { viewBox } = props;
     return (
-        <div className="flex flex-row-reverse justify-end mt-4">
-            {payload.map((entry: any, index: number) => {
-                const isHovered = hoveredSeries === entry.dataKey;
-                const isOtherHovered = hoveredSeries && hoveredSeries !== entry.dataKey;
-
-                return (
-                    <div
-                        key={`legend-${index}`}
-                        onMouseEnter={() => setHoveredSeries(entry.dataKey)}
-                        onMouseLeave={() => setHoveredSeries(null)}
-                        className={`flex items-center cursor-pointer md:px-3 px-2 py-1 rounded-lg transition-all duration-200 ${isOtherHovered ? 'opacity-30' : ''
-                            }`}
-                    >
-                        <div
-                            className="w-2 h-2 rounded-full ml-2"
-                            style={{
-                                backgroundColor: entry.color,
-                                transform: isHovered ? 'scale(1.3)' : 'scale(1)',
-                                transition: 'transform 0.2s'
-                            }}
-                        ></div>
-                        <span className="md:text-sm text-[10px] font-medium">{entry.value}</span>
-                    </div>
-                );
-            })}
-        </div>
+        <text
+            x={viewBox.x}
+            y={viewBox.y}
+            dy={-20}
+            dx={20}
+            textAnchor="middle"
+            className="text-sm font-normal text-[#707585]"
+            transform={`rotate(0 ${viewBox.x} ${viewBox.y})`}
+        >
+            <tspan x={viewBox.x} dy="-2.4rem">מחיר שולי</tspan>
+            <tspan x={viewBox.x} dy="1.2em" dx="1.3rem">[MWh/₪]</tspan>
+        </text>
     );
 };
+
 
 export default function SMPGraph() {
     const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
@@ -141,7 +127,7 @@ export default function SMPGraph() {
             <ResponsiveContainer width="100%" height="95%">
                 <LineChart
                     data={data}
-                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                    margin={{ top: 50, right: 10, left: 30, bottom: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
@@ -154,6 +140,7 @@ export default function SMPGraph() {
                         tick={{ fontSize: 12 }}
                         axisLine={true}
                         tickMargin={10}
+                        label={<CustomYAxisLabel />}
                     />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend content={CustomLegend} />

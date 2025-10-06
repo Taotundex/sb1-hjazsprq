@@ -133,6 +133,24 @@ const ElectricityLineGraph = () => {
         );
     };
 
+    const CustomYAxisLabel = (props: any) => {
+        const { viewBox } = props;
+        return (
+            <text
+                x={viewBox.x}
+                y={viewBox.y}
+                dy={-20}
+                dx={20}
+                textAnchor="middle"
+                className="text-sm font-normal text-[#707585]"
+                transform={`rotate(0 ${viewBox.x} ${viewBox.y})`}
+            >
+                <tspan x={viewBox.x} dy="-2.4rem">מחיר שולי</tspan>
+                <tspan x={viewBox.x} dy="1.2em" dx="1.3rem">[MWh/₪]</tspan>
+            </text>
+        );
+    };
+
     const getLineOpacity = (dataKey: string) => {
         // If series is manually hidden by click
         if (activeSeries.includes(dataKey)) {
@@ -153,7 +171,7 @@ const ElectricityLineGraph = () => {
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                     data={lineData}
-                    margin={{ top: 10, right: 0, left: -20, bottom: 0 }}
+                    margin={{ top: 50, right: 10, left: 30, bottom: 0 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
@@ -168,6 +186,7 @@ const ElectricityLineGraph = () => {
                         tick={{ fontSize: 12 }}
                         axisLine={true}
                         tickMargin={10}
+                        label={<CustomYAxisLabel />}
                     />
                     <YAxis
                         yAxisId="right"

@@ -15,24 +15,24 @@ interface DataItem {
 }
 
 const data: DataItem[] = [
+    { name: "יו\"ש", value: 3.15 },
     { name: "הצפון", value: 27.17 },
     { name: "המרכז", value: 23.98 },
     { name: "הדרום", value: 20.82 },
     { name: "חיפה", value: 11.54 },
     { name: "תל אביב", value: 7.16 },
     { name: "ירושלים", value: 6.35 },
-    { name: "יו\"ש", value: 3.15 },
 ];
 
 // Custom colors (similar to your image)
 const COLORS = [
-    "#1C1C1C", // North
-    "#A48373", // Center
-    "#B5D64B", // South
-    "#6FB96F", // Haifa
-    "#28704D", // Tel Aviv
-    "#3D9BFF", // Jerusalem
-    "#D8DEE9", // יו"ש
+    "#8BBFE1",
+    "#1C1A17",
+    "#957669",
+    "#98C74E",
+    "#60A261",
+    "#276E4E",
+    "#358BFF",
 ];
 
 // Custom label renderer
@@ -107,6 +107,8 @@ const ProductionDistrictPieChart: React.FC = () => {
                         dataKey="value"
                         labelLine={false}
                         label={renderCustomizedLabel}
+                        startAngle={90}  // Start at top (12 o'clock position)
+                        endAngle={-270} // Go clockwise
                     >
                         {data.map((_, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

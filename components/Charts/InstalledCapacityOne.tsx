@@ -17,30 +17,30 @@ import { ChevronDown } from "lucide-react";
 
 // Data extracted from the image (values in MW)
 const data = [
-    { year: 2009, רוח: 200, פוטו: 200, תרמו: 500, אחר: 600 },
-    { year: 2010, רוח: 300, פוטו: 300, תרמו: 600, אחר: 700 },
-    { year: 2011, רוח: 400, פוטו: 400, תרמו: 700, אחר: 800 },
-    { year: 2012, רוח: 600, פוטו: 500, תרמו: 700, אחר: 800 },
-    { year: 2013, רוח: 769, פוטו: 537, תרמו: 637, אחר: 1037 },
-    { year: 2014, רוח: 700, פוטו: 600, תרמו: 800, אחר: 900 },
-    { year: 2015, רוח: 800, פוטו: 700, תרמו: 900, אחר: 900 },
-    { year: 2016, רוח: 900, פוטו: 800, תרמו: 900, אחר: 1100 },
-    { year: 2017, רוח: 1000, פוטו: 900, תרמו: 1000, אחר: 1200 },
-    { year: 2018, רוח: 1400, פוטו: 1100, תרמו: 1200, אחר: 1400 },
-    { year: 2019, רוח: 1600, פוטו: 1200, תרמו: 1400, אחר: 1500 },
-    { year: 2020, רוח: 1700, פוטו: 1300, תרמו: 1500, אחר: 1700 },
-    { year: 2021, רוח: 1800, פוטו: 1400, תרמו: 1600, אחר: 1900 },
-    { year: 2022, רוח: 1900, פוטו: 1500, תרמו: 1700, אחר: 2100 },
-    { year: 2023, רוח: 2100, פוטו: 1600, תרמו: 1800, אחר: 2200 },
-    { year: 2024, רוח: 2200, פוטו: 1700, תרמו: 1900, אחר: 2400 },
+    { year: 2009, אחר: 600, תרמו: 500, פוטו: 200, רוח: 200 },
+    { year: 2010, אחר: 700, תרמו: 600, פוטו: 300, רוח: 300 },
+    { year: 2011, אחר: 800, תרמו: 700, פוטו: 400, רוח: 400 },
+    { year: 2012, אחר: 800, תרמו: 700, פוטו: 500, רוח: 600 },
+    { year: 2013, אחר: 1037, תרמו: 637, פוטו: 537, רוח: 769 },
+    { year: 2014, אחר: 900, תרמו: 800, פוטו: 600, רוח: 700 },
+    { year: 2015, אחר: 900, תרמו: 900, פוטו: 700, רוח: 800 },
+    { year: 2016, אחר: 1100, תרמו: 900, פוטו: 800, רוח: 900 },
+    { year: 2017, אחר: 1200, תרמו: 1000, פוטו: 900, רוח: 1000 },
+    { year: 2018, אחר: 1400, תרמו: 1200, פוטו: 1100, רוח: 1400 },
+    { year: 2019, אחר: 1500, תרמו: 1400, פוטו: 1200, רוח: 1600 },
+    { year: 2020, אחר: 1700, תרמו: 1500, פוטו: 1300, רוח: 1700 },
+    { year: 2021, אחר: 1900, תרמו: 1600, פוטו: 1400, רוח: 1800 },
+    { year: 2022, אחר: 2100, תרמו: 1700, פוטו: 1500, רוח: 1900 },
+    { year: 2023, אחר: 2200, תרמו: 1800, פוטו: 1600, רוח: 2100 },
+    { year: 2024, אחר: 2400, תרמו: 1900, פוטו: 1700, רוח: 2200 },
 ];
 
-// Energy categories (with Hebrew labels + colors)
+// Energy categories (with Hebrew labels + colors) - REVERSED ORDER
 const categories = [
-    { key: "רוח", label: "רוח", color: "#98C74E" },
-    { key: "פוטו", label: "פוטו וולטאי", color: "#C4C95C" },
-    { key: "תרמו", label: "תרמו סולארי", color: "#60A261" },
     { key: "אחר", label: "אחר", color: "#2A6D94" },
+    { key: "תרמו", label: "תרמו סולארי", color: "#60A261" },
+    { key: "פוטו", label: "פוטו וולטאי", color: "#C4C95C" },
+    { key: "רוח", label: "רוח", color: "#98C74E" },
 ];
 
 // Custom tooltip
@@ -74,7 +74,7 @@ const CustomLegend = ({
     activeSeries: string | null;
     setActiveSeries: (s: string | null) => void;
 }) => (
-    <div className="flex justify-start gap-6 mt-4">
+    <div className="flex flex-row-reverse justify-end gap-6 mt-4">
         {categories.map((c) => (
             <div
                 key={c.key}
@@ -121,13 +121,13 @@ export default function InstalledCapacityOne() {
 
                         <div className="relative w-[113px]">
                             <label htmlFor="" className='flex flex-col gap-1'>
-                                <span className='text-sm text-slate-600'>מיקום:</span>
+                                <span className='text-sm text-slate-600'>שנה</span>
                                 <select
                                     className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
                                 >
-                                    <option>2025</option>
-                                    <option>2024</option>
-                                    <option>2023</option>
+                                    <option>הכל</option>
+                                    <option>הכל</option>
+                                    <option>הכל</option>
                                 </select>
                                 {/* Custom dropdown arrow */}
                                 <span className="pointer-events-none absolute left-3 top-[40px] -translate-y-1/2 text-black text-xs">
@@ -137,13 +137,13 @@ export default function InstalledCapacityOne() {
                         </div>
                         <div className="relative w-[179px]">
                             <label htmlFor="" className='flex flex-col gap-1'>
-                                <span className='text-sm text-slate-600'>מיקום:</span>
+                                <span className='text-sm text-slate-600'>הספק/מספר מתקנים</span>
                                 <select
                                     className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
                                 >
-                                    <option>יומי</option>
-                                    <option>שבועי</option>
-                                    <option>חודשי</option>
+                                    <option value="">הספק מותקן</option>
+                                    <option value="">הספק מותקן</option>
+                                    <option value="">הספק מותקן</option>
                                 </select>
                             </label>
                             <span className="pointer-events-none absolute left-3 top-[40px] -translate-y-1/2 text-black text-xs">

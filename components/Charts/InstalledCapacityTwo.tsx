@@ -91,7 +91,7 @@ const CustomLegend = ({ payload, hoveredKey, onMouseEnter, onMouseLeave, onClick
     if (!payload) return null;
 
     return (
-        <div className="flex flex-wrap gap-2 mt-4 px-4">
+        <div className="flex flex-row-reverse justify-end flex-wrap gap-2 mt-4 px-4">
             {payload.map((entry: any, index: number) => {
                 const isActive = hoveredKey === null || hoveredKey === entry.dataKey;
                 const isHovered = hoveredKey === entry.dataKey;

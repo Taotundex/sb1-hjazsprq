@@ -93,17 +93,34 @@ const scatterData1 = Array.from({ length: 100 }).map((_, i) => ({
   type: i % 2 === 0 ? "ביקוש נטו" : "מחיר שוליי כולל אילוצים",
 }));
 
+const CustomYAxisLabel = (props: any) => {
+  const { viewBox } = props;
+  return (
+    <text
+      x={viewBox.x}
+      y={viewBox.y}
+      dy={-20}
+      dx={20}
+      textAnchor="middle"
+      className="text-sm font-normal text-[#707585]"
+      transform={`rotate(0 ${viewBox.x} ${viewBox.y})`}
+    >
+      <tspan x={viewBox.x} dy="em" dx="1.3rem">[MWh]</tspan>
+    </text>
+  );
+};
+
 export function ElectricityScatterGraph() {
   return (
     <div className="w-full md:h-[500px] h-[300px] md:mt-0 -mt-10">
       {/* <h2 className="text-xl font-bold text-gray-800 mb-4 text-right">
         ייצור חשמל אל מול המחיר השוליי
       </h2> */}
-      <ResponsiveContainer width="100%" height="95%">
-        <ScatterChart margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart margin={{ top: 50, right: 10, left: 30, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis dataKey="price" name="מחיר שוליי" tick={{ fontSize: 12 }} />
-          <YAxis dataKey="demand" name="MW" tick={{ fontSize: 12 }} />
+          <YAxis dataKey="demand" name="MW" tick={{ fontSize: 12 }} label={<CustomYAxisLabel />} />
           <Tooltip content={<CustomTooltip />} />
           <Legend content={<CustomLegend />} />
           <Scatter name="ביקוש נטו" data={scatterData1.filter((d) => d.type === "ביקוש נטו")} fill="#166534" />

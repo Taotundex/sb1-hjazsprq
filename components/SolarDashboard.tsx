@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 
 type Props = {
     gaugePercent?: number;
+    nationalAveragePercent?: number;
     topBarPercent?: number;
     bottomBarPercent?: number;
     installedKW?: number;
@@ -13,7 +14,8 @@ type Props = {
 };
 
 export default function SolarDashboard({
-    gaugePercent = 38,
+    gaugePercent = 8,
+    nationalAveragePercent = 38,
     topBarPercent = 42,
     bottomBarPercent = 18,
     installedKW = 123,
@@ -44,9 +46,9 @@ export default function SolarDashboard({
     // arc length of semicircle
     const arcLen = Math.PI * r;
 
-    // compute point on semicircle for the gauge percent
+    // compute point on semicircle for the national average (38%)
     const callout = useMemo(() => {
-        const p = Math.max(0, Math.min(100, gaugePercent));
+        const p = Math.max(0, Math.min(100, nationalAveragePercent));
         const angle = Math.PI * (1 - p / 100);
         const px = cx + Math.cos(angle) * r;
         const py = cy - Math.sin(angle) * r;
@@ -58,7 +60,7 @@ export default function SolarDashboard({
         const midY = clampedPy - 18;
 
         return { px, py: clampedPy, midX, midY, labelX, labelY };
-    }, [gaugePercent, cx, cy, r, strokeW]);
+    }, [nationalAveragePercent, cx, cy, r, strokeW]);
 
     return (
         <div className="" dir="rtl">
@@ -78,29 +80,28 @@ export default function SolarDashboard({
                 </div>
 
                 {/* Gauge section */}
-                <div className="flex justify-center mt-4 md:mt-6 border-b-[3px] md:border-b-[5px] border-black w-full md:w-[60%] mx-auto">
-                    <div className="relative flex justify-center w-full" style={{ maxWidth: svgW }}>
-                        {/* Center percentage */}
-                        <div className="absolute flex flex-col items-center top-1/2 left-1/2 -translate-x-1/2 mt-5 md:mt-10 md:ml-0 -ml-2">
-                            <h1 className="text-[#484C56] text-xl md:text-[48px] lg:text-[58px] leading-[1] font-semibold">
-                                8%
+                <div className="flex justify-center mt-4 md:mt-6 w-full mx-auto">
+                    <div className="relative flex justify-center items-center w-full" style={{ maxWidth: svgW }}>
+                        {/* Center percentage - shows actual gauge percentage (8%) */}
+                        <div className="absolute flex flex-col text-center items-center top-1/2 left-1/2 -translate-x-1/2 -mt-1 md:mt-12">
+                            <h1 className="text-[#484C56] text-base md:text-3xl lg:text-4xl font-semibold">
+                                {gaugePercent}%
                             </h1>
-                            <p className="text-[#484C56] text-xs md:text-base lg:text-lg font-extrabold mt-1">
+                            <p className="text-[#484C56] text-[8px] md:text-base lg:text-lg font-extrabold -mt-2">
                                 מימוש פוטנציאל
                             </p>
                         </div>
 
                         {/* Gauge with labels */}
-                        <div className="flex flex-row-reverse justify-center items-end gap-0 w-full">
-                            <h5 className="block md:-mr-20 lg:-mr-32 xl:-mr-40 -mr-20 text-[#484C56] text-sm md:text-base lg:text-xl font-extrabold">
-                                0%
-                            </h5>
-
+                        <div className="w-full">
                             {/* Responsive SVG container */}
-                            <div className="md:w-full w-[680px] flex justify-center items-center space-x-0">
+                            <div className="md:w-full w-full flex flex-row-reverse justify-center items-end space-x-0 border-b-[3px] md:border-b-[5px] border-black">
+                                <h5 className="block text-[#484C56] text-sm md:text-base lg:text-xl font-extrabold">
+                                    0%
+                                </h5>
                                 <svg
                                     viewBox={`0 0 ${svgW} ${svgH}`}
-                                    className="md:w-[720px] w-auto md:h-auto h-[130px] p-0 space-x-0"
+                                    className="md:w-[720px] w-auto md:h-auto h-auto p-0 space-x-0"
                                     preserveAspectRatio="xMidYMid meet"
                                 >
                                     {/* background semicircular ring */}
@@ -112,7 +113,7 @@ export default function SolarDashboard({
                                         strokeLinecap="butt"
                                     />
 
-                                    {/* green arc (gauge) */}
+                                    {/* green arc (gauge) - shows actual progress (8%) */}
                                     <path
                                         d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
                                         stroke="#4f9b58"
@@ -127,42 +128,35 @@ export default function SolarDashboard({
                                     {/* small inner white semicircle */}
                                     <circle cx={cx} cy={cy} r={r - strokeW / 2 - 4} fill="#ffffff" />
 
-                                    {/* small marker circle */}
-                                    <circle cx={callout.px} cy={callout.py} r={8} fill="#4f9b58" stroke="#ffffff" strokeWidth={2} />
+                                    {/* small marker circle - positioned at national average (38%) */}
+                                    {/* <circle cx={callout.px} cy={callout.py} r={8} fill="#4f9b58" stroke="#ffffff" strokeWidth={2} /> */}
 
-                                    {/* connector polyline */}
+                                    {/* connector polyline - to national average marker */}
                                     <polyline
-                                        points={`${callout.px},${callout.py} ${callout.midX},${callout.midY} ${callout.labelX - 90},${callout.labelY + 38}`}
+                                        points={`${callout.px - 18},${callout.py + 40} ${callout.midX - 20},${callout.midY} ${callout.labelX - 135},${callout.labelY + 38}`}
                                         fill="none"
-                                        stroke="#2b7b48"
-                                        strokeWidth={2}
+                                        stroke="#1E8025"
+                                        strokeWidth={1}
                                         strokeLinecap="round"
                                     />
                                 </svg>
+                                <h5 className="block text-[#484C56] text-sm md:text-base lg:text-xl font-extrabold">
+                                    100%
+                                </h5>
                             </div>
-
-                            <h5 className="block -ml-20 md:-ml-20 lg:-ml-32 xl:-ml-40 text-[#484C56] text-sm md:text-base lg:text-xl font-extrabold">
-                                100%
-                            </h5>
-                        </div>
-
-                        {/* Mobile labels */}
-                        {/* <div className="flex justify-between w-full max-w-[320px] md:hidden mt-2 px-4">
-                            <span className="text-[#484C56] text-sm font-extrabold">0%</span>
-                            <span className="text-[#484C56] text-sm font-extrabold">100%</span>
-                        </div> */}
-
-                        {/* Callout label */}
-                        <div
-                            style={{ left: callout.labelX, top: callout.labelY }}
-                            className="absolute md:text-right text-left block !left-0"
-                        >
-                            <div className="flex items-left gap-2">
-                                <div className="md:font-semibold font-normal text-gray-700 text-xs md:text-base md:ml-28 -ml-0 -mt-10 md:mt-3">
-                                    ממוצע ארצי (38%)
+                            <div
+                                // style={{ left: callout.labelX, top: callout.labelY }}
+                                className="absolute md:top-20 top-5 md:left-24 left-6 md:text-right text-left block"
+                            >
+                                <div className="flex items-left gap-2">
+                                    <div className="md:font-semibold font-normal text-gray-700 text-[8px] md:text-base">
+                                        ממוצע ארצי ({nationalAveragePercent}%)
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Callout label - national average */}
                     </div>
                 </div>
 
@@ -193,7 +187,7 @@ export default function SolarDashboard({
                         <div className="text-gray-700 text-center font-semibold text-base md:text-lg">ממוצע ארצי</div>
                         <div className="h-4 w-[2px] bg-[#2F7A4F] mx-auto my-2"></div>
 
-                        {/* first bar */}
+                        {/* first bar - הספק לקמ"ר */}
                         <div className="mb-4 md:mb-6">
                             <div className="flex justify-center gap-1 items-baseline flex-wrap">
                                 <div className="text-gray-700 font-semibold text-sm md:text-base">
@@ -214,7 +208,7 @@ export default function SolarDashboard({
                             </div>
                         </div>
 
-                        {/* second bar */}
+                        {/* second bar - הספק לתושב */}
                         <div className="mb-2">
                             <div className="flex justify-center gap-1 items-baseline flex-wrap">
                                 <div className="text-gray-700 font-semibold text-sm md:text-base">

@@ -60,10 +60,10 @@ const facilitiesData: DataPoint[] = [
 
 // Series config with colors and labels
 const series = [
-    { key: "small", label: "קטן | 0-200 KW", color: "#C68C53" },
-    { key: "medium", label: "בינוני | 201-630 KW", color: "#7C5C46" },
-    { key: "large", label: "גדול | 631-5000 KW", color: "#4CAF50" },
-    { key: "veryLarge", label: "גדול מאוד | +5001 KW", color: "#3C91E6" },
+    { key: "small", label: "גדול מאוד | +5001 KW", color: "#648AA3" },
+    { key: "medium", label: "גדול | 631-5000 KW", color: "#60A261" },
+    { key: "large", label: "בינוני | 201-630 KW", color: "#957669" },
+    { key: "veryLarge", label: "קטן | 0-200 KW", color: "#CEA073" },
 ];
 
 // Custom Tooltip in the same format
@@ -111,7 +111,7 @@ const CustomLegend = ({
     activeSeries: string | null;
     setActiveSeries: (s: string | null) => void;
 }) => (
-    <div className="flex justify-start gap-6 mt-6">
+    <div className="flex flex-row-reverse justify-end gap-6 mt-6">
         {series.map((s) => (
             <div
                 key={s.key}
@@ -242,7 +242,7 @@ export default function RequestTwo() {
                     className={`rounded-full md:px-5 px-2 md:py-[6px] py-[2px] font-black md:text-base text-xs ${activeTab === "supply" ? "bg-[#59687D] text-white hover:bg-[#59687D] hover:text-white" : "bbg-transparent text-[#59687D] hover:bg-[#59687D] hover:text-white"
                         }`}
                 >
-                    הספק מתגובות
+                    הספק מתקנים
                 </button>
                 <button
                     onClick={() => setActiveTab("facilities")}

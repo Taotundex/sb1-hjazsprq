@@ -185,10 +185,19 @@ export default function ApiSection() {
                       className={`flex items-center gap-1 px-3 py-1 rounded ${copiedEndpoint === endpoint.endpoint ? '' : 'hover:bg-[#1e5a3f] hover:text-white'
                         }`}
                     >
-                      {copiedEndpoint === endpoint.endpoint ? 'Copied!' : 'Copy'}
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
+                      {copiedEndpoint === endpoint.endpoint ? (
+                        <span className="flex items-center ltr">
+                          <span>!</span>
+                          <span>Copied</span>
+                        </span>
+                      ) : (
+                        <>
+                          Copy
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </>
+                      )}
                     </button>
                   </div>
 
