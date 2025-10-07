@@ -98,7 +98,7 @@ export default function HomePage() {
 
                 <div className="flex flex-wrap md:gap-3 gap-2 space-x-0 space-y-0">
                   <Link href={'#electricity-sector'}>
-                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 md:h-10 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
+                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.92371 15.0982H10.5456C10.5456 17.5576 11.2482 19.7714 12.3458 21.3384C12.893 22.122 13.5397 22.7407 14.2331 23.1604C14.9296 23.5802 15.6727 23.8041 16.4531 23.8041C17.2335 23.8041 17.9766 23.5802 18.6731 23.1604C19.7147 22.5324 20.6443 21.4473 21.3066 20.0481C21.9689 18.649 22.3637 16.942 22.3606 15.0982C22.3637 12.6886 21.3937 10.3069 20.1282 8.55329C19.5001 7.67649 18.7975 6.96139 18.1352 6.47946C17.8056 6.23694 17.4854 6.05661 17.1962 5.93846C16.907 5.82031 16.6521 5.76743 16.45 5.76743C16.2728 5.76743 16.0302 5.81719 15.7504 5.93535C15.2623 6.14055 14.6684 6.54784 14.0745 7.11683C13.1822 7.96876 12.2898 9.17517 11.6307 10.565C10.9684 11.9548 10.5424 13.5187 10.5424 15.0982H9.92371H9.30187C9.30498 12.3497 10.4181 9.75657 11.8234 7.82574C12.5292 6.85877 13.3097 6.05658 14.0932 5.47826C14.485 5.1891 14.8767 4.95592 15.2716 4.79113C15.6633 4.62634 16.0582 4.52686 16.4531 4.52686C16.8604 4.52686 17.2677 4.62634 17.6719 4.78802C18.3777 5.07718 19.0773 5.57154 19.7551 6.21826C20.7687 7.18834 21.7201 8.50666 22.4321 10.0333C23.141 11.5599 23.6074 13.2949 23.6074 15.0951C23.6074 17.7877 22.8488 20.2378 21.5833 22.0473C20.949 22.9521 20.1873 23.6983 19.3198 24.2207C18.4523 24.7462 17.4791 25.0446 16.4562 25.0446C15.4333 25.0446 14.4601 24.7462 13.5926 24.2207C12.2929 23.4341 11.2265 22.1531 10.4803 20.5736C9.73405 18.9941 9.30497 17.113 9.30497 15.092H9.92371V15.0982Z" fill="#59687D" />
                         <path d="M17.0762 5.1487V27.8088C17.0762 28.1508 16.7963 28.4306 16.4543 28.4306C16.1123 28.4306 15.8325 28.1508 15.8325 27.8088V5.1487C15.8325 4.80669 16.1123 4.52686 16.4543 4.52686C16.7963 4.52686 17.0762 4.80669 17.0762 5.1487Z" fill="#59687D" />
@@ -110,7 +110,7 @@ export default function HomePage() {
                   </Link>
 
                   <Link href={'/renewable-energy'}>
-                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 md:h-10 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
+                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M25.4271 24.6307V24.0089H7.15237L10.0002 10.3791H21.8113L24.8177 24.7582L25.4271 24.6307V24.0089V24.6307L26.0365 24.5033L22.9275 9.62982C22.8684 9.34068 22.6134 9.1355 22.3181 9.1355H9.49657C9.20122 9.1355 8.94938 9.34068 8.8872 9.62982L5.7782 24.5033C5.74089 24.6867 5.78754 24.8764 5.90568 25.0225C6.02382 25.1686 6.20103 25.2525 6.38757 25.2525H25.4271C25.6136 25.2525 25.7908 25.1686 25.909 25.0225C26.0271 24.8764 26.0738 24.6867 26.0365 24.5033L25.4271 24.6307Z" fill="#59687D" />
                         <path d="M13.0874 9.73877L11.8438 24.55L13.0811 24.6526L14.3247 9.84135" fill="#59687D" />
@@ -134,7 +134,7 @@ export default function HomePage() {
                   </Link>
 
                   <Link href={'/emissions'}>
-                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 md:h-10 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
+                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
                       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16.3613 8.39575C19.5871 8.39575 22.2738 10.6909 22.877 13.7502L23.0029 14.3889L23.6523 14.4338C25.8154 14.5836 27.5117 16.3614 27.5117 18.5461C27.5117 20.8367 25.6519 22.6965 23.3613 22.6965H10.3613C7.52077 22.6965 5.21094 20.3867 5.21094 17.5461C5.21094 14.8945 7.21956 12.7055 9.80078 12.4309L10.2549 12.3831L10.4648 11.9788C11.5745 9.84827 13.801 8.39575 16.3613 8.39575Z" stroke="#59687D" strokeWidth="1.7" />
                       </svg>
@@ -143,7 +143,7 @@ export default function HomePage() {
                   </Link>
 
                   <Link href={'climate'}>
-                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 md:h-10 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
+                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
                       <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.93688 13.1062C11.0153 13.1062 11.9657 13.6374 12.5481 14.4566C12.7529 14.7446 13.1529 14.8118 13.4409 14.607C13.7289 14.4022 13.7961 14.0022 13.5913 13.7142C12.7817 12.5718 11.4441 11.8262 9.93688 11.8262C9.58488 11.8262 9.29688 12.1142 9.29688 12.4662C9.29688 12.8214 9.58168 13.1062 9.93688 13.1062Z" fill="#59687D" />
                         <path d="M18.8679 16.3062C18.8679 15.4198 19.2263 14.6262 19.8055 14.0438C20.3879 13.4646 21.1815 13.1062 22.0679 13.1062C22.4199 13.1062 22.7079 12.8182 22.7079 12.4662C22.7079 12.1142 22.4199 11.8262 22.0679 11.8262C19.5943 11.8262 17.5879 13.8326 17.5879 16.3062C17.5879 16.6582 17.8759 16.9462 18.2279 16.9462C18.5831 16.9462 18.8679 16.6614 18.8679 16.3062Z" fill="#59687D" />
@@ -159,7 +159,7 @@ export default function HomePage() {
                   </Link>
 
                   <Link href={'/predictions'}>
-                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 md:h-10 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
+                    <Button variant="outline" className="w-max flex items-center gap-2 justify-between md:px-3 px-2 h-10 border-[#DEDEDE] hover:bg-white/90 text-slate-700 rounded-full bg-transparent">
                       <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clipPath="url(#clip0_4503_10964)">
                           <path d="M24.2459 28.5843H9.41579C9.1448 28.5843 8.92578 28.3652 8.92578 28.0943C8.92578 27.8233 9.1448 27.6042 9.41579 27.6042H24.2459C24.5169 27.6042 24.7359 27.8233 24.7359 28.0943C24.7359 28.3652 24.5169 28.5843 24.2459 28.5843Z" fill="#59687D" />

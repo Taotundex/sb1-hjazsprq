@@ -84,43 +84,83 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
 };
 
-// Custom Legend Component
+// Custom Legend Component with toggle functionality
 const CustomLegend = ({
     activeSeries,
     setActiveSeries,
+    hoveredSeries,
+    setHoveredSeries,
 }: {
-    activeSeries: string | null;
-    setActiveSeries: (s: string | null) => void;
-}) => (
-    <div className="flex justify-start gap-6 mt-6">
-        {series.map((s) => (
-            <div
-                key={s.key}
-                onMouseEnter={() => setActiveSeries(s.key)}
-                onMouseLeave={() => setActiveSeries(null)}
-                className="flex items-center gap-2 text-sm cursor-pointer select-none"
-            >
-                <span
-                    style={{
-                        background: s.color,
-                        opacity: activeSeries && activeSeries !== s.key ? 0.3 : 1,
-                    }}
-                    className="w-2 h-2 rounded-full block"
-                />
-                <span>{s.label}</span>
-            </div>
-        ))}
-    </div>
-);
+    activeSeries: { [key: string]: boolean };
+    setActiveSeries: (series: { [key: string]: boolean }) => void;
+    hoveredSeries: string | null;
+    setHoveredSeries: (series: string | null) => void;
+}) => {
+    const toggleSeries = (key: string) => {
+        setActiveSeries({
+            ...activeSeries,
+            [key]: !activeSeries[key]
+        });
+    };
+
+    const getLegendOpacity = (key: string) => {
+        if (!hoveredSeries) return 1;
+        return hoveredSeries === key ? 1 : 0.5;
+    };
+
+    return (
+        <div className="flex justify-start gap-6 mt-6">
+            {series.map((s) => (
+                <div
+                    key={s.key}
+                    onClick={() => toggleSeries(s.key)}
+                    onMouseEnter={() => setHoveredSeries(s.key)}
+                    onMouseLeave={() => setHoveredSeries(null)}
+                    className="flex items-center gap-2 text-sm cursor-pointer select-none transition-opacity duration-200"
+                    style={{ opacity: getLegendOpacity(s.key) }}
+                >
+                    <span
+                        style={{
+                            background: s.color,
+                            opacity: activeSeries[s.key] ? 1 : 0.3,
+                        }}
+                        className="w-2 h-2 rounded-full block transition-opacity duration-200"
+                    />
+                    <span
+                        className={`transition-all duration-200 ${activeSeries[s.key] ? "text-gray-800" : "text-gray-400"
+                            }`}
+                    >
+                        {s.label}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 export default function RequestOne() {
     const [tab, setTab] = useState<"1" | "2">("1");
-    const [activeSeries, setActiveSeries] = useState<string | null>(null);
     const [timeView, setTimeView] = useState<"yearly" | "quarterly">("yearly");
 
+    // New state for active series with toggle functionality
+    const [activeSeries, setActiveSeries] = useState<{ [key: string]: boolean }>({
+        negative: true,
+        limitedPositive: true,
+        partialPositive: true,
+        positive: true
+    });
+
+    const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
+
     // Function to determine opacity for each bar
-    const opacityForKey = (key: string) =>
-        activeSeries && activeSeries !== key ? 0.18 : 1;
+    const opacityForKey = (key: string) => {
+        // If a series is hovered, highlight only that series
+        if (hoveredSeries) {
+            return hoveredSeries === key ? 1 : 0.3;
+        }
+        // If no series is hovered, show based on active state
+        return activeSeries[key] ? 1 : 0.3;
+    };
 
     // Get current data based on time view
     const currentData = timeView === "yearly" ? yearlyData : quarterlyData;
@@ -178,40 +218,48 @@ export default function RequestOne() {
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
                                 <YAxis tick={{ fontSize: 12 }} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar
-                                    dataKey="negative"
-                                    stackId="a"
-                                    fill={series[0].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("negative")}
-                                />
-                                <Bar
-                                    dataKey="limitedPositive"
-                                    stackId="a"
-                                    fill={series[1].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("limitedPositive")}
-                                />
-                                <Bar
-                                    dataKey="partialPositive"
-                                    stackId="a"
-                                    fill={series[2].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("partialPositive")}
-                                />
-                                <Bar
-                                    dataKey="positive"
-                                    stackId="a"
-                                    fill={series[3].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("positive")}
-                                >
-                                    <LabelList
-                                        dataKey="total"
-                                        position="top"
-                                        style={{ fill: "#707585", fontWeight: 500 }}
+                                {activeSeries.negative && (
+                                    <Bar
+                                        dataKey="negative"
+                                        stackId="a"
+                                        fill={series[0].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("negative")}
                                     />
-                                </Bar>
+                                )}
+                                {activeSeries.limitedPositive && (
+                                    <Bar
+                                        dataKey="limitedPositive"
+                                        stackId="a"
+                                        fill={series[1].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("limitedPositive")}
+                                    />
+                                )}
+                                {activeSeries.partialPositive && (
+                                    <Bar
+                                        dataKey="partialPositive"
+                                        stackId="a"
+                                        fill={series[2].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("partialPositive")}
+                                    />
+                                )}
+                                {activeSeries.positive && (
+                                    <Bar
+                                        dataKey="positive"
+                                        stackId="a"
+                                        fill={series[3].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("positive")}
+                                    >
+                                        <LabelList
+                                            dataKey="total"
+                                            position="top"
+                                            style={{ fill: "#707585", fontWeight: 500 }}
+                                        />
+                                    </Bar>
+                                )}
                             </ComposedChart>
                         </ResponsiveContainer>
                     </div>
@@ -220,6 +268,8 @@ export default function RequestOne() {
                     <CustomLegend
                         activeSeries={activeSeries}
                         setActiveSeries={setActiveSeries}
+                        hoveredSeries={hoveredSeries}
+                        setHoveredSeries={setHoveredSeries}
                     />
                 </>
             ) : (
@@ -232,40 +282,48 @@ export default function RequestOne() {
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
                                 <YAxis tick={{ fontSize: 12 }} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar
-                                    dataKey="negative"
-                                    stackId="a"
-                                    fill={series[0].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("negative")}
-                                />
-                                <Bar
-                                    dataKey="limitedPositive"
-                                    stackId="a"
-                                    fill={series[1].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("limitedPositive")}
-                                />
-                                <Bar
-                                    dataKey="partialPositive"
-                                    stackId="a"
-                                    fill={series[2].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("partialPositive")}
-                                />
-                                <Bar
-                                    dataKey="positive"
-                                    stackId="a"
-                                    fill={series[3].color}
-                                    barSize={104}
-                                    opacity={opacityForKey("positive")}
-                                >
-                                    <LabelList
-                                        dataKey="total"
-                                        position="top"
-                                        style={{ fill: "#707585", fontWeight: 500 }}
+                                {activeSeries.negative && (
+                                    <Bar
+                                        dataKey="negative"
+                                        stackId="a"
+                                        fill={series[0].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("negative")}
                                     />
-                                </Bar>
+                                )}
+                                {activeSeries.limitedPositive && (
+                                    <Bar
+                                        dataKey="limitedPositive"
+                                        stackId="a"
+                                        fill={series[1].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("limitedPositive")}
+                                    />
+                                )}
+                                {activeSeries.partialPositive && (
+                                    <Bar
+                                        dataKey="partialPositive"
+                                        stackId="a"
+                                        fill={series[2].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("partialPositive")}
+                                    />
+                                )}
+                                {activeSeries.positive && (
+                                    <Bar
+                                        dataKey="positive"
+                                        stackId="a"
+                                        fill={series[3].color}
+                                        barSize={104}
+                                        opacity={opacityForKey("positive")}
+                                    >
+                                        <LabelList
+                                            dataKey="total"
+                                            position="top"
+                                            style={{ fill: "#707585", fontWeight: 500 }}
+                                        />
+                                    </Bar>
+                                )}
                             </ComposedChart>
                         </ResponsiveContainer>
                     </div>
@@ -274,6 +332,8 @@ export default function RequestOne() {
                     <CustomLegend
                         activeSeries={activeSeries}
                         setActiveSeries={setActiveSeries}
+                        hoveredSeries={hoveredSeries}
+                        setHoveredSeries={setHoveredSeries}
                     />
                 </>
             )}

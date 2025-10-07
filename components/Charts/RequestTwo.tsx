@@ -12,6 +12,7 @@ import {
     Tooltip,
     ResponsiveContainer,
     LabelList,
+    ComposedChart,
 } from "recharts";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -24,8 +25,8 @@ type DataPoint = {
     veryLarge: number;
 };
 
-// ✅ Values from your image (Answer provider divided by facility size)
-const supplyData: DataPoint[] = [
+// ✅ Original monthly data
+const monthlySupplyData: DataPoint[] = [
     { date: "1/24", small: 500, medium: 100, large: 300, veryLarge: 1700 },
     { date: "2/24", small: 600, medium: 200, large: 400, veryLarge: 2100 },
     { date: "3/24", small: 700, medium: 200, large: 500, veryLarge: 2500 },
@@ -41,8 +42,7 @@ const supplyData: DataPoint[] = [
     { date: "1/25", small: 1400, medium: 800, large: 1200, veryLarge: 5055 },
 ];
 
-// Dummy facilities dataset
-const facilitiesData: DataPoint[] = [
+const monthlyFacilitiesData: DataPoint[] = [
     { date: "1/24", small: 20, medium: 10, large: 5, veryLarge: 2 },
     { date: "2/24", small: 25, medium: 12, large: 6, veryLarge: 3 },
     { date: "3/24", small: 28, medium: 13, large: 7, veryLarge: 4 },
@@ -58,6 +58,38 @@ const facilitiesData: DataPoint[] = [
     { date: "1/25", small: 50, medium: 28, large: 16, veryLarge: 11 },
 ];
 
+// ✅ Weekly data (aggregated from monthly for demonstration)
+const weeklySupplyData: DataPoint[] = [
+    { date: "W1", small: 150, medium: 30, large: 90, veryLarge: 510 },
+    { date: "W2", small: 180, medium: 60, large: 120, veryLarge: 630 },
+    { date: "W3", small: 210, medium: 60, large: 150, veryLarge: 750 },
+    { date: "W4", small: 150, medium: 30, large: 90, veryLarge: 570 },
+];
+
+const weeklyFacilitiesData: DataPoint[] = [
+    { date: "W1", small: 6, medium: 3, large: 1.5, veryLarge: 0.6 },
+    { date: "W2", small: 7.5, medium: 3.6, large: 1.8, veryLarge: 0.9 },
+    { date: "W3", small: 8.4, medium: 3.9, large: 2.1, veryLarge: 1.2 },
+    { date: "W4", small: 6.6, medium: 3.3, large: 1.8, veryLarge: 0.9 },
+];
+
+// ✅ Daily data (further aggregated)
+const dailySupplyData: DataPoint[] = [
+    { date: "Mon", small: 50, medium: 10, large: 30, veryLarge: 170 },
+    { date: "Tue", small: 60, medium: 20, large: 40, veryLarge: 210 },
+    { date: "Wed", small: 70, medium: 20, large: 50, veryLarge: 250 },
+    { date: "Thu", small: 50, medium: 10, large: 30, veryLarge: 190 },
+    { date: "Fri", small: 40, medium: 15, large: 25, veryLarge: 160 },
+];
+
+const dailyFacilitiesData: DataPoint[] = [
+    { date: "Mon", small: 2, medium: 1, large: 0.5, veryLarge: 0.2 },
+    { date: "Tue", small: 2.5, medium: 1.2, large: 0.6, veryLarge: 0.3 },
+    { date: "Wed", small: 2.8, medium: 1.3, large: 0.7, veryLarge: 0.4 },
+    { date: "Thu", small: 2.2, medium: 1.1, large: 0.6, veryLarge: 0.3 },
+    { date: "Fri", small: 2.0, medium: 0.9, large: 0.5, veryLarge: 0.2 },
+];
+
 // Series config with colors and labels
 const series = [
     { key: "small", label: "גדול מאוד | +5001 KW", color: "#648AA3" },
@@ -66,11 +98,28 @@ const series = [
     { key: "veryLarge", label: "קטן | 0-200 KW", color: "#CEA073" },
 ];
 
-// Custom Tooltip in the same format
+type TimePeriod = "daily" | "weekly" | "monthly";
+
+// Data structure by time period and type
+const dataByPeriod = {
+    monthly: {
+        supply: monthlySupplyData,
+        facilities: monthlyFacilitiesData,
+    },
+    weekly: {
+        supply: weeklySupplyData,
+        facilities: weeklyFacilitiesData,
+    },
+    daily: {
+        supply: dailySupplyData,
+        facilities: dailyFacilitiesData,
+    },
+};
+
+// Custom Tooltip
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload || payload.length === 0) return null;
 
-    // Calculate total from the payload data
     const total = payload.reduce((sum: number, entry: any) => sum + entry.value, 0);
 
     return (
@@ -103,44 +152,86 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     );
 };
 
-// Custom Legend Component
+// Custom Legend Component with toggle functionality
 const CustomLegend = ({
     activeSeries,
     setActiveSeries,
+    hoveredSeries,
+    setHoveredSeries,
 }: {
-    activeSeries: string | null;
-    setActiveSeries: (s: string | null) => void;
-}) => (
-    <div className="flex flex-row-reverse justify-end gap-6 mt-6">
-        {series.map((s) => (
-            <div
-                key={s.key}
-                onMouseEnter={() => setActiveSeries(s.key)}
-                onMouseLeave={() => setActiveSeries(null)}
-                className="flex items-center gap-2 text-sm cursor-pointer select-none"
-            >
-                <span
-                    style={{
-                        background: s.color,
-                        opacity: activeSeries && activeSeries !== s.key ? 0.3 : 1,
-                    }}
-                    className="w-2 h-2 rounded-full block"
-                />
-                <span>{s.label}</span>
-            </div>
-        ))}
-    </div>
-);
+    activeSeries: { [key: string]: boolean };
+    setActiveSeries: (series: { [key: string]: boolean }) => void;
+    hoveredSeries: string | null;
+    setHoveredSeries: (series: string | null) => void;
+}) => {
+    const toggleSeries = (key: string) => {
+        setActiveSeries({
+            ...activeSeries,
+            [key]: !activeSeries[key]
+        });
+    };
+
+    const getLegendOpacity = (key: string) => {
+        if (!hoveredSeries) return 1;
+        return hoveredSeries === key ? 1 : 0.5;
+    };
+
+    return (
+        <div className="flex flex-row-reverse justify-end gap-6 mt-6">
+            {series.map((s) => (
+                <div
+                    key={s.key}
+                    onClick={() => toggleSeries(s.key)}
+                    onMouseEnter={() => setHoveredSeries(s.key)}
+                    onMouseLeave={() => setHoveredSeries(null)}
+                    className="flex items-center gap-2 text-sm cursor-pointer select-none transition-opacity duration-200"
+                    style={{ opacity: getLegendOpacity(s.key) }}
+                >
+                    <span
+                        style={{
+                            background: s.color,
+                            opacity: activeSeries[s.key] ? 1 : 0.3,
+                        }}
+                        className="w-2 h-2 rounded-full block transition-opacity duration-200"
+                    />
+                    <span
+                        className={`transition-all duration-200 ${activeSeries[s.key] ? "text-gray-800" : "text-gray-400"
+                            }`}
+                    >
+                        {s.label}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 export default function RequestTwo() {
     const [activeTab, setActiveTab] = useState<"supply" | "facilities">("supply");
-    const [activeSeries, setActiveSeries] = useState<string | null>(null);
+    const [timePeriod, setTimePeriod] = useState<TimePeriod>("monthly");
+    
+    // New state for active series with toggle functionality
+    const [activeSeries, setActiveSeries] = useState<{ [key: string]: boolean }>({
+        small: true,
+        medium: true,
+        large: true,
+        veryLarge: true
+    });
+    
+    const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
 
-    const chartData = activeTab === "supply" ? supplyData : facilitiesData;
+    // Get chart data based on active tab and time period
+    const chartData = dataByPeriod[timePeriod][activeTab];
 
     // Function to determine opacity for each bar
-    const opacityForKey = (key: string) =>
-        activeSeries && activeSeries !== key ? 0.18 : 1;
+    const opacityForKey = (key: string) => {
+        // If a series is hovered, highlight only that series
+        if (hoveredSeries) {
+            return hoveredSeries === key ? 1 : 0.3;
+        }
+        // If no series is hovered, show based on active state
+        return activeSeries[key] ? 1 : 0.3;
+    };
 
     return (
         <div className="bg-white border border-[#E9C863] md:rounded-[40px] rounded-[20px] p-6">
@@ -161,13 +252,15 @@ export default function RequestTwo() {
                         <span className="text-sm text-slate-600 mt-6">מיון לפי:</span>
                         <div className="relative w-[113px]">
                             <label htmlFor="" className='flex flex-col gap-1'>
-                                <span className='text-sm text-slate-600'>מיקום:</span>
+                                <span className='text-sm text-slate-600'>תקופה:</span>
                                 <select
+                                    value={timePeriod}
+                                    onChange={(e) => setTimePeriod(e.target.value as TimePeriod)}
                                     className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
                                 >
-                                    <option>יומי</option>
-                                    <option>שבועי</option>
-                                    <option>חודשי</option>
+                                    <option value="daily">יומי</option>
+                                    <option value="weekly">שבועי</option>
+                                    <option value="monthly">חודשי</option>
                                 </select>
                                 {/* Custom dropdown arrow */}
                                 <span className="pointer-events-none absolute left-3 top-[40px] -translate-y-1/2 text-black text-xs">
@@ -186,46 +279,54 @@ export default function RequestTwo() {
             {/* Chart */}
             <div className="w-full h-[420px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
+                    <ComposedChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
                         <CartesianGrid vertical={false} strokeDasharray="6 6" />
                         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                         <YAxis tick={{ fontSize: 12 }} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar
-                            dataKey="small"
-                            stackId="a"
-                            fill={series[0].color}
-                            barSize={28}
-                            opacity={opacityForKey("small")}
-                        />
-                        <Bar
-                            dataKey="medium"
-                            stackId="a"
-                            fill={series[1].color}
-                            barSize={28}
-                            opacity={opacityForKey("medium")}
-                        />
-                        <Bar
-                            dataKey="large"
-                            stackId="a"
-                            fill={series[2].color}
-                            barSize={28}
-                            opacity={opacityForKey("large")}
-                        />
-                        <Bar
-                            dataKey="veryLarge"
-                            stackId="a"
-                            fill={series[3].color}
-                            barSize={28}
-                            opacity={opacityForKey("veryLarge")}
-                        >
-                            <LabelList
-                                dataKey="total"
-                                position="top"
-                                style={{ fill: "#707585", fontWeight: 500 }}
+                        {activeSeries.small && (
+                            <Bar
+                                dataKey="small"
+                                stackId="a"
+                                fill={series[0].color}
+                                barSize={28}
+                                opacity={opacityForKey("small")}
                             />
-                        </Bar>
-                    </BarChart>
+                        )}
+                        {activeSeries.medium && (
+                            <Bar
+                                dataKey="medium"
+                                stackId="a"
+                                fill={series[1].color}
+                                barSize={28}
+                                opacity={opacityForKey("medium")}
+                            />
+                        )}
+                        {activeSeries.large && (
+                            <Bar
+                                dataKey="large"
+                                stackId="a"
+                                fill={series[2].color}
+                                barSize={28}
+                                opacity={opacityForKey("large")}
+                            />
+                        )}
+                        {activeSeries.veryLarge && (
+                            <Bar
+                                dataKey="veryLarge"
+                                stackId="a"
+                                fill={series[3].color}
+                                barSize={28}
+                                opacity={opacityForKey("veryLarge")}
+                            >
+                                <LabelList
+                                    dataKey="total"
+                                    position="top"
+                                    style={{ fill: "#707585", fontWeight: 500 }}
+                                />
+                            </Bar>
+                        )}
+                    </ComposedChart>
                 </ResponsiveContainer>
             </div>
 
@@ -233,6 +334,8 @@ export default function RequestTwo() {
             <CustomLegend
                 activeSeries={activeSeries}
                 setActiveSeries={setActiveSeries}
+                hoveredSeries={hoveredSeries}
+                setHoveredSeries={setHoveredSeries}
             />
 
             {/* Tabs */}
