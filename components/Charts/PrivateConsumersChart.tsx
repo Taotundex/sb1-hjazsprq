@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {
-    BarChart,
+    ComposedChart,
     Bar,
     XAxis,
     YAxis,
@@ -128,7 +128,7 @@ const PrivateConsumersChart = () => {
     return (
         <div className="w-full md:h-[500px] h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-                <BarChart
+                <ComposedChart
                     data={data}
                     margin={{ top: 20, right: 10, left: -50, bottom: 20 }}
                     barCategoryGap="25%"
@@ -166,7 +166,7 @@ const PrivateConsumersChart = () => {
                         hide={hiddenBars.includes("withProduction")}
                         opacity={getBarOpacity("withProduction")}
                     />
-                </BarChart>
+                </ComposedChart>
             </ResponsiveContainer>
         </div>
     );

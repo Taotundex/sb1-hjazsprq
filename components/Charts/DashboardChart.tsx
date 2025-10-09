@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {
-    BarChart,
+    ComposedChart,
     Bar,
     XAxis,
     YAxis,
@@ -184,7 +184,7 @@ const DashboardCharts: React.FC = () => {
             {/* Bar Chart */}
             <div className="w-full md:h-[500px] h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={barData} barCategoryGap="100%" margin={{ top: 20, right: 10, left: -50, bottom: 20 }}>
+                    <ComposedChart data={barData} barCategoryGap="100%" margin={{ top: 20, right: 10, left: -50, bottom: 20 }}>
                         <XAxis dataKey="month" />
                         <YAxis domain={[0, 100]} />
                         <Tooltip content={<CustomTooltip />} />
@@ -210,7 +210,7 @@ const DashboardCharts: React.FC = () => {
                                 opacity={getOpacity("נדחו")}
                             />
                         )}
-                    </BarChart>
+                    </ComposedChart>
                 </ResponsiveContainer>
             </div>
         </div>

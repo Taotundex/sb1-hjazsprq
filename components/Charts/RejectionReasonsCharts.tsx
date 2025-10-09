@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {
-    BarChart,
+    ComposedChart,
     Bar,
     XAxis,
     YAxis,
@@ -195,7 +195,7 @@ const RejectionReasonsCharts: React.FC = () => {
             {/* Bar Chart */}
             <div className="md:h-[500px] h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
+                    <ComposedChart
                         data={barData}
                         barCategoryGap="30%"
                         margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
@@ -243,7 +243,7 @@ const RejectionReasonsCharts: React.FC = () => {
                                 opacity={getOpacity("אחר")}
                             />
                         )}
-                    </BarChart>
+                    </ComposedChart>
                 </ResponsiveContainer>
             </div>
         </div>

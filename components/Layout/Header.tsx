@@ -77,7 +77,7 @@ export default function Header() {
   // Handle search icon click
   const handleSearchIconClick = () => {
     if (searchValue.trim()) {
-      router.push(`/search-result?q=${encodeURIComponent(searchValue.trim())}`);
+      router.push(`/search/result?q=${encodeURIComponent(searchValue.trim())}`);
     }
   };
 
@@ -128,7 +128,7 @@ export default function Header() {
                 <form onSubmit={handleSearchSubmit} className="relative">
                   <div className="flex items-center gap-2 rounded-full px-4 pl-3 py-2 border border-white md:w-[200px] w-[175px] transition-all duration-300 hover:border-gray-300" style={{ backgroundColor: '#2A2E33' }}>
                     <input
-                      type="text"
+                      type="search"
                       placeholder="חיפוש"
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
