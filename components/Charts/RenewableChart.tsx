@@ -15,6 +15,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from "recharts";
+import TooltipInfo from "../TooltipInfo";
 
 // Example dataset (each metric has both % and TWh values)
 const data = [
@@ -70,56 +71,76 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-// Custom Legend (only 3 items)
-const CustomLegend = (props: any) => {
-    const { payload, onHover, onLeave } = props;
-
-    // Filter to show only Bar items (or only one item per series)
-    const filteredPayload = payload.filter((entry: any, index: number, self: any[]) =>
-        index === self.findIndex((item) => item.value === entry.value)
-    );
-
-    return (
-        <ul className="flex gap-4 justify-start mb-4">
-            {filteredPayload.map((entry: any, index: number) => (
-                <li
-                    key={`item-${index}`}
-                    className="cursor-pointer flex items-center md:text-sm text-xs gap-2"
-                    onMouseEnter={() => onHover(entry.value)}
-                    onMouseLeave={onLeave}
-                >
-                    <span
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: entry.color }}
-                    />
-                    {entry.value === "actual"
-                        ? "ייצור בפועל"
-                        : entry.value === "ministry"
-                            ? "יעד משרד האנרגיה"
-                            : "יעד NZO"}
-                </li>
-            ))}
-        </ul>
-    );
-};
-
 export default function RenewableChart() {
-    const [activeItem, setActiveItem] = useState<string | null>(null);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [hovered, setHovered] = useState<string | null>(null);
+    const [active, setActive] = useState({
+        actual: true,
+        ministry: true,
+        nzo: true
+    });
 
-    const handleHover = (key: string) => setActiveItem(key);
-    const handleLeave = () => setActiveItem(null);
+    const toggle = (key: keyof typeof active) =>
+        setActive((prev) => ({ ...prev, [key]: !prev[key] }));
+
+    const opacity = (key: string) => {
+        if (!hovered) return 1;
+        return hovered === key ? 1 : 0.3;
+    };
+
+    const getLegendOpacity = (key: string) => {
+        if (!hovered) return 1;
+        return hovered === key ? 1 : 0.5;
+    };
+
+    // Function to get the color for a series (considering hover and active states)
+    const getSeriesColor = (seriesKey: string, defaultColor: string) => {
+        if (!active[seriesKey as keyof typeof active]) {
+            return "#ccc";
+        }
+        if (hovered && hovered !== seriesKey) {
+            return "#ccc";
+        }
+        return defaultColor;
+    };
 
     return (
         <div className="w-full">
             <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
                     יעדי אנרגיות מתחדשות מול ייצור בפועל
-                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g opacity="0.5">
-                            <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
-                            <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
-                        </g>
-                    </svg>
+                    <div
+                        className="relative"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                    >
+                        <svg
+                            width="21"
+                            height="21"
+                            viewBox="0 0 21 21"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="cursor-help"
+                        >
+                            <g opacity="0.5">
+                                <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
+                                <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
+                            </g>
+                        </svg>
+
+                        {/* Tooltip that appears on hover */}
+                        {showTooltip && (
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 mb-2 z-50">
+                                <TooltipInfo
+                                    content="
+                    הגרף מציג את כמות החשמל שיוצר מאנרגיות מתחדשות (שמש, רוח ואחרים) לאורך שנה נבחרת, לפי חודשים.
+                    ניתן ללמוד ממנו איך משתנה ייצור החשמל מאנרגיות מתחדשות לאורך השנה, ימים, או חודשים, ומה התרומה של כל סוג טכנולוגיה (רוח, סולארי, אחר) בכל חודש.
+                    הנתונים נאספים ממערכת נוגה ומתעדכנים מעת לעת. ניתן לסנן לפי סוג טכנולוגיה ושנה, יום או חודש, ולהוריד את המידע לקובץ אקסל או לגשת אליו דרך API.
+                    "
+                                />
+                            </div>
+                        )}
+                    </div>
                 </h2>
                 <div className="flex items-start md:gap-4 gap-2">
                     <Image src={api} width={32} height={32} className='w-[32px] h-[32px]' alt='image' />
@@ -127,16 +148,77 @@ export default function RenewableChart() {
                 </div>
             </div>
 
-            {/* Legend positioned above the chart */}
-            <CustomLegend
-                payload={[
-                    { value: "actual", color: "#3A7C2F" },
-                    { value: "ministry", color: "#1976d2" },
-                    { value: "nzo", color: "#8e24aa" }
-                ]}
-                onHover={handleHover}
-                onLeave={handleLeave}
-            />
+            {/* Custom Legend positioned above the chart */}
+            <div className="flex justify-start gap-6 mb-4">
+                {/* Actual */}
+                <div
+                    className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
+                    onClick={() => toggle("actual")}
+                    onMouseEnter={() => setHovered("actual")}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{ opacity: getLegendOpacity("actual") }}
+                >
+                    <span
+                        className="w-2 h-2 rounded-full transition-opacity duration-200"
+                        style={{
+                            backgroundColor: "#1E8025",
+                            opacity: active.actual ? 1 : 0.3,
+                        }}
+                    ></span>
+                    <span
+                        className={`md:text-sm text-xs transition-all duration-200 ${active.actual ? "text-gray-800" : "text-gray-400"
+                            }`}
+                    >
+                        ייצור בפועל
+                    </span>
+                </div>
+
+                {/* Ministry */}
+                <div
+                    className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
+                    onClick={() => toggle("ministry")}
+                    onMouseEnter={() => setHovered("ministry")}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{ opacity: getLegendOpacity("ministry") }}
+                >
+                    <span
+                        className="w-2 h-2 rounded-full transition-opacity duration-200"
+                        style={{
+                            backgroundColor: "#8BBFE1",
+                            opacity: active.ministry ? 1 : 0.3,
+                        }}
+                    ></span>
+                    <span
+                        className={`md:text-sm text-xs transition-all duration-200 ${active.ministry ? "text-gray-800" : "text-gray-400"
+                            }`}
+                    >
+                        יעד משרד האנרגיה
+                    </span>
+                </div>
+
+                {/* NZO */}
+                <div
+                    className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
+                    onClick={() => toggle("nzo")}
+                    onMouseEnter={() => setHovered("nzo")}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{ opacity: getLegendOpacity("nzo") }}
+                >
+                    <span
+                        className="w-2 h-2 rounded-full transition-opacity duration-200"
+                        style={{
+                            backgroundColor: "#957669",
+                            opacity: active.nzo ? 1 : 0.3,
+                        }}
+                    ></span>
+                    <span
+                        className={`md:text-sm text-xs transition-all duration-200 ${active.nzo ? "text-gray-800" : "text-gray-400"
+                            }`}
+                    >
+                        יעד NZO
+                    </span>
+                </div>
+            </div>
 
             <div className="md:h-[500px] h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -152,55 +234,58 @@ export default function RenewableChart() {
                         {/* Actual */}
                         <Bar
                             dataKey="actual.pct"
-                            name="actual"
-                            fill={activeItem && activeItem !== "actual" ? "#ccc" : "#3A7C2F"}
+                            name="ייצור בפועל"
+                            fill={getSeriesColor("actual", "#1E8025")}
                             barSize={28}
                             stackId="a"
+                            opacity={opacity("actual")}
                         />
                         <Line
                             type="monotone"
                             dataKey="actual.pct"
-                            stroke={activeItem && activeItem !== "actual" ? "#ccc" : "#3A7C2F"}
+                            stroke={getSeriesColor("actual", "#1E8025")}
                             strokeWidth={2}
                             dot={{ r: 4 }}
-                            name="actual"
-                            hide={false}
+                            name="ייצור בפועל"
+                            opacity={opacity("actual")}
                         />
 
                         {/* Ministry */}
                         <Bar
                             dataKey="ministry.pct"
-                            name="ministry"
-                            fill={activeItem && activeItem !== "ministry" ? "#ccc" : "#1976d2"}
+                            name="יעד משרד האנרגיה"
+                            fill={getSeriesColor("ministry", "#8BBFE1")}
                             barSize={28}
                             stackId="a"
+                            opacity={opacity("ministry")}
                         />
                         <Line
                             type="monotone"
                             dataKey="ministry.pct"
-                            stroke={activeItem && activeItem !== "ministry" ? "#ccc" : "#1976d2"}
+                            stroke={getSeriesColor("ministry", "#8BBFE1")}
                             strokeWidth={2}
                             dot={{ r: 4 }}
-                            name="ministry"
-                            hide={false}
+                            name="יעד משרד האנרגיה"
+                            opacity={opacity("ministry")}
                         />
 
                         {/* NZO */}
                         <Bar
                             dataKey="nzo.pct"
-                            name="nzo"
-                            fill={activeItem && activeItem !== "nzo" ? "#ccc" : "#8e24aa"}
+                            name="יעד NZO"
+                            fill={getSeriesColor("nzo", "#957669")}
                             barSize={28}
                             stackId="a"
+                            opacity={opacity("nzo")}
                         />
                         <Line
                             type="monotone"
                             dataKey="nzo.pct"
-                            stroke={activeItem && activeItem !== "nzo" ? "#ccc" : "#8e24aa"}
+                            stroke={getSeriesColor("nzo", "#957669")}
                             strokeWidth={2}
                             dot={{ r: 4 }}
-                            name="nzo"
-                            hide={false}
+                            name="יעד NZO"
+                            opacity={opacity("nzo")}
                         />
                     </ComposedChart>
                 </ResponsiveContainer>
