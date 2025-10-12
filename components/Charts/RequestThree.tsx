@@ -254,11 +254,16 @@ export default function RequestThree() {
                 <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                         data={chartData}
-                        margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
+                        margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
                     >
                         <CartesianGrid vertical={false} strokeDasharray="6 6" />
                         <XAxis dataKey="district" tick={{ fontSize: 12 }} />
-                        <YAxis tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} label={{
+                            value: "הספק תשובות [MW]",
+                            angle: -90,
+                            position: "insideLeft",
+                            style: { textAnchor: 'middle' }
+                        }} />
                         <Tooltip content={<CustomTooltip activeTab={activeTab} />} />
 
                         {/* Bars */}

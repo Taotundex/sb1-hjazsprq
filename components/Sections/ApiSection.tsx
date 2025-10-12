@@ -24,9 +24,39 @@ interface ApiData {
 export default function ApiSection() {
   const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
 
-  const copyToClipboard = (text: string, endpoint: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedEndpoint(endpoint);
+  const copyToClipboard = (endpointData: ApiEndpoint) => {
+    const textToCopy = `
+Endpoint: ${endpointData.endpoint}
+Description: ${endpointData.description}
+Method: ${endpointData.method}
+Authentication: Required (Bearer Token)
+
+Headers:
+- Authorization: Bearer <your-token>
+- Content-Type: application/json
+
+Parameters:
+- page (optional): The page number for paginated results
+- limit (optional): Number of items per page (default: 10)
+
+Response:
+- Status: 200 OK
+- Body:
+{
+  "chart": [
+    {
+      "id": 1,
+      "title": "Sales Data",
+      "type": "bar",
+      "created_at": "2023-01-01T12:00:00Z"
+    },
+    ...
+  ]
+}
+    `.trim();
+
+    navigator.clipboard.writeText(textToCopy);
+    setCopiedEndpoint(endpointData.endpoint);
     setTimeout(() => setCopiedEndpoint(null), 2000);
   };
 
@@ -121,7 +151,6 @@ export default function ApiSection() {
 
       <div className="container mx-auto px-5 md:py-[52px] py-10 relative w-full overflow-hidden z-10">
         {/* Header */}
-        {/* <div className=""> */}
         <div className="md:px-[60px] px-5">
           <h1 className="md:text-5xl text-3xl font-extrabold text-[#484C56]">API</h1>
           <div className="w-[92px] h-1 bg-[#276E4E] md:my-5 my-3"></div>
@@ -137,7 +166,6 @@ export default function ApiSection() {
             <p className='md:text-xl text-base font-normal text-right text-[#484C56]'>Formats Supported: Specify data formats, e.g., JSON or XML</p>
           </div>
         </div>
-        {/* </div> */}
 
         {/* API Documentation */}
         <div className="md:my-10 my-5 flex flex-col md:gap-10 gap-5">
@@ -171,7 +199,7 @@ export default function ApiSection() {
           </div>
 
           <div className="flex flex-col bg-[#FDFBF6] md:rounded-[40px] rounded-[20px] border border-[#DEDEDE]/70 md:px-[60px] px-5 md:py-[50px] py-5">
-            <h2 className='md:text-[34px] text-2xl text-[#276E4E] font-extrabold'>נקודות הקצה</h2>
+            <h2 className='md:text-[34px] mb-6 text-2xl text-[#276E4E] font-extrabold'>נקודות הקצה</h2>
             <div className="flex flex-col gap-6">
               {apiEndpoints.map((endpoint, index) => (
                 <div key={index} className="max-w-[780px] text-left w-full bg-white border border-[#C3C3C3] p-5 rounded-xl">
@@ -181,15 +209,16 @@ export default function ApiSection() {
                       <p className='text-[#484C56] md:text-xl text-base font-normal'>{endpoint.title}</p>
                     </div>
                     <button
-                      onClick={() => copyToClipboard(endpoint.endpoint, endpoint.endpoint)}
-                      className={`flex items-center gap-1 px-3 py-1 rounded ${copiedEndpoint === endpoint.endpoint ? '' : 'hover:bg-[#1e5a3f] hover:text-white'
-                        }`}
+                      onClick={() => copyToClipboard(endpoint)}
+                      className={`flex items-center gap-1 px-3 py-1 rounded border border-[#276E4E] text-[#276E4E] ${copiedEndpoint === endpoint.endpoint
+                        ? 'bg-[#276E4E] text-white'
+                        : 'hover:bg-[#276E4E] hover:text-white'
+                        } transition-colors duration-200`}
                     >
                       {copiedEndpoint === endpoint.endpoint ? (
-                        <span className="flex items-center ltr">
-                          <span>!</span>
-                          <span>Copied</span>
-                        </span>
+                        <div className="flex items-center">
+                          <div><span>!</span>Copied</div>
+                        </div>
                       ) : (
                         <>
                           Copy

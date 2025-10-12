@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import InterestPage from '@/components/InterestPage';
 import Electricity from '@/components/Electritiy';
+import { ElectricityLineGraph } from '@/components/Graph/ElectricityScatterGraph';
+import HeatVsProductionChart from '@/components/Charts/HeatVsProductionChart';
 
 const page = () => {
     return (
@@ -19,9 +21,7 @@ const page = () => {
                             קרא פחות...
                         </Button>
                     </div>
-                    {/* <div className="bg-white border border-[#E9C863] md:rounded-[40px] rounded-[20px] py-10 px-5 space-y-[30px]"> */}
-                        <Electricity />
-                    {/* </div> */}
+                    <HeatVsProductionChart />
                 </div>
 
                 {/* Bottom Section - Additional Data Links */}

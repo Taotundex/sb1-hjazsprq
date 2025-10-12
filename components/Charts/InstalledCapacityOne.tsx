@@ -166,11 +166,16 @@ export default function InstalledCapacityOne() {
                         <ResponsiveContainer width="100%" height="100%">
                             <ComposedChart
                                 data={data}
-                                margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
+                                margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
                             >
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                                <YAxis tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} label={{
+                                    value: "הספק מותקן [MW]",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    style: { textAnchor: 'middle' }
+                                }} />
                                 <Tooltip content={<CustomTooltip />} />
                                 {categories.map((c) => (
                                     <Bar
@@ -200,7 +205,12 @@ export default function InstalledCapacityOne() {
                             >
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                                <YAxis tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} label={{
+                                    value: "הספק מותקן [MW]",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    style: { textAnchor: 'middle' }
+                                }} />
                                 <Tooltip content={<CustomTooltip />} />
                                 {categories.map((c) => (
                                     <Bar

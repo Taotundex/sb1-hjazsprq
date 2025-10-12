@@ -149,11 +149,16 @@ export default function RenewableProduction2() {
                         <ResponsiveContainer width="100%" height="100%">
                             <ComposedChart
                                 data={data}
-                                margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
+                                margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
                             >
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                                <YAxis tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} label={{
+                                    value: "אחוז מכלל הייצור [%]",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    style: { textAnchor: 'middle' }
+                                }} />
                                 <Tooltip content={<CustomTooltip />} />
                                 {/* <div className="mx-1"> */}
                                 {series.map((s, idx) => (
@@ -185,7 +190,12 @@ export default function RenewableProduction2() {
                             >
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                                <YAxis tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} label={{
+                                    value: "אחוז מכלל הייצור [%]",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    style: { textAnchor: 'middle' }
+                                }} />
                                 <Tooltip content={<CustomTooltip />} />
                                 {/* <div className="mx-1"> */}
                                 {series.map((s, idx) => (

@@ -209,7 +209,7 @@ const CustomLegend = ({
 export default function RequestTwo() {
     const [activeTab, setActiveTab] = useState<"supply" | "facilities">("supply");
     const [timePeriod, setTimePeriod] = useState<TimePeriod>("monthly");
-    
+
     // New state for active series with toggle functionality
     const [activeSeries, setActiveSeries] = useState<{ [key: string]: boolean }>({
         small: true,
@@ -217,7 +217,7 @@ export default function RequestTwo() {
         large: true,
         veryLarge: true
     });
-    
+
     const [hoveredSeries, setHoveredSeries] = useState<string | null>(null);
 
     // Get chart data based on active tab and time period
@@ -279,10 +279,15 @@ export default function RequestTwo() {
             {/* Chart */}
             <div className="w-full h-[420px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
+                    <ComposedChart data={chartData} margin={{ top: 20, right: 20, left: 10, bottom: 10 }}>
                         <CartesianGrid vertical={false} strokeDasharray="6 6" />
                         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                        <YAxis tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} label={{
+                            value: "הספק תשובות [KW]",
+                            angle: -90,
+                            position: "insideLeft",
+                            style: { textAnchor: 'middle' }
+                        }} />
                         <Tooltip content={<CustomTooltip />} />
                         {activeSeries.small && (
                             <Bar

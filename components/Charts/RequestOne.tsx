@@ -213,10 +213,15 @@ export default function RequestOne() {
                     {/* Chart */}
                     <div className="w-full h-[420px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
+                            <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 10, bottom: 10 }}>
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                                <YAxis tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} label={{
+                                    value: "הספק תשובות [MW]",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    style: { textAnchor: 'middle' }
+                                }} />
                                 <Tooltip content={<CustomTooltip />} />
                                 {activeSeries.negative && (
                                     <Bar
@@ -280,7 +285,12 @@ export default function RequestOne() {
                             <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
-                                <YAxis tick={{ fontSize: 12 }} />
+                                <YAxis tick={{ fontSize: 12 }} label={{
+                                    value: "הספק תשובות [MW]",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    style: { textAnchor: 'middle' }
+                                }} />
                                 <Tooltip content={<CustomTooltip />} />
                                 {activeSeries.negative && (
                                     <Bar
