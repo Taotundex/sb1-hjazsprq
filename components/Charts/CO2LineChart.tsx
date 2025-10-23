@@ -92,22 +92,22 @@ const CO2LineChart = () => {
                         <TooltipProvider>
                             <UITooltip>
                                 <TooltipTrigger asChild>
-                                <button type="button" className="inline-flex items-center">
-                                    <svg
-                                        width="21"
-                                        height="21"
-                                        viewBox="0 0 21 21"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="cursor-pointer"
-                                    >
-                                        <g opacity="0.5">
-                                            <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
-                                            <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
-                                        </g>
-                                    </svg>
-                                </button>
-                            </TooltipTrigger>
+                                    <button type="button" className="inline-flex items-center">
+                                        <svg
+                                            width="21"
+                                            height="21"
+                                            viewBox="0 0 21 21"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="cursor-pointer"
+                                        >
+                                            <g opacity="0.5">
+                                                <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
+                                                <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
+                                            </g>
+                                        </svg>
+                                    </button>
+                                </TooltipTrigger>
                                 <TooltipContent className="max-w-sm">
                                     <p>נתונים על פליטות CO₂ לאורך זמן</p>
                                 </TooltipContent>
@@ -142,12 +142,18 @@ const CO2LineChart = () => {
                 </div>
             </div>
             <div className="h-[300px]">
-                <p className="text-right text-xs text-gray-500">[mTCO₂/h]</p>
+                {/* <p className="text-right text-xs text-gray-500 ">[mTCO₂/h]</p> */}
                 <ResponsiveContainer width="100%" height="95%">
-                    <LineChart data={currentData} margin={{ top: 20, right: 0, left: -20, bottom: 10 }}>
+                    <LineChart data={currentData} margin={{ top: 20, right: 0, left: 10, bottom: 10 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                         <XAxis dataKey="date" tickLine={false} tick={{ fill: "#6b7280", fontSize: 10 }} />
-                        <YAxis tickLine={false} tick={{ fill: "#6b7280", fontSize: 10 }} />
+                        <YAxis tickLine={false} tick={{ fill: "#6b7280", fontSize: 10 }} label={{
+                            value: "[mTCO₂/h]",
+                            angle: -90,
+                            position: "insideLeft",
+                            style: { textAnchor: 'middle' }
+                        }}
+                        />
                         {/* <Tooltip
                             cursor={{ strokeDasharray: "3 3" }}
                             contentStyle={{

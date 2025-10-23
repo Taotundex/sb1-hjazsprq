@@ -176,13 +176,13 @@ const HeatVsProductionChart: React.FC = () => {
 
             <div className="md:h-[480px] h-[320px]">
                 {/* small axis labels row */}
-                <div className="flex justify-between items-end mb-2 text-right">
+                {/* <div className="flex justify-between items-end mb-2 text-right">
                     <p className="text-right text-xs text-[#707585]">ייצור חשמל <br />(MW)</p>
                     <p className="text-right text-xs text-[#707585]">עומס חום <br />[מעלות C]</p>
-                </div>
+                </div> */}
 
                 <ResponsiveContainer width="100%" height="90%">
-                    <LineChart data={currentData} margin={{ top: 20, right: -20, left: 0, bottom: 10 }}>
+                    <LineChart data={currentData} margin={{ top: 20, right: 10, left: 10, bottom: 10 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E6E7EA" />
                         <XAxis
                             dataKey="date"
@@ -198,6 +198,12 @@ const HeatVsProductionChart: React.FC = () => {
                             tickLine={false}
                             axisLine={false}
                             tick={{ fill: "#6b7280", fontSize: 12 }}
+                            label={{
+                                value: "עומס חום [מעלות C°]",
+                                angle: -90,
+                                position: "insideLeft",
+                                style: { textAnchor: 'middle' }
+                            }}
                         />
 
                         <YAxis
@@ -208,6 +214,12 @@ const HeatVsProductionChart: React.FC = () => {
                             tick={{ fill: "#6b7280", fontSize: 12 }}
                             domain={[0, (dataMax: number) => Math.ceil(dataMax / 1000) * 1000 + 1000]}
                             width={80}
+                            label={{
+                                value: "מגה-וואט [MW]",
+                                angle: 90,
+                                position: "insideRight",
+                                style: { textAnchor: 'middle' }
+                            }}
                         // push a little to the right visually
                         />
 

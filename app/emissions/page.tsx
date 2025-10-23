@@ -33,6 +33,11 @@ export default function Emissions() {
     const [smpDetails, setSmpDetails] = useState(false)
     const [marketDetails, setMarketDetails] = useState(false)
     const [selectedTimeframe, setSelectedTimeframe] = useState('יומי');
+    const [showMore, setShowMore] = useState(true)
+
+    const handleChange = () => {
+        setShowMore(!showMore)
+    }
 
     const handleSMP = (() => {
         setSmpDetails(!smpDetails)
@@ -85,9 +90,27 @@ export default function Emissions() {
                             <p className="text-[#484C56] max-w-full leading-[120%]">
                                 כאן יהיה הסבר.  לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש.
                             </p>
+                            {!showMore && (
+                                <>
+                                    <p className="text-[#484C56] max-w-full leading-[120%]">
+                                        כאן יהיה הסבר.  לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש.
+                                    </p>
+                                    <p className="text-[#484C56] max-w-full leading-[120%]">
+                                        כאן יהיה הסבר.  לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש.
+                                    </p>
+                                </>
+                            )}
                         </div>
-                        <Button variant="link" className="text-[#358BFF] mt-2 mr-0 p-0">
-                            קרא פחות...
+                        <Button variant="link" className="text-[#358BFF] mt-2 mr-0 p-0" onClick={handleChange}>
+                            {showMore ? (
+                                <span>
+                                    קרא עוד…
+                                </span>
+                            ) : (
+                                <span>
+                                    קרא פחות…
+                                </span>
+                            )}
                         </Button>
                     </div>
 

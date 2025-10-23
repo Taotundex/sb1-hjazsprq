@@ -135,6 +135,8 @@ const CO2DonutChart = () => {
                                 innerRadius={70}
                                 outerRadius={130}
                                 paddingAngle={0}
+                                startAngle={90}
+                                endAngle={-270}
                             >
                                 {data.map((entry, index) => (
                                     <Cell
@@ -171,7 +173,7 @@ const CO2DonutChart = () => {
                 </div>
 
                 {/* Legend */}
-                <div className="flex flex-col gap-6 mt-6">
+                <div className="flex flex-col gap-6 mt-6 w-[200px]">
                     {data.map((item) => (
                         <div
                             key={item.name}
@@ -181,12 +183,17 @@ const CO2DonutChart = () => {
                             style={{ opacity: getOpacity(item.name) }}
                         >
                             <span
-                                className="w-2 h-2 rounded-full"
+                                className="w-2 h-2 rounded-full -mt-2"
                                 style={{ backgroundColor: item.color }}
                             />
-                            <span className="text-sm text-gray-700">
-                                {item.name} ({item.percent}%)
-                            </span>
+                            <div className="flex flex-col">
+                                <span className="text-sm text-gray-700">
+                                    {item.name} | ({item.percent}%)
+                                </span>
+                                <span className="text-sm text-gray-700 flex items-center gap-1">
+                                    5293<span>MTCO2</span>
+                                </span>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -225,7 +232,7 @@ const CO2DonutChart = () => {
                     </svg>
                     <div>
                         <p className="text-center text-sm font-normal text-[#59687D]">סך יצור חשמלי</p>
-                        <p className="text-center text-lg font-normal text-[#484C56]">11,365/MWh</p>
+                        <p className="text-center text-lg font-normal text-[#484C56] flex flex-row-reverse items-center">11,365<span>MWh/</span></p>
                     </div>
                 </div>
             </div>

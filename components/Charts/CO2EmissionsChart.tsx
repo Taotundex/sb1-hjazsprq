@@ -87,7 +87,7 @@ const CO2EmissionsChart = () => {
             סך פליטות CO₂ מול יחס פליטות CO₂
             <TooltipProvider>
               <UITooltip>
-                            <TooltipTrigger asChild>
+                <TooltipTrigger asChild>
                   <button type="button" className="inline-flex items-center">
                     <svg
                       width="21"
@@ -139,12 +139,12 @@ const CO2EmissionsChart = () => {
       </div>
 
       <div className="md:h-[500px] h-[300px]">
-        <div className="flex justify-between items-end text-right">
+        {/* <div className="flex justify-between items-end text-right">
           <p className="text-right text-xs text-[#707585] font-normal">קצב פליטות <br />mTCO₂/<br />MWh</p>
           <p className="text-right text-xs text-[#707585] font-normal">סך פליטות <br />[mTCO₂/h]</p>
-        </div>
+        </div> */}
         <ResponsiveContainer width="100%" height="90%">
-          <LineChart data={currentData} margin={{ top: 20, right: 0, left: 0, bottom: 10 }}>
+          <LineChart data={currentData} margin={{ top: 20, right: 10, left: 10, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="date"
@@ -158,6 +158,12 @@ const CO2EmissionsChart = () => {
               tickLine={false}
               axisLine={false}
               tick={{ fill: "#6b7280", fontSize: 12 }}
+              label={{
+                value: ">סך פליטות [mTCO₂/h]",
+                angle: -90,
+                position: "insideLeft",
+                style: { textAnchor: 'middle' }
+              }}
             />
             <YAxis
               yAxisId="right"
@@ -167,6 +173,12 @@ const CO2EmissionsChart = () => {
               tick={{ fill: "#6b7280", fontSize: 12 }}
               style={{
                 transform: 'translateX(25px)'
+              }}
+              label={{
+                value: "קצב פליטות mTCO₂/MWh",
+                angle: 90,
+                position: "insideRight",
+                style: { textAnchor: 'middle' }
               }}
             />
             {active.co2 && (
