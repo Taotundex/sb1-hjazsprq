@@ -73,7 +73,7 @@ export default function ElectricitySector() {
         <div className="">
             <div className="container mx-auto px-5 md:py-[52px] py-5 md:space-y-[52px] space-y-5 relative w-full overflow-hidden" >
                 {/* Main Content */}
-                <div className="md:space-y-[52px] space-y-8 bg-[#FDFBF6] border border-[#DEDEDE]/70 md:px-[60px] px-6 md:py-[50px] py-6 md:rounded-[40px] rounded-[20px]">
+                <div className="md:space-y-[52px] space-y-8 bg-[#FDFBF6] border border-[#DEDEDE]/70 md:px-[30px] px-6 md:py-[50px] py-6 md:rounded-[40px] rounded-[20px]">
                     <div className="">
                         <h2 className="md:text-3xl text-2xl font-bold text-[#276E4E]">משק החשמל בישראל</h2>
                         <div className="w-[46px] h-1 bg-[#276E4E] md:my-5 my-3"></div>
@@ -219,7 +219,7 @@ export default function ElectricitySector() {
                 </div>
 
                 {/* Bottom Section - Additional Data Links */}
-                <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] pb-5 md:px-[60px] px-5 space-y-[30px]">
+                <div className="bg-[#FDFBF6] border border-[#DEDEDE]/70 md:rounded-[40px] rounded-[20px] pb-5 md:px-[30px] px-5 space-y-[30px]">
                     <div className="flex flex-col gap-2 my-[30px]">
                         <h3 className="md:text-lg text-base font-extrabold text-[#276E4E]">לנתונים נוספים</h3>
                         <div className="flex items-center md:gap-6 gap-3">

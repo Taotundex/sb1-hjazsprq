@@ -279,7 +279,7 @@ export default function RequestTwo() {
             {/* Chart */}
             <div className="w-full h-[420px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={chartData} margin={{ top: 20, right: 20, left: 10, bottom: 10 }}>
+                    <ComposedChart data={chartData} margin={{ top: 20, right: 20, left: 60, bottom: 10 }}>
                         <CartesianGrid vertical={false} strokeDasharray="6 6" />
                         <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                         <YAxis tick={{ fontSize: 12 }} label={{

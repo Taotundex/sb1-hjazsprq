@@ -175,7 +175,7 @@ const DashboardCharts: React.FC = () => {
                         </Pie>
                     </PieChart>
                 </ResponsiveContainer>
-                <div className="absolute text-sm flex flex-col top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2">
+                <div className="absolute text-sm flex flex-col items-center top-1/2  right-1/2 -translate-y-[60%] translate-x-1/2 pb-4">
                     <b className="text-xl">314,932</b>
                     <span className="text-gray-500 text-sm font-normal">בקשות</span>
                 </div>
@@ -184,9 +184,18 @@ const DashboardCharts: React.FC = () => {
             {/* Bar Chart */}
             <div className="w-full md:h-[500px] h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={barData} barCategoryGap="100%" margin={{ top: 20, right: 10, left: -50, bottom: 20 }}>
+                    <ComposedChart data={barData} barCategoryGap="100%" margin={{ top: 20, right: 10, left: 20, bottom: 20 }}>
                         <XAxis dataKey="month" />
-                        <YAxis domain={[0, 100]} />
+                        <YAxis 
+                            domain={[0, 100]} 
+                            ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+                            label={{
+                                value: "מספר מונים [באלפים]",
+                                angle: -90,
+                                position: "insideLeft",
+                                style: { textAnchor: 'middle' }
+                            }}
+                        />
                         <Tooltip content={<CustomTooltip />} />
                         {!hiddenKeys.includes("אושרו") && (
                             <Bar

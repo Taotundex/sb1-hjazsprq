@@ -16,7 +16,7 @@ import {
     LabelList,
 } from "recharts";
 import { ChevronDown } from "lucide-react";
-import TooltipInfo from "../TooltipInfo";
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 type DataPoint = {
     month: string;
@@ -89,7 +89,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function RenewableProduction() {
     const [activeSeries, setActiveSeries] = useState<string | null>(null);
-    const [showTooltip, setShowTooltip] = useState(false);
 
     const opacityForKey = (key: string) => (activeSeries && activeSeries !== key ? 0.18 : 1);
 

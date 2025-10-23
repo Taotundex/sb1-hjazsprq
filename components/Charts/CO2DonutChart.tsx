@@ -12,7 +12,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import api from "@/public/images/API.png";
 import download from "@/public/images/download_2.png";
-import TooltipInfo from "../TooltipInfo";
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 type EnergyData = {
     name: string;
@@ -51,7 +51,6 @@ const dataByPeriod: Record<Period, { total: number; data: EnergyData[] }> = {
 };
 
 const CO2DonutChart = () => {
-    const [showTooltip, setShowTooltip] = useState(false);
     const [selectedPeriod, setSelectedPeriod] = useState<Period>("monthly");
     const [hovered, setHovered] = useState<string | null>(null);
 
@@ -72,38 +71,30 @@ const CO2DonutChart = () => {
                 <div className="flex flex-col gap-2 mb-3">
                     <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
                         תמהיל פליטות CO2
-                        <div
-                            className="relative"
-                            onMouseEnter={() => setShowTooltip(true)}
-                            onMouseLeave={() => setShowTooltip(false)}
-                        >
-                            <svg
-                                width="21"
-                                height="21"
-                                viewBox="0 0 21 21"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="cursor-help"
-                            >
-                                <g opacity="0.5">
-                                    <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
-                                    <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
-                                </g>
-                            </svg>
-
-                            {/* Tooltip that appears on hover */}
-                            {showTooltip && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mb-2 z-50">
-                                    <TooltipInfo
-                                        content="
-                    הגרף מציג את כמות החשמל שיוצר מאנרגיות מתחדשות (שמש, רוח ואחרים) לאורך שנה נבחרת, לפי חודשים.
-                    ניתן ללמוד ממנו איך משתנה ייצור החשמל מאנרגיות מתחדשות לאורך השנה, ימים, או חודשים, ומה התרומה של כל סוג טכנולוגיה (רוח, סולארי, אחר) בכל חודש.
-                    הנתונים נאספים ממערכת נוגה ומתעדכנים מעת לעת. ניתן לסנן לפי סוג טכנולוגיה ושנה, יום או חודש, ולהוריד את המידע לקובץ אקסל או לגשת אליו דרך API.
-                    "
-                                    />
-                                </div>
-                            )}
-                        </div>
+                        <TooltipProvider>
+                            <UITooltip>
+                                <TooltipTrigger asChild>
+                                    <button type="button" className="inline-flex items-center">
+                                        <svg
+                                            width="21"
+                                            height="21"
+                                            viewBox="0 0 21 21"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="cursor-pointer"
+                                        >
+                                            <g opacity="0.5">
+                                                <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
+                                                <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
+                                            </g>
+                                        </svg>
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-sm">
+                                    <p>תמהיל פליטות CO2 מאנרגיה פוסילית</p>
+                                </TooltipContent>
+                            </UITooltip>
+                        </TooltipProvider>
                     </h2>
                     <p className="-mt-8">מאנרגיה פוסילית</p>
                     <p className="mr-14">מאנרגיה פוסילית</p>

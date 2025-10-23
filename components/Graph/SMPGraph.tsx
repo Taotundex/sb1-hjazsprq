@@ -137,6 +137,7 @@ export default function SMPGraph() {
                     />
                     <YAxis
                         domain={[0, 10000]}
+                        ticks={[0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]}
                         tick={{ fontSize: 12 }}
                         axisLine={true}
                         tickMargin={10}

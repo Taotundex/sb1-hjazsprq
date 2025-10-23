@@ -10,9 +10,9 @@ export default function Logo() {
       <Image
         src="/Frame 427319881.png"
         alt="NZO Logo"
-        width={163}
-        height={65}
-        className="md:h-[65px] md:w-[163px] h-auto w-[70px]"
+        width={140}
+        height={56}
+        className="md:h-[56px] md:w-[140px] h-auto w-[60px]"
         priority
       />
     </div>

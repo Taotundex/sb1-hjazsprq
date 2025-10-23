@@ -132,18 +132,22 @@
   @apply bg-renewable text-white;
 }
 
-/* Custom scrollbar for RTL */
-[dir="rtl"] ::-webkit-scrollbar {
-  width: 8px;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-[dir="rtl"] ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+::-webkit-scrollbar-track {
+  background: #1a1d20;
 }
 
-[dir="rtl"] ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+::-webkit-scrollbar-thumb {
+  background: #357A5B;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1E8025;
 }
 
 .recharts-yAxis .recharts-cartesian-axis-tick text{

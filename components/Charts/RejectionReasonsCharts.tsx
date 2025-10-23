@@ -186,9 +186,9 @@ const RejectionReasonsCharts: React.FC = () => {
                         </Pie>
                     </PieChart>
                 </ResponsiveContainer>
-                <div className="absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45px]">
+                  <div className="absolute text-sm flex flex-col items-center top-1/2  right-1/2 -translate-y-[60%] translate-x-1/2 pb-14">
                     <b className="text-xl">12,531</b>
-                    <p className="text-gray-500 text-sm font-normal">סה״כ פניות</p>
+                    <span className="text-gray-500 text-sm font-normal">סה״כ פניות</span>
                 </div>
             </div>
 
@@ -198,10 +198,19 @@ const RejectionReasonsCharts: React.FC = () => {
                     <ComposedChart
                         data={barData}
                         barCategoryGap="30%"
-                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                        margin={{ top: 10, right: 10, left: 20, bottom: 0 }}
                     >
                         <XAxis dataKey="month" />
-                        <YAxis domain={[0, 100]} />
+                        <YAxis 
+                            domain={[0, 100]} 
+                            ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+                            label={{
+                                value: "מספר מונים [באלפים]",
+                                angle: -90,
+                                position: "insideLeft",
+                                style: { textAnchor: 'middle' }
+                            }}
+                        />
                         <Tooltip content={<CustomTooltip />} />
                         {!hiddenKeys.includes("ייפוי כח חסר") && (
                             <Bar

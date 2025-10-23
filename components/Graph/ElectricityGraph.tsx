@@ -133,23 +133,23 @@ const ElectricityLineGraph = () => {
         );
     };
 
-    const CustomYAxisLabel = (props: any) => {
-        const { viewBox } = props;
-        return (
-            <text
-                x={viewBox.x}
-                y={viewBox.y}
-                dy={-20}
-                dx={20}
-                textAnchor="middle"
-                className="text-sm font-normal text-[#707585]"
-                transform={`rotate(0 ${viewBox.x} ${viewBox.y})`}
-            >
-                <tspan x={viewBox.x} dy="-2.4rem">מחיר שולי</tspan>
-                <tspan x={viewBox.x} dy="1.2em" dx="1.3rem">[MWh/₪]</tspan>
-            </text>
-        );
-    };
+    // const CustomYAxisLabel = (props: any) => {
+    //     const { viewBox } = props;
+    //     return (
+    //         <text
+    //             x={viewBox.x}
+    //             y={viewBox.y}
+    //             dy={-10}
+    //             dx={20}
+    //             textAnchor="middle"
+    //             className="text-sm font-normal text-[#707585]"
+    //             transform={`rotate(0 ${viewBox.x} ${viewBox.y})`}
+    //         >
+    //             <tspan x={viewBox.x} dy="-2.4rem">מחיר שולי</tspan>
+    //             <tspan x={viewBox.x} dy="1.2em" dx="1.3rem">[MWh/₪]</tspan>
+    //         </text>
+    //     );
+    // };
 
     const getLineOpacity = (dataKey: string) => {
         // If series is manually hidden by click
@@ -183,18 +183,20 @@ const ElectricityLineGraph = () => {
                         yAxisId="left"
                         orientation="left"
                         domain={[0, 220]}
+                        ticks={[0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]}
                         tick={{ fontSize: 12 }}
                         axisLine={true}
                         tickMargin={10}
-                        label={<CustomYAxisLabel />}
+                        // label={<CustomYAxisLabel />}
                     />
                     <YAxis
                         yAxisId="right"
                         orientation="right"
                         domain={[0, 11000]}
+                        ticks={[0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]}
                         tick={{ fontSize: 12 }}
                         axisLine={true}
-                        tickMargin={10}
+                        tickMargin={35}
                     />
                     <Tooltip content={<CustomLineTooltip />} />
                     <Legend content={renderLegend} />

@@ -213,7 +213,7 @@ export default function RequestOne() {
                     {/* Chart */}
                     <div className="w-full h-[420px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 10, bottom: 10 }}>
+                            <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 60, bottom: 10 }}>
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
                                 <YAxis tick={{ fontSize: 12 }} label={{
@@ -282,7 +282,7 @@ export default function RequestOne() {
                     {/* Chart */}
                     <div className="w-full h-[420px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
+                            <ComposedChart data={currentData} margin={{ top: 20, right: 20, left: 60, bottom: 10 }}>
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
                                 <XAxis dataKey="year" tick={{ fontSize: 12 }} />
                                 <YAxis tick={{ fontSize: 12 }} label={{

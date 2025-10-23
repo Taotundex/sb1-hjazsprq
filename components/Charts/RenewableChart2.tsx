@@ -13,7 +13,7 @@ import {
     Legend,
     LabelList,
 } from "recharts";
-import TooltipInfo from "../TooltipInfo";
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 interface DataItem {
     country: string;
@@ -48,7 +48,6 @@ const legendLabels: Record<string, string> = {
 };
 
 export default function RenewableChart2() {
-    const [showTooltip, setShowTooltip] = useState(false);
     const [activeKey, setActiveKey] = useState<string | null>(null);
 
     const handleLegendMouseEnter = (dataKey: string) => {

@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import apiIcon from "@/public/images/API.png";
 import downloadIcon from "@/public/images/download_2.png";
-import TooltipInfo from "../TooltipInfo"; // keep your existing TooltipInfo component
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"; // keep your existing TooltipInfo component
 
 type DataPoint = {
     date: string;

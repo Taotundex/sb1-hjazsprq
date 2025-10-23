@@ -3,6 +3,7 @@ import ElectricityGraph from './Graph/ElectricityGraph'
 import { Button } from './ui/button'
 import { ChevronDown, ChevronLeft } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 import Image from 'next/image'
 import download from '@/public/images/download_2.png'
 import api from '@/public/images/API.png'
@@ -16,12 +17,23 @@ const Electricity = () => {
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between gap-2">
                             <CardTitle className="md:text-lg text-base md:text-right flex flex-row-reverse items-center gap-2 text-[#484C56] font-extrabold p-0 text-left">
-                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g opacity="0.5">
-                                        <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
-                                        <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
-                                    </g>
-                                </svg>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <button type="button" className="inline-flex items-center">
+                                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" className="cursor-pointer">
+                                                    <g opacity="0.5">
+                                                        <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
+                                                        <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
+                                                    </g>
+                                                </svg>
+                                            </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>גרף המציג את ייצור החשמל והמחיר השולי לאורך זמן</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                                 ייצור חשמל אל מול המחיר השולי
                             </CardTitle>
                             <div className="flex items-start md:gap-4 gap-2">

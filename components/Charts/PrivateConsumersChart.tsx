@@ -15,17 +15,17 @@ import {
 // Sample data
 const data = [
     { month: "01/24", virtual: 12, withProduction: 12 },
-    { month: "02/24", virtual: 15, withProduction: 20 },
-    { month: "03/24", virtual: 10, withProduction: 14 },
-    { month: "04/24", virtual: 37, withProduction: 20 },
-    { month: "05/24", virtual: 12, withProduction: 12 },
-    { month: "06/24", virtual: 12, withProduction: 12 },
-    { month: "07/24", virtual: 12, withProduction: 12 },
-    { month: "08/24", virtual: 12, withProduction: 12 },
-    { month: "09/24", virtual: 12, withProduction: 12 },
-    { month: "10/24", virtual: 12, withProduction: 12 },
-    { month: "11/24", virtual: 20, withProduction: 14 },
-    { month: "12/24", virtual: 12, withProduction: 12 },
+    { month: "02/24", virtual: 13, withProduction: 14 },
+    { month: "03/24", virtual: 11, withProduction: 13 },
+    { month: "04/24", virtual: 15, withProduction: 18 },
+    { month: "05/24", virtual: 14, withProduction: 16 },
+    { month: "06/24", virtual: 16, withProduction: 17 },
+    { month: "07/24", virtual: 15, withProduction: 15 },
+    { month: "08/24", virtual: 17, withProduction: 19 },
+    { month: "09/24", virtual: 18, withProduction: 20 },
+    { month: "10/24", virtual: 19, withProduction: 21 },
+    { month: "11/24", virtual: 20, withProduction: 22 },
+    { month: "12/24", virtual: 21, withProduction: 23 },
 ];
 
 // Custom Tooltip
@@ -130,12 +130,21 @@ const PrivateConsumersChart = () => {
             <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart
                     data={data}
-                    margin={{ top: 20, right: 10, left: -50, bottom: 20 }}
+                    margin={{ top: 20, right: 10, left: 20, bottom: 20 }}
                     barCategoryGap="25%"
                 >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="month" />
-                    <YAxis domain={[0, 100]} />
+                    <YAxis 
+                        domain={[0, 100]} 
+                        ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+                        label={{
+                            value: "צרכנים פרטיים [באלפים]",
+                            angle: -90,
+                            position: "insideLeft",
+                            style: { textAnchor: 'middle' }
+                        }}
+                    />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend
                         content={
