@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import TooltipInfo from '../TooltipInfo';
 
 const ProductionTable = () => {
+    const [showTooltip, setShowTooltip] = useState(false);
+
     const tableData = [
         { id: 1, one: "3", two: "77", three: "77", four: "77", five: '77', six: "4", seven: "287,196", eight: "58", nine: "287,196", ten: "58", eleven: "גזר" },
         { id: 2, one: "3", two: "77", three: "77", four: "77", five: '77', six: "4", seven: "7,196", eight: "58", nine: "7,196", ten: "58", eleven: "תל שבע" },
@@ -26,12 +29,29 @@ const ProductionTable = () => {
         <div className="px-5 py-6 rounded-[16px] border border-[#E9C863] bg-white flex flex-col gap-5">
             <h3 className='text-[#484C56] text-xl font-extrabold flex items-center gap-2 pr-5'>
                 פוטנציאל ייצור - השוואה ליישובים דומים (לתל אביב)
-                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g opacity="0.5">
-                        <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#59687D" />
-                        <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#59687D" />
-                    </g>
-                </svg>
+                <div
+                    className="relative"
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                >
+                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g opacity="0.5">
+                            <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#59687D" />
+                            <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#59687D" />
+                        </g>
+                    </svg>
+                    {showTooltip && (
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mb-2 z-50">
+                            <TooltipInfo
+                                content="
+                                    הגרף מציג את כמות החשמל שיוצר מאנרגיות מתחדשות (שמש, רוח ואחרים) לאורך שנה נבחרת, לפי חודשים.
+                                    ניתן ללמוד ממנו איך משתנה ייצור החשמל מאנרגיות מתחדשות לאורך השנה, ימים, או חודשים, ומה התרומה של כל סוג טכנולוגיה (רוח, סולארי, אחר) בכל חודש.
+                                    הנתונים נאספים ממערכת נוגה ומתעדכנים מעת לעת. ניתן לסנן לפי סוג טכנולוגיה ושנה, יום או חודש, ולהוריד את המידע לקובץ אקסל או לגשת אליו דרך API.
+                                    "
+                            />
+                        </div>
+                    )}
+                </div>
             </h3>
             <div className="relative overflow-x-auto rounded-lg">
                 <table className="w-full text-sm text-left text-[#0F0F0F] border border-[#DEDEDE] rounded-lg">

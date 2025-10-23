@@ -14,6 +14,7 @@ import {
     Bar,
 } from "recharts";
 import { ChevronDown } from "lucide-react";
+import TooltipInfo from "../TooltipInfo";
 
 // Data extracted from the image (values in MW)
 const data = [
@@ -42,6 +43,9 @@ const categories = [
     { key: "פוטו", label: "פוטו וולטאי", color: "#C4C95C" },
     { key: "רוח", label: "רוח", color: "#98C74E" },
 ];
+
+// Get all unique years from data
+const allYears = data.map(item => item.year);
 
 // Custom tooltip
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -95,9 +99,135 @@ const CustomLegend = ({
     </div>
 );
 
+// Custom Dropdown Component with Checkboxes
+// Custom Dropdown Component with Checkboxes
+const YearDropdown = ({ selectedYears, setSelectedYears }: { selectedYears: number[], setSelectedYears: (years: number[]) => void }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const isAllSelected = selectedYears.length === allYears.length;
+
+    const handleSelectAllChange = (checked: boolean) => {
+        if (checked) {
+            setSelectedYears([...allYears]);
+        } else {
+            setSelectedYears([]);
+        }
+    };
+
+    const toggleYear = (year: number) => {
+        if (selectedYears.includes(year)) {
+            const newSelectedYears = selectedYears.filter(y => y !== year);
+            setSelectedYears(newSelectedYears);
+        } else {
+            const newSelectedYears = [...selectedYears, year];
+            setSelectedYears(newSelectedYears);
+        }
+    };
+
+    const displayText = selectedYears.length === 0
+        ? "בחר שנים"
+        : isAllSelected
+            ? "בחירה מרובה"
+            : `${selectedYears.length} שנים נבחרו`;
+
+    return (
+        <div className="relative">
+            <button
+                type="button"
+                className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6 text-right flex items-center justify-between"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <span>{displayText}</span>
+                <ChevronDown size={14} className={`transform ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isOpen && (
+                <div className="absolute z-10 mt-1 w-full bg-white border border-[#A1A1A1] rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    <div className="p-2 pb-0">
+                        <label className="flex items-center space-x-2 space-x-reverse p-1 hover:bg-gray-100 rounded cursor-pointer">
+                            <input
+                                type="radio"
+                                checked={isAllSelected}
+                                onChange={(e) => handleSelectAllChange(e.target.checked)}
+                                className="rounded border-[#A1A1A1] text-blue-600 focus:ring-blue-500"
+                            />
+                            <span className="text-sm font-medium">הכל</span>
+                        </label>
+                    </div>
+                    <div className="p-2">
+                        {allYears.map((year) => (
+                            <label key={year} className="flex items-center space-x-2 space-x-reverse p-1 hover:bg-gray-100 rounded cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedYears.includes(year)}
+                                    onChange={() => toggleYear(year)}
+                                    className="rounded border-[#A1A1A1] text-blue-600 focus:ring-blue-500"
+                                />
+                                <span className="text-sm">{year}</span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+// Capacity Type Dropdown
+const CapacityDropdown = ({ selectedCapacity, setSelectedCapacity }: { selectedCapacity: string, setSelectedCapacity: (capacity: string) => void }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const capacityOptions = [
+        { value: "installed", label: "הספק מותקן" },
+        { value: "number", label: "מספר מתקנים" }
+    ];
+
+    const displayText = capacityOptions.find(opt => opt.value === selectedCapacity)?.label || "הספק מותקן";
+
+    return (
+        <div className="relative">
+            <button
+                type="button"
+                className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6 text-right flex items-center justify-between"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <span>{displayText}</span>
+                <ChevronDown size={14} className={`transform ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isOpen && (
+                <div className="absolute z-10 mt-1 w-full bg-white border border-[#A1A1A1] rounded-lg shadow-lg">
+                    <div className="p-2">
+                        {capacityOptions.map((option) => (
+                            <button
+                                key={option.value}
+                                type="button"
+                                className={`w-full text-right p-2 text-sm hover:bg-gray-100 rounded ${selectedCapacity === option.value ? 'bg-blue-50 text-blue-600' : ''
+                                    }`}
+                                onClick={() => {
+                                    setSelectedCapacity(option.value);
+                                    setIsOpen(false);
+                                }}
+                            >
+                                {option.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
 export default function InstalledCapacityOne() {
     const [tab, setTab] = useState(1);
     const [activeSeries, setActiveSeries] = useState<string | null>(null);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [selectedYears, setSelectedYears] = useState<number[]>(allYears);
+    const [selectedCapacity, setSelectedCapacity] = useState<string>("installed");
+
+    // Filter data based on selected years
+    const filteredData = data.filter(item => selectedYears.includes(item.year));
 
     // Function to determine opacity for each bar
     const opacityForKey = (key: string) =>
@@ -109,47 +239,50 @@ export default function InstalledCapacityOne() {
                 <div className="flex flex-col gap-0">
                     <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
                         הספק מותקן (מצטבר) של מתקנים לייצור אנרגיות מתחדשות
-                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.5">
-                                <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#A1A1A1" />
-                                <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#A1A1A1" />
-                            </g>
-                        </svg>
+                        <div
+                            className="relative"
+                            onMouseEnter={() => setShowTooltip(true)}
+                            onMouseLeave={() => setShowTooltip(false)}
+                        >
+                            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g opacity="0.5">
+                                    <path d="M10.5 0.545898C4.98 0.545898 0.5 5.0259 0.5 10.5459C0.5 16.0659 4.98 20.5459 10.5 20.5459C16.02 20.5459 20.5 16.0659 20.5 10.5459C20.5 5.0259 16.02 0.545898 10.5 0.545898ZM10.5 18.5459C6.09 18.5459 2.5 14.9559 2.5 10.5459C2.5 6.1359 6.09 2.5459 10.5 2.5459C14.91 2.5459 18.5 6.1359 18.5 10.5459C18.5 14.9559 14.91 18.5459 10.5 18.5459Z" fill="#59687D" />
+                                    <path d="M9.5 5.5459H11.5V7.5459H9.5V5.5459ZM9.5 9.5459H11.5V15.5459H9.5V9.5459Z" fill="#59687D" />
+                                </g>
+                            </svg>
+                            {showTooltip && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mb-2 z-50">
+                                    <TooltipInfo
+                                        content="
+                                    הגרף מציג את כמות החשמל שיוצר מאנרגיות מתחדשות (שמש, רוח ואחרים) לאורך שנה נבחרת, לפי חודשים.
+                                    ניתן ללמוד ממנו איך משתנה ייצור החשמל מאנרגיות מתחדשות לאורך השנה, ימים, או חודשים, ומה התרומה של כל סוג טכנולוגיה (רוח, סולארי, אחר) בכל חודש.
+                                    הנתונים נאספים ממערכת נוגה ומתעדכנים מעת לעת. ניתן לסנן לפי סוג טכנולוגיה ושנה, יום או חודש, ולהוריד את המידע לקובץ אקסל או לגשת אליו דרך API.
+                                    "
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </h2>
                     <div className="flex flex-wrap items-center gap-5">
                         <span className="text-sm text-slate-600 mt-6">מיון לפי:</span>
 
-                        <div className="relative w-[113px]">
+                        <div className="relative w-[170px]">
                             <label htmlFor="" className='flex flex-col gap-1'>
                                 <span className='text-sm text-slate-600'>שנה</span>
-                                <select
-                                    className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
-                                >
-                                    <option>הכל</option>
-                                    <option>הכל</option>
-                                    <option>הכל</option>
-                                </select>
-                                {/* Custom dropdown arrow */}
-                                <span className="pointer-events-none absolute left-3 top-[40px] -translate-y-1/2 text-black text-xs">
-                                    <ChevronDown size={14} />
-                                </span>
+                                <YearDropdown
+                                    selectedYears={selectedYears}
+                                    setSelectedYears={setSelectedYears}
+                                />
                             </label>
                         </div>
                         <div className="relative w-[179px]">
                             <label htmlFor="" className='flex flex-col gap-1'>
                                 <span className='text-sm text-slate-600'>הספק/מספר מתקנים</span>
-                                <select
-                                    className="w-full border rounded-full px-3 py-1 text-xs h-8 appearance-none bg-white pr-6"
-                                >
-                                    <option value="">הספק מותקן</option>
-                                    <option value="">הספק מותקן</option>
-                                    <option value="">הספק מותקן</option>
-                                </select>
+                                <CapacityDropdown
+                                    selectedCapacity={selectedCapacity}
+                                    setSelectedCapacity={setSelectedCapacity}
+                                />
                             </label>
-                            <span className="pointer-events-none absolute left-3 top-[40px] -translate-y-1/2 text-black text-xs">
-                                <ChevronDown size={14} />
-                            </span>
-                            {/* Custom dropdown arrow */}
                         </div>
                     </div>
                 </div>
@@ -159,13 +292,12 @@ export default function InstalledCapacityOne() {
                 </div>
             </div>
 
-
             {tab === 1 ? (
                 <>
                     <div className="w-full md:h-[500px] h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <ComposedChart
-                                data={data}
+                                data={filteredData}
                                 margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
                             >
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
@@ -200,7 +332,7 @@ export default function InstalledCapacityOne() {
                     <div className="w-full md:h-[500px] h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
                             <ComposedChart
-                                data={data}
+                                data={filteredData}
                                 margin={{ top: 20, right: 20, left: 0, bottom: 10 }}
                             >
                                 <CartesianGrid vertical={false} strokeDasharray="6 6" />
@@ -231,7 +363,6 @@ export default function InstalledCapacityOne() {
                     />
                 </>
             )}
-
 
             {/* Tabs */}
             <div className="flex gap-1 md:p-[6px] p-1 rounded-full bg-[#F8F8F8] mb-4 w-fit ml-auto -mt-10" style={{ boxShadow: "inset 0px 4px 10px 0px #0000001A" }}>

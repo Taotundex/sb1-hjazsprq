@@ -16,6 +16,7 @@ import {
 import apiIcon from "@/public/images/API.png";
 import downloadIcon from "@/public/images/download_2.png";
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"; // keep your existing TooltipInfo component
+import TooltipInfo from "../TooltipInfo";
 
 type DataPoint = {
     date: string;

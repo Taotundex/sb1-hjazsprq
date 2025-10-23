@@ -15,6 +15,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import Image from "next/image";
+import TooltipInfo from "../TooltipInfo";
 
 // Data extracted from the image (approximate values of % renewable per year/month)
 const data = [
@@ -93,7 +94,7 @@ const CustomLegend = ({
 export default function RenewableProduction2() {
     const [activeSeries, setActiveSeries] = useState<string | null>(null);
     const [tab, setTab] = useState(1);
-
+    const [showTooltip, setShowTooltip] = useState(false);
 
     const opacityForKey = (key: string) =>
         activeSeries && activeSeries !== key ? 0.18 : 1;
