@@ -49,7 +49,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                 <p className="font-semibold">שנה: {label}</p>
                 {uniquePayload.map((p: any) => {
                     const value = p.value;
-                    const dataKey = p.dataKey.split(".")[0];
+                    const dataKey = p.dataKey.includes('.') ? p.dataKey.split(".")[0] : p.dataKey.replace('Bar', '');
                     const twh = p.payload[dataKey]?.twh;
                     return (
                         <p key={p.dataKey} className="mt-1 text-[#484C56] md:text-sm text-sm font-medium">
@@ -68,27 +68,25 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 // --- COMPONENT ---
 export default function RenewableChart() {
     const [hovered, setHovered] = useState<string | null>(null);
-    const [active, setActive] = useState({
-        ministry: false,
-        nzo: false,
-    });
+    const [selectedPrediction, setSelectedPrediction] = useState<"ministry" | "nzo">("ministry");
 
-    // Exclusive toggle between Ministry and NZO
-    const toggleExclusive = (key: "ministry" | "nzo") => {
-        setActive((prev) => ({
-            ministry: key === "ministry" ? !prev.ministry : false,
-            nzo: key === "nzo" ? !prev.nzo : false,
-        }));
+    const togglePrediction = (key: "ministry" | "nzo") => {
+        setSelectedPrediction(key);
     };
 
-    const opacity = (key: string) => (!hovered ? 1 : hovered === key ? 1 : 0.3);
+    const opacity = (key: string) => {
+        if (!hovered) return 1;
+        return hovered === key ? 1 : 0.3;
+    };
 
-    // Preprocess data
+    // Preprocess data - stacked bars only up to 2024, lines continue throughout
     const adjustedData = data.map((d) => ({
         ...d,
+        // Green base bar - always shows actual data up to 2024
         actualBar: d.year <= 2024 ? d.actual.pct : null,
-        ministryBar: d.year > 2024 ? d.ministry.pct : null,
-        nzoBar: d.year > 2024 ? d.nzo.pct : null,
+        // Stacked prediction bars - show the difference between prediction and actual, only up to 2024
+        ministryBar: selectedPrediction === "ministry" && d.year <= 2024 ? d.ministry.pct - d.actual.pct : null,
+        nzoBar: selectedPrediction === "nzo" && d.year <= 2024 ? d.nzo.pct - d.actual.pct : null,
     }));
 
     return (
@@ -106,7 +104,7 @@ export default function RenewableChart() {
 
             {/* Legend */}
             <div className="flex justify-start gap-6 mb-4">
-                {/* Actual */}
+                {/* Actual - Always visible */}
                 <div
                     className="flex items-center gap-2 cursor-default"
                     onMouseEnter={() => setHovered("actual")}
@@ -116,46 +114,44 @@ export default function RenewableChart() {
                     <span className="md:text-sm text-xs text-gray-800">ייצור בפועל</span>
                 </div>
 
-                {/* Ministry */}
+                {/* Ministry - Toggleable */}
                 <div
                     className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
-                    onClick={() => toggleExclusive("ministry")}
+                    onClick={() => togglePrediction("ministry")}
                     onMouseEnter={() => setHovered("ministry")}
                     onMouseLeave={() => setHovered(null)}
-                    style={{ opacity: active.ministry ? 1 : 0.5 }}
+                    style={{ opacity: selectedPrediction === "ministry" ? 1 : 0.5 }}
                 >
                     <span
                         className="w-2 h-2 rounded-full"
                         style={{
                             backgroundColor: "#8BBFE1",
-                            opacity: active.ministry ? 1 : 0.3,
                         }}
                     ></span>
                     <span
-                        className={`md:text-sm text-xs ${active.ministry ? "text-gray-800" : "text-gray-400"
+                        className={`md:text-sm text-xs ${selectedPrediction === "ministry" ? "text-gray-800" : "text-gray-400"
                             }`}
                     >
                         יעד משרד האנרגיה
                     </span>
                 </div>
 
-                {/* NZO */}
+                {/* NZO - Toggleable */}
                 <div
                     className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
-                    onClick={() => toggleExclusive("nzo")}
+                    onClick={() => togglePrediction("nzo")}
                     onMouseEnter={() => setHovered("nzo")}
                     onMouseLeave={() => setHovered(null)}
-                    style={{ opacity: active.nzo ? 1 : 0.5 }}
+                    style={{ opacity: selectedPrediction === "nzo" ? 1 : 0.5 }}
                 >
                     <span
                         className="w-2 h-2 rounded-full"
                         style={{
                             backgroundColor: "#957669",
-                            opacity: active.nzo ? 1 : 0.3,
                         }}
                     ></span>
                     <span
-                        className={`md:text-sm text-xs ${active.nzo ? "text-gray-800" : "text-gray-400"
+                        className={`md:text-sm text-xs ${selectedPrediction === "nzo" ? "text-gray-800" : "text-gray-400"
                             }`}
                     >
                         יעד NZO
@@ -173,61 +169,63 @@ export default function RenewableChart() {
                         <Tooltip content={<CustomTooltip />} />
                         <Legend content={() => null} />
 
-                        {/* Actual (green) */}
+                        {/* Green base bar - Actual data up to 2024 */}
                         <Bar
                             dataKey="actualBar"
                             fill="#1E8025"
                             barSize={28}
-                            stackId="a"
+                            stackId="stack"
                             name="ייצור בפועל"
                             opacity={opacity("actual")}
                         />
+
+                        {/* Ministry stacked bar - Difference between ministry and actual, up to 2024 */}
+                        <Bar
+                            dataKey="ministryBar"
+                            fill="#8BBFE1"
+                            barSize={28}
+                            stackId="stack"
+                            name="יעד משרד האנרגיה"
+                            opacity={selectedPrediction === "ministry" ? opacity("ministry") : 0}
+                        />
+
+                        {/* NZO stacked bar - Difference between nzo and actual, up to 2024 */}
+                        <Bar
+                            dataKey="nzoBar"
+                            fill="#957669"
+                            barSize={28}
+                            stackId="stack"
+                            name="יעד NZO"
+                            opacity={selectedPrediction === "nzo" ? opacity("nzo") : 0}
+                        />
+
+                        {/* Lines for the full values - ALWAYS VISIBLE throughout timeline */}
                         <Line
                             type="monotone"
                             dataKey="actual.pct"
                             stroke="#1E8025"
                             strokeWidth={2}
-                            dot={{ r: 4 }}
+                            dot={false}
                             name="ייצור בפועל"
                             opacity={opacity("actual")}
-                        />
-
-                        {/* Ministry stacked */}
-                        <Bar
-                            dataKey="ministryBar"
-                            fill="#8BBFE1"
-                            barSize={28}
-                            stackId="a"
-                            name="יעד משרד האנרגיה"
-                            opacity={active.ministry ? opacity("ministry") : 0}
                         />
                         <Line
                             type="monotone"
                             dataKey="ministry.pct"
                             stroke="#8BBFE1"
                             strokeWidth={2}
-                            dot={{ r: 4 }}
+                            dot={false}
                             name="יעד משרד האנרגיה"
-                            opacity={active.ministry ? opacity("ministry") : 0}
-                        />
-
-                        {/* NZO stacked */}
-                        <Bar
-                            dataKey="nzoBar"
-                            fill="#957669"
-                            barSize={28}
-                            stackId="a"
-                            name="יעד NZO"
-                            opacity={active.nzo ? opacity("nzo") : 0}
+                            opacity={opacity("ministry")}
                         />
                         <Line
                             type="monotone"
                             dataKey="nzo.pct"
                             stroke="#957669"
                             strokeWidth={2}
-                            dot={{ r: 4 }}
+                            dot={false}
                             name="יעד NZO"
-                            opacity={active.nzo ? opacity("nzo") : 0}
+                            opacity={opacity("nzo")}
                         />
                     </ComposedChart>
                 </ResponsiveContainer>
