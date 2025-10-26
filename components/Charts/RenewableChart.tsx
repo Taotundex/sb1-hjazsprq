@@ -14,6 +14,7 @@ import {
     Tooltip,
     Legend,
     ResponsiveContainer,
+    LabelList,
 } from "recharts";
 
 // --- DATA ---
@@ -39,23 +40,28 @@ const data = [
 // --- TOOLTIP ---
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-        const uniquePayload = payload.filter(
-            (item: any, index: number, self: any[]) =>
-                index === self.findIndex((t) => t.dataKey === item.dataKey)
+        // Filter to only show line data (exclude bar data)
+        const linePayload = payload.filter((p: any) =>
+            p.dataKey === "actual.pct" ||
+            p.dataKey === "ministry.pct" ||
+            p.dataKey === "nzo.pct"
         );
 
         return (
             <div className="bg-white shadow-lg rounded-lg p-3 border border-gray-200 text-sm">
-                <p className="font-semibold">שנה: {label}</p>
-                {uniquePayload.map((p: any) => {
+                <p className="font-medium">שנה</p>
+                {linePayload.map((p: any) => {
                     const value = p.value;
-                    const dataKey = p.dataKey.includes('.') ? p.dataKey.split(".")[0] : p.dataKey.replace('Bar', '');
+                    const dataKey = p.dataKey.split(".")[0];
                     const twh = p.payload[dataKey]?.twh;
                     return (
-                        <p key={p.dataKey} className="mt-1 text-[#484C56] md:text-sm text-sm font-medium">
+                        <p key={p.dataKey} className="mt-1.5 text-[#484C56] text-sm font-normal">
                             <span className="text-[#59687D] font-normal">{p.name}</span>
                             <br />
-                            {value}% | {twh} TWh
+                            <p className="flex gap-1 font-medium text-sm">
+                                <span className="flex flex-row-reverse">{twh}<span>TWh</span></span>
+                                <span>| {value}%</span>
+                            </p>
                         </p>
                     );
                 })}
@@ -114,27 +120,6 @@ export default function RenewableChart() {
                     <span className="md:text-sm text-xs text-gray-800">ייצור בפועל</span>
                 </div>
 
-                {/* Ministry - Toggleable */}
-                <div
-                    className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
-                    onClick={() => togglePrediction("ministry")}
-                    onMouseEnter={() => setHovered("ministry")}
-                    onMouseLeave={() => setHovered(null)}
-                    style={{ opacity: selectedPrediction === "ministry" ? 1 : 0.5 }}
-                >
-                    <span
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                            backgroundColor: "#8BBFE1",
-                        }}
-                    ></span>
-                    <span
-                        className={`md:text-sm text-xs ${selectedPrediction === "ministry" ? "text-gray-800" : "text-gray-400"
-                            }`}
-                    >
-                        יעד משרד האנרגיה
-                    </span>
-                </div>
 
                 {/* NZO - Toggleable */}
                 <div
@@ -157,6 +142,29 @@ export default function RenewableChart() {
                         יעד NZO
                     </span>
                 </div>
+
+                {/* Ministry - Toggleable */}
+                <div
+                    className="flex items-center gap-2 cursor-pointer transition-opacity duration-200"
+                    onClick={() => togglePrediction("ministry")}
+                    onMouseEnter={() => setHovered("ministry")}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{ opacity: selectedPrediction === "ministry" ? 1 : 0.5 }}
+                >
+                    <span
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                            backgroundColor: "#8BBFE1",
+                        }}
+                    ></span>
+                    <span
+                        className={`md:text-sm text-xs ${selectedPrediction === "ministry" ? "text-gray-800" : "text-gray-400"
+                            }`}
+                    >
+                        יעד משרד האנרגיה
+                    </span>
+                </div>
+
             </div>
 
             {/* Chart */}
@@ -177,7 +185,15 @@ export default function RenewableChart() {
                             stackId="stack"
                             name="ייצור בפועל"
                             opacity={opacity("actual")}
-                        />
+                        >
+                            <LabelList
+                                dataKey={"actualBar"}
+                                position="insideTop"
+                                offset={10}
+                                formatter={(val: number) => (val ? `${val}` : "")}
+                                style={{ fill: "#ffffff90", fontSize: 14, fontWeight: 400, width: 100 }}
+                            />
+                        </Bar>
 
                         {/* Ministry stacked bar - Difference between ministry and actual, up to 2024 */}
                         <Bar
@@ -230,6 +246,6 @@ export default function RenewableChart() {
                     </ComposedChart>
                 </ResponsiveContainer>
             </div>
-        </div>
+        </div >
     );
 }
